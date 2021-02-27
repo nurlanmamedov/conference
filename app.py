@@ -18,9 +18,110 @@ def home():
         curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         curl.execute("SELECT * FROM rewievers")
         rewievers = curl.fetchall()
+        curl.execute("SELECT * FROM authors")
+        authors = curl.fetchall()
         curl.close()
         print(rewievers)
-        return render_template("home.html", data=rewievers)
+        return render_template("home.html", data=rewievers, authors=authors)
     else:
         print("alalalal")
         return render_template("home.html")
+
+
+@app.route('/authors',methods=["GET", "POST"])
+def authors():
+    if request.method == "GET":
+        curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        curl.execute("SELECT * FROM authors")
+        authors = curl.fetchall()
+        curl.close()
+        print(authors)
+        return render_template("home.html", authors=authors)
+
+    # if request.method == 'POST':
+
+    #     username = request.form['username']
+    #     fullname = request.form['fullname']
+    #     institution = request.form['institution']
+    #     email = request.form['email']
+    #     password = request.form['password'].encode('utf-8')
+    #     hash_password = bcrypt.hashpw(password, bcrypt.gensalt())
+
+    #     cur = mysql.connection.cursor()
+    #     cur.execute("INSERT INTO rewievers (username, fullname, institution, email, password) VALUES (%s,%s,%s,%s,%s)",(username, fullname, institution, email, hash_password))
+    #     mysql.connection.commit()
+    #     return render_template("home.html")
+    else:
+        return render_template("home.html")
+
+
+@app.route('/rewievers',methods=["GET", "POST"])
+def reviewers():
+    if request.method == 'POST':
+
+        username = request.form['username']
+        fullname = request.form['fullname']
+        institution = request.form['institution']
+        email = request.form['email']
+        password = request.form['password'].encode('utf-8')
+        hash_password = bcrypt.hashpw(password, bcrypt.gensalt())
+
+        cur = mysql.connection.cursor()
+        cur.execute("INSERT INTO rewievers (username, fullname, institution, email, password) VALUES (%s,%s,%s,%s,%s)",(username, fullname, institution, email, hash_password))
+        mysql.connection.commit()
+        return render_template("home.html")
+    else:
+        return render_template("home.html")
+
+
+
+
+@app.route('/login', methods=["GET", "POST"])
+def login():
+    if request.method == 'POST':
+        email = request.form['email']
+        password = request.form['password'].encode('utf-8')
+
+
+        curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        curl.execute("SELECT * FROM users WHERE email=%s",(email,))
+        user = curl.fetchone()
+        curl.close()
+
+        if len(user) > 0:
+            if bcrypt.hashpw(password, user["password"].encode('utf-8')) == user["password"].encode('utf-8'):
+                session['name'] = user['name']
+                session['email'] = user['email']
+                return render_template("home.html")
+            else:
+                return "Error password and email not match"
+        else:
+            return "Error user not found"
+    else:
+        return render_template("login.html")
+
+@app.route('/logout', methods=["GET", "POST"])
+def logout():
+    session.clear()
+    return render_template("home.html")
+
+@app.route('/register', methods=["GET", "POST"])
+def register():
+    if request.method == 'GET':
+        return render_template("register.html")
+    else:
+        name = request.form['name']
+        email = request.form['email']
+        password = request.form['password'].encode('utf-8')
+        hash_password = bcrypt.hashpw(password, bcrypt.gensalt())
+
+        cur = mysql.connection.cursor()
+        cur.execute("INSERT INTO users (name, email, password) VALUES (%s,%s,%s)",(name,email,hash_password,))
+        mysql.connection.commit()
+        session['name'] = request.form['name']
+        session['email'] = request.form['email']
+        return redirect(url_for('home'))
+
+if __name__ == '__main__':
+    app.debug = True
+    app.run()
