@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+
+    <title>{% block title %} {% endblock %}</title>
+
+
+    <link rel="stylesheet" href="static/regstyle.css">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+
+    <!-- JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
+        crossorigin="anonymous"></script>
+
+    <!-- <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css"> -->
+    <!-- <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script> -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+</head>
+
+
+<body>
+
+    <!-- 
+    <nav class="navbar navbar-default">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+
+
+                    <span class="sr-only">Toggle navigation</span>
+
+
+                    <span class="icon-bar"></span>
+
+
+                    <span class="icon-bar"></span>
+
+
+                    <span class="icon-bar"></span>
+
+
+                </button>
+
+
+                <a class="navbar-brand" href="#">Flask User Auth</a>
+
+
+            </div>
+
+
+            <div id="navbar" class="collapse navbar-collapse">
+
+
+                <ul class="nav navbar-nav">
+
+
+                    <li>
+
+
+                        <a href="/">Home</a>
+
+
+                    </li>
+
+
+
+
+                    {% if session['name'] %}
+
+
+                    <li>
+
+
+                        <a href="/logout">Logout</a>
+
+
+                    </li>
+
+
+                    {% else %}
+
+                    <li>
+
+
+                        <a href="/login">Login</a>
+
+
+                    </li>
+
+
+                    <li>
+
+
+                        <a href="/register">Register</a>
+
+
+                    </li>
+
+
+                    {% endif %}
+
+
+                </ul>
+
+
+            </div>
+
+
+        </div>
+
+
+    </nav>
+ -->
+
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">User Authaaaa</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">Home</a>
+                    </li>
+                    {% if session['name'] %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logout">Logout</a>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/login">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/register">Register</a>
+                    </li>
+                    {% endif %}
+                </ul>
+                <form class="d-flex">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success" type="submit">Search</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+
+    {% block content %} {% endblock %}
+
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</body>
+
+</html>

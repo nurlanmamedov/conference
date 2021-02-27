@@ -1,0 +1,75 @@
+{% extends 'layout.html' %}
+{% block title %} Home {% endblock %}
+{% block content %}
+<div class="container" style="margin: 50px;
+   background-color: #cce3f3;">
+   <div class="row">
+      <div class="col-md-6 col-md-offset-3">
+         {% if session['name'] %}
+         Welcome {{ session['name'] }}
+         <nav>
+            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+               <a class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" href="#nav-home" role="tab"
+                  aria-controls="nav-home" aria-selected="true">Home</a>
+               <a class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" href="#nav-profile" role="tab"
+                  aria-controls="nav-profile" aria-selected="false">View Rewievers</a>
+               <a class="nav-link" id="nav-contact-tab" data-bs-toggle="tab" href="#nav-contact" role="tab"
+                  aria-controls="nav-contact" aria-selected="false">Update Reviewers</a>
+               <a class="nav-link" id="nav-authors-tab" data-bs-toggle="tab" href="#nav-authors" role="tab"
+                  aria-controls="nav-contact" aria-selected="false">View Authors</a>
+            </div>
+         </nav>
+         <div class="tab-content" id="nav-tabContent">
+            <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+               <form action="/rewievers" method="POST">
+                  <div class="mb-3">
+                     <label for="exampleInputEmail1" class="form-label">Username</label>
+                     <input type="form-text" name="username" class="form-control" id="username"
+                        aria-describedby="usernameHelp">
+                  </div>
+                  <div class="mb-3">
+                     <label for="exampleInputEmail1" class="form-label">Fullname</label>
+                     <input type="form-text" class="form-control" name="fullname" id="fullname"
+                        aria-describedby="fullnameHelp">
+                  </div>
+                  <div class="mb-3">
+                     <label for="exampleInputEmail1" class="form-label">Institution</label>
+                     <input type="form-text" class="form-control" name="institution" id="institution"
+                        aria-describedby="institutionHelp">
+                  </div>
+                  <div class="mb-3">
+                     <label for="exampleInputEmail1" class="form-label">Email address</label>
+                     <input type="email" class="form-control" id="email" name="email"
+                        aria-describedby="emailHelp">
+                  </div>
+                  <div class="mb-3">
+                     <label for="exampleInputPassword1" class="form-label">Password</label>
+                     <input type="password" class="form-control" id="password" name="password">
+                  </div>
+                  <button type="submit" class="btn btn-primary">Register</button>
+               </form>
+            </div>
+            <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+               <ul class="list-group">
+                  {% for i in data %}
+                  <li class="list-group-item">{{ i.fullname }}</li>
+                  {% endfor %}
+               </ul>
+            </div>
+
+            <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">...3</div>
+            <div class="tab-pane fade" id="nav-authors" role="tabpanel" aria-labelledby="nav-authors-tab">
+               <ul class="list-group">
+                  {% for i in authors %}
+                  <li class="list-group-item">{{ i.name }} {{ i.surname }}</li>
+                  {% endfor %}
+               </ul>
+            </div>
+         </div>
+         {% else %}
+         Not login
+         {% endif %}
+      </div>
+   </div>
+</div>
+{% endblock %}
