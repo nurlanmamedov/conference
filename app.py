@@ -111,12 +111,18 @@ def register():
         return render_template("register.html")
     else:
         name = request.form['name']
+        surname = request.form['surname']
+        interests = request.form['interests']
+        phone = request.form['phone']
         email = request.form['email']
+        country = request.form['country']
+        city = request.form['city']
+        zip = request.form['zipcode']
         password = request.form['password'].encode('utf-8')
         hash_password = bcrypt.hashpw(password, bcrypt.gensalt())
 
         cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO users (name, email, password) VALUES (%s,%s,%s)",(name,email,hash_password,))
+        cur.execute("INSERT INTO authors (name,surname,interests, phone, email, country, city,zipcode, password) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)",(name,surname,interests, phone, email, country, city,zip, hash_password))
         mysql.connection.commit()
         session['name'] = request.form['name']
         session['email'] = request.form['email']
