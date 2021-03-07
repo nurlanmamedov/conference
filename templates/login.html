@@ -5,56 +5,105 @@
 {% block content %}
 
 
-<div class="container">
 
-
+<div class="container register">
     <div class="row">
+        <div class="col-md-3 register-left">
+            <img src="https://image.ibb.co/n7oTvU/logo_white.png" alt="" />
+            <h3>Welcome</h3>
+            <p>Ucuruq aya</p>
+        </div>
+        <div class="col-md-9 register-right">
+            <ul class="nav nav-tabs nav-justified" id="Tab" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link " id="admin-tab" data-toggle="tab" href="#admin" role="tab" aria-controls="admin"
+                        aria-selected="true"> Admin</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " id="reviewer-tab" data-toggle="tab" href="#reviewer" role="tab"
+                        aria-controls="reviewer" aria-selected="true"> Reviewer</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="author-tab" data-toggle="tab" href="#author" role="tab"
+                        aria-controls="author" aria-selected="true"> Author</a>
+                </li>
+            </ul>
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="admin" role="tabpanel" aria-labelledby="admin-tab">
+                    <h3 class="register-heading">Log in as an admin</h3>
+                    <form action="/login" method="POST">
+                        <div class="row register-form">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <input type="email" class="form-control" placeholder="Email" name="email">
+                                </div>
+                                <!-- email pasword login -->
+
+                                <div class="form-group">
+                                    <input type="password" class="form-control" placeholder="password" name="password">
+                                </div>
+                                <div class="form-group">
+                                    <button class="btn btn-primary btnRegister">Log in</button>
+                                </div>
+                            </div>
+
+                    </form>
+                </div>
+            </div>
 
 
-        <div class="col-md-6 col-md-offset-3">
+
+            <div class="tab-pane fade show" id="reviewer" role="tabpanel" aria-labelledby="reviewer-tab">
+                <h3 class="register-heading">Log in as an Reviewer</h3>
+                <form action="/login" method="POST">
+
+                    <div class="row register-form">
+                        <div class="col-md-6">
+
+                            <div class="form-group">
+                                <input type="email" class="form-control" placeholder="Email" value="" />
+                            </div>
+                            <div class="form-group">
+                                <input type="password" class="form-control" placeholder="Password" value="" />
+                            </div>
+                            <div class="form-group">
+                                <button class="btn btn-primary btnRegister">Log in</button>
+                            </div>
+                        </div>
+                </form>
+            </div>
+        </div>
 
 
+        <div class="tab-pane fade show" id="author" role="tabpanel" aria-labelledby="author-tab">
+            <h3 class="register-heading">Log in as an Author</h3>
             <form action="/login" method="POST">
 
+                <div class="row register-form">
+                    <div class="col-md-6">
 
-                <div class="form-group">
+                        <div class="form-group">
+                            <input type="email" class="form-control" placeholder="Email" value="" />
+                        </div>
+                        <div class="form-group">
+                            <input type="password" class="form-control" placeholder="Password" value="" />
+                        </div>
+                        <div class="form-group">
+                            <button class="btn btn-primary btnRegister">Log in</button>
+                        </div>
 
-
-                    <label>Email:</label>
-
-
-                    <input type="email" class="form-control" name="email">
-
-
-                </div>
-
-
-                <div class="form-group">
-
-
-                    <label>Password:</label>
-
-
-                    <input type="password" class="form-control" name="password">
-
-
-                </div>
-
-
-                <div class="form-group">
-
-
-                    <button class="btn btn-primary">Login</button>
-
-
-                </div>
-
-
+                    </div>
             </form>
-
-
         </div>
     </div>
+
+
 </div>
+</div>
+</div>
+
+</div>
+
+
 
 {% endblock %}
