@@ -71,6 +71,7 @@ def reviewers():
         mysql.connection.commit()
         return render_template("home.html")
     else:
+        print("lalal")
         return render_template("home.html")
 
 
