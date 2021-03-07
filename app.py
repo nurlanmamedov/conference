@@ -75,8 +75,6 @@ def reviewers():
         return render_template("home.html")
 
 
-
-
 @app.route('/login', methods=["GET", "POST"])
 def login():
     if request.method == 'POST':
@@ -128,6 +126,34 @@ def register():
         session['name'] = request.form['name']
         session['email'] = request.form['email']
         return redirect(url_for('home'))
+
+
+@app.route('/login_author', methods=["GET", "POST"])
+def login_author():
+    if request.method == 'POST':
+        email = request.form['email']
+        password = request.form['password'].encode('utf-8')
+
+        print("email --> ",password)
+        print("password --> ",password)
+
+        curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        curl.execute("SELECT * FROM authors WHERE email=%s",(email,))
+        user = curl.fetchone()
+        print("User --> ",user)
+        curl.close()
+
+        if len(user) > 0:
+            if bcrypt.hashpw(password, user["password"].encode('utf-8')) == user["password"].encode('utf-8'):
+                session['name'] = user['name']
+                session['email'] = user['email']
+                return render_template("author.html", name=user['name'])
+            else:
+                return "Error password and email not match"
+        else:
+            return "Error Author not found"
+    else:
+        return render_template("login.html")
 
 if __name__ == '__main__':
     app.debug = True

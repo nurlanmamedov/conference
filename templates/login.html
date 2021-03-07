@@ -16,7 +16,7 @@
         <div class="col-md-9 register-right">
             <ul class="nav nav-tabs nav-justified" id="Tab" role="tablist">
                 <li class="nav-item">
-                    <a class="nav-link " id="admin-tab" data-toggle="tab" href="#admin" role="tab" aria-controls="admin"
+                    <a class="nav-link" id="admin-tab" data-toggle="tab" href="#admin" role="tab" aria-controls="admin"
                         aria-selected="true"> Admin</a>
                 </li>
                 <li class="nav-item">
@@ -77,16 +77,16 @@
 
         <div class="tab-pane fade show" id="author" role="tabpanel" aria-labelledby="author-tab">
             <h3 class="register-heading">Log in as an Author</h3>
-            <form action="/login" method="POST">
+            <form action="/login_author" method="POST">
 
                 <div class="row register-form">
                     <div class="col-md-6">
 
                         <div class="form-group">
-                            <input type="email" class="form-control" placeholder="Email" value="" />
+                            <input type="email" class="form-control" placeholder="Email" value="" name="email" />
                         </div>
                         <div class="form-group">
-                            <input type="password" class="form-control" placeholder="Password" value="" />
+                            <input type="password" class="form-control" placeholder="Password" value="" name="password" />
                         </div>
                         <div class="form-group">
                             <button class="btn btn-primary btnRegister">Log in</button>
