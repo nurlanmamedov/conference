@@ -155,6 +155,34 @@ def login_author():
     else:
         return render_template("login.html")
 
+
+@app.route('/login_reviewer', methods=["GET", "POST"])
+def login_reviewer():
+    if request.method == 'POST':
+        email = request.form['email']
+        password = request.form['password'].encode('utf-8')
+
+        print("email --> ",password)
+        print("password --> ",password)
+
+        curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        curl.execute("SELECT * FROM authors WHERE email=%s",(email,))
+        user = curl.fetchone()
+        print("User --> ",user)
+        curl.close()
+
+        if len(user) > 0:
+            if bcrypt.hashpw(password, user["password"].encode('utf-8')) == user["password"].encode('utf-8'):
+                session['name'] = user['name']
+                session['email'] = user['email']
+                return render_template("reviewers.html", name=user['name'])
+            else:
+                return "Error password and email not match"
+        else:
+            return "Error Author not found"
+    else:
+        return render_template("login.html")
+
 if __name__ == '__main__':
     app.debug = True
     app.run()
