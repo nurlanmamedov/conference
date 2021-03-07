@@ -21,7 +21,7 @@ def home():
         curl.execute("SELECT * FROM authors")
         authors = curl.fetchall()
         curl.close()
-        print(rewievers)
+        print("here reviewers=>",rewievers)
         return render_template("home.html", data=rewievers, authors=authors)
     else:
         print("alalalal")
@@ -132,3 +132,5 @@ def register():
 if __name__ == '__main__':
     app.debug = True
     app.run()
+
+
