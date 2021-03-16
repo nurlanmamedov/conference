@@ -159,7 +159,7 @@ def login_author():
 @app.route('/login_reviewer', methods=["GET", "POST"])
 def login_reviewer():
     if request.method == 'POST':
-        email = request.form['email']
+        email git push= request.form['email']
         password = request.form['password'].encode('utf-8')
 
         print("email --> ",password)
