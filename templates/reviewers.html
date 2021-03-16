@@ -4,9 +4,6 @@
 {% block title %} Reviewers page {% endblock %}
 {% block content %}
 
-<div style="margin: 50px;">
-    <h1> Welcome to Rewiever page  {{ name }} </h1>
-</div>
 
 
 <div class="container register">
@@ -14,56 +11,24 @@
         <div class="col-md-3 register-left">
             <img src="https://image.ibb.co/n7oTvU/logo_white.png" alt="" />
             <h3>Welcome</h3>
-            <p>Ucuruq aya</p>
+            <h3> dear Reviewer : {{ name }} </h3>
+           
         </div>
         <div class="col-md-9 register-right">
-            <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist">
 
-                <li class="nav-item">
-                    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab"
-                        aria-controls="profile" aria-selected="false">AUTHOR</a>
-                </li>
-            </ul>
             <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                    <h3 class="register-heading">Register as an Author</h3>
+                    <h3 class="register-heading">Select one of these dear {{ name }}</h3>
                     <form action="/register" method="POST">
                         <div class="row register-form">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <input type="text" class="form-control" placeholder="name" name="name">
+                                    <button class="btn btn-primary btnRegister">View Papers</button>
                                 </div>
                                 <div class="form-group">
-                                    <input type="text" class="form-control" placeholder="lastname" name="surname">
-                                </div>
-                                <div class="form-group">
-                                    <input type="text" class="form-control" placeholder="interests" name="interests">
+                                    <button class="btn btn-primary btnRegister">Evaluate Papers</button>
                                 </div>
 
-                                <div class="form-group">
-                                    <input type="tel" class="form-control" placeholder="Phone number" name="phone">
-                                </div>
-
-                                <div class="form-group">
-                                    <input type="email" class="form-control" placeholder="Email" name="email">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <input type="text" class="form-control" placeholder="Country" name="country">
-                                </div>
-                                <div class="form-group">
-                                    <input type="text" class="form-control" placeholder="City" name="city">
-                                </div>
-                                <div class="form-group">
-                                    <input type="text" class="form-control" placeholder="zip code" name="zipcode">
-                                </div>
-                                <div class="form-group">
-                                    <input type="password" class="form-control" placeholder="password" name="password">
-                                </div>
-                                <div class="form-group">
-                                    <button class="btn btn-primary btnRegister">Register</button>
-                                </div>
                                 <!-- <input type="submit" class="btnRegister"  value="Register"/> -->
                             </div>
                     </form>
