@@ -159,7 +159,7 @@ def login_author():
 @app.route('/login_reviewer', methods=["GET", "POST"])
 def login_reviewer():
     if request.method == 'POST':
-        email git push= request.form['email']
+        email= request.form['email']
         password = request.form['password'].encode('utf-8')
 
         print("email --> ",password)
@@ -173,9 +173,9 @@ def login_reviewer():
 
         if len(user) > 0:
             if bcrypt.hashpw(password, user["password"].encode('utf-8')) == user["password"].encode('utf-8'):
-                session['name'] = user['name']
+                session['fullname'] = user['fullname']
                 session['email'] = user['email']
-                return render_template("reviewers.html", name=user['name'])
+                return render_template("reviewers.html", name=user['fullname'])
             else:
                 return "Error password and email not match"
         else:
