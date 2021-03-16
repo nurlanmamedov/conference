@@ -180,7 +180,7 @@ def login_reviewer():
                 return "Error password and email not match"
         else:
             return "Error Author not found"
-    else:
+    else: 
         return render_template("login.html")
 
 if __name__ == '__main__':
