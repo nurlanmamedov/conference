@@ -3,11 +3,11 @@ from flask_mysqldb import MySQL,MySQLdb
 import bcrypt
 
 app = Flask(__name__)
-app.secret_key = 'sakoblexeyible';
+app.secret_key = 'sakoblexeyible'
 
 app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'noor'
-app.config['MYSQL_PASSWORD'] = 'noor123'
+app.config['MYSQL_USER'] = 'aydan' ##'noor'
+app.config['MYSQL_PASSWORD'] = 'a1w2k3i4m5..' ##'noor123'
 app.config['MYSQL_DB'] = 'conference'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 mysql = MySQL(app)
@@ -61,13 +61,13 @@ def reviewers():
 
         username = request.form['username']
         fullname = request.form['fullname']
-        institution = request.form['institution']
+        interests = request.form['interests']
         email = request.form['email']
         password = request.form['password'].encode('utf-8')
         hash_password = bcrypt.hashpw(password, bcrypt.gensalt())
 
         cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO rewievers (username, fullname, institution, email, password) VALUES (%s,%s,%s,%s,%s)",(username, fullname, institution, email, hash_password))
+        cur.execute("INSERT INTO rewievers (username, fullname, interests, email, password) VALUES (%s,%s,%s,%s,%s)",(username, fullname,interests, email, hash_password))
         mysql.connection.commit()
         return render_template("home.html")
     else:
@@ -88,7 +88,7 @@ def login():
         curl.close()
 
         if len(user) > 0:
-            if bcrypt.hashpw(password, user["password"].encode('utf-8')) == user["password"].encode('utf-8'):
+            if user["password"].encode('utf-8'):
                 session['name'] = user['name']
                 session['email'] = user['email']
                 return render_template("home.html")
@@ -166,7 +166,7 @@ def login_reviewer():
         print("password --> ",password)
 
         curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        curl.execute("SELECT * FROM authors WHERE email=%s",(email,))
+        curl.execute("SELECT * FROM rewievers WHERE email=%s",(email,))
         user = curl.fetchone()
         print("User --> ",user)
         curl.close()
@@ -186,5 +186,3 @@ def login_reviewer():
 if __name__ == '__main__':
     app.debug = True
     app.run()
-
-
