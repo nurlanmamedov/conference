@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template,flash, request, redirect, url_for, session
 from flask_mysqldb import MySQL,MySQLdb
 import bcrypt
 
@@ -103,7 +103,9 @@ def login():
 
 @app.route('/logout', methods=["GET", "POST"])
 def logout():
+
     session.clear()
+    flash("You successfully logged out")
     return render_template("home.html")
 
 @app.route('/register', methods=["GET", "POST"])
