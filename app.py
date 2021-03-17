@@ -20,9 +20,11 @@ def home():
         rewievers = curl.fetchall()
         curl.execute("SELECT * FROM authors")
         authors = curl.fetchall()
+        curl.execute("SELECT * FROM papers")
+        papers=curl.fetchall()
         curl.close()
-        print("here reviewers=>",rewievers)
-        return render_template("home.html", data=rewievers, authors=authors)
+
+        return render_template("home.html", data=rewievers, authors=authors,papers=papers)
     else:
         print("alalalal")
         return render_template("home.html")
