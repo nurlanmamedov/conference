@@ -183,6 +183,30 @@ def login_reviewer():
     else: 
         return render_template("login.html")
 
+
+
+
+
+@app.route('/submit_paper', methods=["GET", "POST"])
+def submit_paper():
+    if request.method == 'GET':
+        return render_template("author.html")
+    else:
+        title = request.form['title']
+        topic = request.form['topic']
+        keyword = request.form['keyword']
+        abstract = request.form['abstract']
+        body = request.form['body']
+
+
+        cur = mysql.connection.cursor()
+        cur.execute("INSERT INTO papers (title,topic,keyword,abstract, body) VALUES (%s,%s,%s,%s,%s)",(title,topic,keyword,abstract,body))
+        mysql.connection.commit()
+        session['title'] = request.form['title']
+        session['keyword'] = request.form['keyword']
+        return redirect(url_for('home'))
+
+
 if __name__ == '__main__':
     app.debug = True
     app.run()

@@ -19,19 +19,20 @@
             <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                     <h3 class="register-heading">Select one of these dear {{ name }}</h3>
-                    <form action="/register" method="POST">
+
                         <div class="row register-form">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <button class="btn btn-primary btnRegister">View Papers</button>
+                                    <a href="view.html"><button class="btn btn-primary btnRegister">View Papers</button></a>
                                 </div>
+                                <link rel="stylesheet" href="view.html">
                                 <div class="form-group">
-                                    <button class="btn btn-primary btnRegister">Evaluate Papers</button>
+                                   <a href="evaluate.html"> <button class="btn btn-primary btnRegister">Evaluate Papers</button></a>
                                 </div>
 
                                 <!-- <input type="submit" class="btnRegister"  value="Register"/> -->
                             </div>
-                    </form>
+
                 </div>
             </div>
 
