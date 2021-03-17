@@ -188,7 +188,7 @@ def login_reviewer():
 
 
 @app.route('/submit_paper', methods=["GET", "POST"])
-def submit_paper():
+def submit_paper(): ##database name is papers
     if request.method == 'GET':
         return render_template("author.html")
     else:
@@ -205,6 +205,19 @@ def submit_paper():
         session['title'] = request.form['title']
         session['keyword'] = request.form['keyword']
         return redirect(url_for('home'))
+
+
+
+
+@app.route('/papers',methods=["GET", "POST"])
+def papers():
+    if request.method == "GET":
+        curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        curl.execute("SELECT * FROM papers")
+        papers = curl.fetchall()
+        curl.close()
+        print(papers)
+        return render_template("home.html", papers=papers)
 
 
 if __name__ == '__main__':

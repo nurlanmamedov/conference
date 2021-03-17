@@ -11,16 +11,16 @@
             <div class="nav nav-tabs" id="nav-tab" role="tablist">
                <a class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" href="#nav-home" role="tab"
                   aria-controls="nav-home" aria-selected="true">Home</a>
-               <a class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" href="#nav-profile" role="tab"
-                  aria-controls="nav-profile" aria-selected="false">View Rewievers</a>
-               <a class="nav-link" id="nav-contact-tab" data-bs-toggle="tab" href="#nav-contact" role="tab"
-                  aria-controls="nav-contact" aria-selected="false">Modify Reviewers</a>
-                  <a class="nav-link" id="nav-contact-tab" data-bs-toggle="tab" href="#nav-contact" role="tab"
-                  aria-controls="nav-contact" aria-selected="false">Delete Reviewers</a>
-               <a class="nav-link" id="nav-authors-tab" data-bs-toggle="tab" href="#nav-authors" role="tab"
-                  aria-controls="nav-contact" aria-selected="false">View Authors</a>
-                  <a class="nav-link" id="nav-contact-tab" data-bs-toggle="tab" href="#nav-contact" role="tab"
-                  aria-controls="nav-contact" aria-selected="false">View all papers</a>
+               <a class="nav-link" id="nav-viewreviewers" data-bs-toggle="tab" href="#nav-viewreviewers" role="tab"
+                  aria-controls="nav-viewreviewers" aria-selected="false">View Rewievers</a>
+               <a class="nav-link" id="nav-modifyreviewers-tab" data-bs-toggle="tab" href="#nav-modifyreviewers" role="tab"
+                  aria-controls="nav-modifyreviewers" aria-selected="false">Modify Reviewers</a>
+                  <a class="nav-link" id="nav-deletereviewers-tab" data-bs-toggle="tab" href="#nav-deletereviewers" role="tab"
+                  aria-controls="nav-deletereviewers" aria-selected="false">Delete Reviewers</a>
+               <a class="nav-link" id="nav-viewauthors-tab" data-bs-toggle="tab" href="#nav-viewauthors" role="tab"
+                  aria-controls="nav-viewauthors" aria-selected="false">View Authors</a>
+                  <a class="nav-link" id="nav-viewpapers-tab" data-bs-toggle="tab" href="#nav-viewpapers" role="tab"
+                  aria-controls="nav-viewpapers" aria-selected="false">View all papers</a>
             </div>
          </nav>
          <div class="tab-content" id="nav-tabContent">
@@ -53,7 +53,7 @@
                   <button type="submit" class="btn btn-primary">Register</button>
                </form>
             </div>
-            <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+            <div class="tab-pane fade" id="nav-viewreviewers" role="tabpanel" aria-labelledby="nav-viewreviewers-tab">
                <ul class="list-group">
                   {% for i in data %}
                   <li class="list-group-item">{{ i.fullname }}</li>
@@ -61,14 +61,24 @@
                </ul>
             </div>
 
-            <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">...3</div>
-            <div class="tab-pane fade" id="nav-authors" role="tabpanel" aria-labelledby="nav-authors-tab">
+            <div class="tab-pane fade" id="nav-modifyreviewers" role="tabpanel" aria-labelledby="nav-modifyreviewers-tab">...3</div>
+            <div class="tab-pane fade" id="nav-viewauthors" role="tabpanel" aria-labelledby="nav-viewauthors-tab">
                <ul class="list-group">
                   {% for i in authors %}
                   <li class="list-group-item">{{ i.name }} {{ i.surname }}</li>
                   {% endfor %}
                </ul>
             </div>
+
+            <div class="tab-pane fade" id="nav-viewpapers" role="tabpanel" aria-labelledby="nav-viewpapers-tab">
+               <ul class="list-group">
+                  {% for i in papers %}
+                  <li class="list-group-item">{{ i.title }} {{ i.abstract }}</li>
+                  {% endfor %}
+               </ul>
+            </div>
+
+
          </div>
          {% else %}
          Not login
