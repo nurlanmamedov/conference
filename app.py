@@ -62,14 +62,15 @@ def reviewers():
     if request.method == 'POST':
 
         username = request.form['username']
-        fullname = request.form['fullname']
+        firstname = request.form['firstname']
+        surname=request.form['surname']
         interests = request.form['interests']
         email = request.form['email']
         password = request.form['password'].encode('utf-8')
         hash_password = bcrypt.hashpw(password, bcrypt.gensalt())
 
         cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO rewievers (username, fullname, interests, email, password) VALUES (%s,%s,%s,%s,%s)",(username, fullname,interests, email, hash_password))
+        cur.execute("INSERT INTO rewievers (username, firstname, surname,interests, email, password) VALUES (%s,%s,%s,%s,%s,%s)",(username, firstname,surname,interests, email, hash_password))
         mysql.connection.commit()
         return render_template("home.html")
     else:
@@ -177,7 +178,9 @@ def login_reviewer():
 
         if len(user) > 0:
             if bcrypt.hashpw(password, user["password"].encode('utf-8')) == user["password"].encode('utf-8'):
-                session['fullname'] = user['fullname']
+                session['firstname'] = user['firstname']
+                session['surname'] = user['surname']
+
                 session['email'] = user['email']
                 return render_template("reviewers.html", name=user['fullname'])
             else:
