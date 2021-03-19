@@ -1,9 +1,58 @@
 {% extends 'layout.html' %}
-{% block title %} Author {% endblock %}
+{% block title %} Authors page {% endblock %}
 {% block content %}
 
-    <div style="margin: 50px;">
-        <h1> Welcome to Author page  {{ name }} </h1>
+
+<div class="container register">
+    <div class="row">
+        <div class="col-md-3 register-left">
+            <img src="https://image.ibb.co/n7oTvU/logo_white.png" alt="" />
+            <h3>Welcome</h3>
+             <h1>to Author page  {{ name }} </h1>
+        </div>
+        <div class="col-md-9 register-right">
+            <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist">
+
+                <li class="nav-item">
+                    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab"
+                        aria-controls="profile" aria-selected="false">View all submitted Papers</a>
+                </li>
+            </ul>
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                    <h3 class="register-heading">Add new Paper</h3>
+                    <form action="/submit_paper" method="POST">
+                        <div class="row register-form">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" placeholder="Title" name="title">
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" class="form-control" placeholder="Topic" name="topic">
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" class="form-control" placeholder="Keywords" name="keyword">
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" class="form-control" placeholder="Abstract" name="abstract">
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" class="form-control" placeholder="Body" name="body">
+                                </div>
+                            </div>
+                          
+ 
+                                <div class="form-group">
+                                    <button class="btn btn-primary btnRegister">Submit</button>
+                                </div>
+                                <!-- <input type="submit" class="btnRegister"  value="Register"/> -->
+                          
+                    </form>
+                </div>
+            </div>
+
+        </div>
     </div>
 
+</div>
 {% endblock %}

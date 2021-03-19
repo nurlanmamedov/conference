@@ -1,9 +1,43 @@
+
+
 {% extends 'layout.html' %}
-{% block title %} Author {% endblock %}
+{% block title %} Reviewers page {% endblock %}
 {% block content %}
 
-    <div style="margin: 50px;">
-        <h1> Welcome to Rewiever page  {{ name }} </h1>
+
+
+<div class="container register">
+    <div class="row">
+        <div class="col-md-3 register-left">
+            <img src="https://image.ibb.co/n7oTvU/logo_white.png" alt="" />
+            <h3>Welcome</h3>
+            <h3> dear Reviewer : {{ name }} </h3>
+           
+        </div>
+        <div class="col-md-9 register-right">
+
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                    <h3 class="register-heading">Select one of these dear {{ name }}</h3>
+
+                        <div class="row register-form">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <a href="view.html"><button class="btn btn-primary btnRegister">View Papers</button></a>
+                                </div>
+                                <link rel="stylesheet" href="view.html">
+                                <div class="form-group">
+                                   <a href="evaluate.html"> <button class="btn btn-primary btnRegister">Evaluate Papers</button></a>
+                                </div>
+
+                                <!-- <input type="submit" class="btnRegister"  value="Register"/> -->
+                            </div>
+
+                </div>
+            </div>
+
+        </div>
     </div>
 
+</div>
 {% endblock %}
