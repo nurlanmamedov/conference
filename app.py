@@ -224,7 +224,7 @@ def papers():
         papers = curl.fetchall()
         curl.close()
         print(papers)
-        return render_template("home.html", papers=papers)
+        return render_template("login.html", papers=papers)
 
 
 if __name__ == '__main__':
