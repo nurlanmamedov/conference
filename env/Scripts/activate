@@ -37,7 +37,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="D:\Python\FLASK\conference\env"
+VIRTUAL_ENV="C:\Users\aydan\Desktop\github\conference\env"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"

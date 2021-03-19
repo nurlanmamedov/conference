@@ -8,7 +8,7 @@ if defined _OLD_CODEPAGE (
     "%SystemRoot%\System32\chcp.com" 65001 > nul
 )
 
-set VIRTUAL_ENV=D:\Python\FLASK\conference\env
+set VIRTUAL_ENV=C:\Users\aydan\Desktop\github\conference\env
 
 if not defined PROMPT set PROMPT=$P$G
 
