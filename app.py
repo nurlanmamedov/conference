@@ -6,8 +6,8 @@ app = Flask(__name__)
 app.secret_key = 'sakoblexeyible'
 
 app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'aydan' ##'noor'
-app.config['MYSQL_PASSWORD'] = 'a1w2k3i4m5..' ##'noor123'
+app.config['MYSQL_USER'] = 'noor'
+app.config['MYSQL_PASSWORD'] ='noor123'
 app.config['MYSQL_DB'] = 'conference'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 mysql = MySQL(app)
@@ -18,6 +18,7 @@ def home():
         curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         curl.execute("SELECT * FROM rewievers")
         rewievers = curl.fetchall()
+        print("All rewievers --> ", rewievers)
         curl.execute("SELECT * FROM authors")
         authors = curl.fetchall()
         curl.execute("SELECT * FROM papers")
@@ -226,6 +227,35 @@ def papers():
         print(papers)
         return render_template("login.html", papers=papers)
 
+@app.route('/delete_rewiever/<id>/',methods=["GET", "POST"])
+def delete_rewiever(id):
+        print("Delete id --> ", id)
+        curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        curl.execute("DELETE from rewievers WHERE id=%s",(id,))
+        curl.close()
+        mysql.connection.commit()
+        return redirect(url_for('home'))
+
+
+@app.route('/update_rewiever/<int:id>/', methods = ['GET', 'POST'])
+def update_rewiever(id):
+    username = request.form['username']
+    firstname = request.form['firstname']
+    surname = request.form['surname']
+    interests = request.form['interests']
+    email = request.form['email']
+
+    print("------->>>>>>>",username, firstname, surname, interests, email)
+    curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    # curl.execute("SELECT * from rewievers WHERE id=%s",(id,))
+
+    sql = ("UPDATE rewievers SET username = %s, firstname=%s, surname=%s, interests=%s, email=%s WHERE id = %s")
+    val = (username, firstname, surname, interests, email, id)
+    curl.execute(sql, val)
+    curl.close()
+    mysql.connection.commit()
+ 
+    return redirect(url_for('home'))
 
 if __name__ == '__main__':
     app.debug = True

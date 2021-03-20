@@ -13,13 +13,9 @@
                   aria-controls="nav-home" aria-selected="true">Home</a>
                <a class="nav-link" id="nav-viewreviewers-tab" data-bs-toggle="tab" href="#nav-viewreviewers" role="tab"
                   aria-controls="nav-viewreviewers" aria-selected="false">View Rewievers</a>
-               <a class="nav-link" id="nav-modifyreviewers-tab" data-bs-toggle="tab" href="#nav-modifyreviewers" role="tab"
-                  aria-controls="nav-modifyreviewers" aria-selected="false">Modify Reviewers</a>
-                  <a class="nav-link" id="nav-deletereviewers-tab" data-bs-toggle="tab" href="#nav-deletereviewers" role="tab"
-                  aria-controls="nav-deletereviewers" aria-selected="false">Delete Reviewers</a>
                <a class="nav-link" id="nav-viewauthors-tab" data-bs-toggle="tab" href="#nav-viewauthors" role="tab"
                   aria-controls="nav-viewauthors" aria-selected="false">View Authors</a>
-                  <a class="nav-link" id="nav-viewpapers-tab" data-bs-toggle="tab" href="#nav-viewpapers" role="tab"
+               <a class="nav-link" id="nav-viewpapers-tab" data-bs-toggle="tab" href="#nav-viewpapers" role="tab"
                   aria-controls="nav-viewpapers" aria-selected="false">View all papers</a>
             </div>
          </nav>
@@ -28,48 +24,145 @@
                <form action="/rewievers" method="POST">
                   <div class="mb-3">
                      <label for="exampleInputEmail1" class="form-label">Username</label>
-                     <input type="form-text" name="username" class="form-control" id="username"
+                     <input type="form-text" name="username" class="form-control form-control-sm" id="username"
                         aria-describedby="usernameHelp">
                   </div>
                   <div class="mb-3">
                      <label for="exampleInputEmail1" class="form-label">First Name</label>
-                     <input type="form-text" class="form-control" name="firstname" id="firstname"
+                     <input type="form-text" class="form-control form-control-sm" name="firstname" id="firstname"
                         aria-describedby="firstnameHelp">
                   </div>
 
                   <div class="mb-3">
                      <label for="exampleInputEmail1" class="form-label">Surname</label>
-                     <input type="form-text" class="form-control" name="surname" id="surname"
+                     <input type="form-text" class="form-control form-control-sm" name="surname" id="surname"
                         aria-describedby="surnameHelp">
                   </div>
 
 
                   <div class="mb-3">
                      <label for="exampleInputEmail1" class="form-label">interests</label>
-                     <input type="form-text" class="form-control" name="interests" id="interests"
+                     <input type="form-text" class="form-control form-control-sm" name="interests" id="interests"
                         aria-describedby="interestsnHelp">
                   </div>
                   <div class="mb-3">
                      <label for="exampleInputEmail1" class="form-label">Email address</label>
-                     <input type="email" class="form-control" id="email" name="email"
+                     <input type="email" class="form-control form-control-sm" id="email" name="email"
                         aria-describedby="emailHelp">
                   </div>
                   <div class="mb-3">
                      <label for="exampleInputPassword1" class="form-label">Password</label>
-                     <input type="password" class="form-control" id="password" name="password">
+                     <input type="password" class="form-control form-control-sm" id="password" name="password">
                   </div>
                   <button type="submit" class="btn btn-primary">Register</button>
                </form>
             </div>
+
             <div class="tab-pane fade" id="nav-viewreviewers" role="tabpanel" aria-labelledby="nav-viewreviewers-tab">
                <ul class="list-group">
                   {% for i in data %}
                   <li class="list-group-item">{{ i.fullname }}</li>
                   {% endfor %}
                </ul>
+
+               <table class="table">
+                  <thead>
+                     <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Firstname</th>
+                        <th scope="col">Lastname</th>
+                        <th scope="col">Edit</th>
+                        <th scope="col">Delete</th>
+                     </tr>
+                  </thead>
+                  <tbody>
+                     {% for i in data %}
+                     <tr>
+                        <th scope="row">{{ i.id }}</th>
+                        <td>{{ i.firstname }}</td>
+                        <td>{{ i.surname }}</td>
+                        <!-- <td><button type="button" class="btn btn-primary">Edit</button></td>
+                      <td><button type="button" class="btn btn-danger">Delete</button></td> -->
+                        <td>
+                           <!-- <button  type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Edit</button> -->
+                           <!-- <a href="/update_test/{{i.id}}"  class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                           Edit
+                        </a> -->
+                           <a href="/update_rewiever/{{i.id}}" class="btn btn-primary" data-bs-toggle="modal"
+                              data-bs-target="#exampleModal">
+                              Edit
+                           </a>
+                        </td>
+
+                        <td>
+                           <a href="/delete_rewiever/{{i.id}}" class="btn btn-danger btn-xs"
+                              onclick="return confirm('Are You Sure To Delete ?')">Delete</a>
+                        </td>
+                     </tr>
+                     <!-- modal  -->
+                     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog">
+                           <div class="modal-content">
+                              <div class="modal-header">
+                                 <h5 class="modal-title" id="exampleModalLabel">Update reviewer</h5>
+                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                              </div>
+                              <div class="modal-body">
+                                 <form action="{{ url_for('update_rewiever', id=i.id) }}" method="POST">
+                                    <div class="mb-3">
+                                       <label for="exampleInputEmail1" class="form-label">Username</label>
+                                       <input type="form-text" name="username" class="form-control form-control-sm"
+                                          id="username" aria-describedby="usernameHelp" value="{{i.username}}">
+                                    </div>
+                                    <div class="mb-3">
+                                       <label for="exampleInputEmail1" class="form-label">First Name</label>
+                                       <input type="form-text" class="form-control form-control-sm" name="firstname"
+                                          id="firstname" aria-describedby="firstnameHelp" value="{{i.firstname}}">
+                                    </div>
+
+                                    <div class="mb-3">
+                                       <label for="exampleInputEmail1" class="form-label">Surname</label>
+                                       <input type="form-text" class="form-control form-control-sm" name="surname"
+                                          id="surname" aria-describedby="surnameHelp" value="{{i.surname}}">
+                                    </div>
+
+
+                                    <div class="mb-3">
+                                       <label for="exampleInputEmail1" class="form-label">interests</label>
+                                       <input type="form-text" class="form-control form-control-sm" name="interests"
+                                          id="interests" aria-describedby="interestsnHelp" value="{{i.interests}}">
+                                    </div>
+                                    <div class="mb-3">
+                                       <label for="exampleInputEmail1" class="form-label">Email address</label>
+                                       <input type="email" class="form-control form-control-sm" id="email" name="email"
+                                          aria-describedby="emailHelp" value="{{i.email}}">
+                                    </div>
+                                    
+                                    <div class="modal-footer">
+                                       <button type="button" class="btn btn-secondary"
+                                          data-bs-dismiss="modal">Close</button>
+                                       <button type="submit" class="btn btn-primary">Update</button>
+                                    </div>
+                                 </form>
+                              </div>
+
+                           </div>
+                        </div>
+                     </div>
+                     <!-- modal end  -->
+                     {% endfor %}
+                  </tbody>
+
+               </table>
             </div>
 
-            <div class="tab-pane fade" id="nav-modifyreviewers" role="tabpanel" aria-labelledby="nav-modifyreviewers-tab">...3</div>
+
+
+
+            <div class="tab-pane fade" id="nav-modifyreviewers" role="tabpanel"
+               aria-labelledby="nav-modifyreviewers-tab">...3</div>
             <div class="tab-pane fade" id="nav-viewauthors" role="tabpanel" aria-labelledby="nav-viewauthors-tab">
                <ul class="list-group">
                   {% for i in authors %}
@@ -86,13 +179,17 @@
                   {% endfor %}
                </ul>
             </div>
-
-
          </div>
+
+
+
          {% else %}
          Not login
          {% endif %}
       </div>
    </div>
 </div>
+
+
+
 {% endblock %}
