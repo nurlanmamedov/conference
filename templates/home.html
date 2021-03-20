@@ -1,16 +1,19 @@
 {% extends 'layout.html' %}
 {% block title %} Home {% endblock %}
 {% block content %}
+{% if session['name'] %}
+<h1>  Welcome {{ session['name'] }}</h1>
 <div class="container" style="margin: 50px;
    background-color: #cce3f3;">
-   <div class="row">
+   
+   <div class="row">     
+
       <div class="col-md-6 col-md-offset-3">
-         {% if session['name'] %}
-         Welcome {{ session['name'] }}
+
          <nav>
             <div class="nav nav-tabs" id="nav-tab" role="tablist">
                <a class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" href="#nav-home" role="tab"
-                  aria-controls="nav-home" aria-selected="true">Home</a>
+                  aria-controls="nav-home" aria-selected="true">Add</a>
                <a class="nav-link" id="nav-viewreviewers-tab" data-bs-toggle="tab" href="#nav-viewreviewers" role="tab"
                   aria-controls="nav-viewreviewers" aria-selected="false">View Rewievers</a>
                <a class="nav-link" id="nav-viewauthors-tab" data-bs-toggle="tab" href="#nav-viewauthors" role="tab"
@@ -59,11 +62,6 @@
             </div>
 
             <div class="tab-pane fade" id="nav-viewreviewers" role="tabpanel" aria-labelledby="nav-viewreviewers-tab">
-               <ul class="list-group">
-                  {% for i in data %}
-                  <li class="list-group-item">{{ i.fullname }}</li>
-                  {% endfor %}
-               </ul>
 
                <table class="table">
                   <thead>
