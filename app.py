@@ -6,8 +6,8 @@ app = Flask(__name__)
 app.secret_key = 'sakoblexeyible'
 
 app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'aydan'##'noor'
-app.config['MYSQL_PASSWORD'] ='a1w2k3i4m5..'##'noor123'
+app.config['MYSQL_USER'] = 'noor' ##'aydan'
+app.config['MYSQL_PASSWORD'] = 'noor123' #'a1w2k3i4m5..'
 app.config['MYSQL_DB'] = 'conference'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 mysql = MySQL(app)
@@ -183,7 +183,12 @@ def login_reviewer():
                 session['surname'] = user['surname']
 
                 session['email'] = user['email']
-                return render_template("reviewers.html", name=user['email'])
+
+                curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+                curl.execute("SELECT * FROM papers")
+                papers = curl.fetchall()
+                print("Papers ---->", papers)
+                return render_template("reviewers.html", name=user['email'], papers=papers)
             else:
                 return "Error password and email not match"
         else:
@@ -226,6 +231,21 @@ def papers():
         curl.close()
         print(papers)
         return render_template("login.html", papers=papers)
+
+
+@app.route('/papers1',methods=["GET", "POST"])
+def get_papers():
+    if request.method == "GET":
+        curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        curl.execute("SELECT * FROM papers")
+        papers = curl.fetchall()
+        curl.close()
+        return papers
+        # print("papers 11111 --->>", papers1)
+        # return render_template("reviewers.html", papers1=papers1)
+
+
+
 
 @app.route('/delete_rewiever/<id>/',methods=["GET", "POST"])
 def delete_rewiever(id):

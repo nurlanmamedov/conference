@@ -1,5 +1,3 @@
-
-
 {% extends 'layout.html' %}
 {% block title %} Reviewers page {% endblock %}
 {% block content %}
@@ -7,178 +5,115 @@
 
 
 <div class="container register">
-    <div class="row">
-       
-        <div class="col-md-3 register-left">
-            <img src="https://image.ibb.co/n7oTvU/logo_white.png" alt="" />
-            <h3>Welcome</h3>
-            <h3> dear Reviewer : {{ firstname }} </h3>           
-        </div>
+  <div class="row">
+
+    <div class="col-md-3 register-left">
+      <img src="https://image.ibb.co/n7oTvU/logo_white.png" alt="" />
+      <h3>Welcome</h3>
+      <h3> dear Reviewer : {{ firstname }} </h3>
+    </div>
 
 
-        <div class="col-md-9 register-right">
-            <div class="tab-content" id="myTabContent">
-                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                    <h3 class="register-heading">Select one of these dear {{ name }}</h3>
+    <div class="col-md-9 register-right">
+      <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+          <h3 class="register-heading">Select one of these dear {{ name }}</h3>
 
-                        <div class="row register-form">
-                            <div class="col-md-6">
-                                <table class="table table-primary table-striped">
-                                    <thead>
-                                      <tr>
+          <div class="row register-form">
+            <div class="col-md-6">
+              <table class="table table-primary table-striped">
+                <thead>
+                  <!-- <tr>
                                         <th scope="col">#</th>
                                         <th scope="col">FirstName,Lastname</th>
                                         <th scope="col">Title</th>
                                         <th scope="col">DTopic</th>
                                         <th scope="col">Accept/Pending/Rejected</th>
-                                      </tr>
-                                    </thead>
-                                    <tbody>
-                                      <tr>
-                                        <th scope="row">1</th>
-                                        <td>Aydan Gasimova</td>
-                                        <td>UAV Networks</td>
-                                        <td><!-- Button trigger modal -->
-                                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                                                See more
-                                              </button>
-                                              
-                                              <!-- Modal -->
-                                              <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                                                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                                                  <div class="modal-content">
-                                            
-                                                    <div class="modal-header">
-                                                      <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
-                                                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                                                                 
-                                                  
-                                                        <table class="table table-primary table-striped">
-                                                            <thead>
-                                                              <tr>
-                                                                <th scope="col">#</th>
-                                                                <th scope="col">FirstName,Lastname</th>
-                                                                <th scope="col">Title</th>
-                                                                <th scope="col">DTopic</th>
-                                                                <th scope="col">Accepted/Rejected</th>
-                                                              </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                              <tr>
-                                                                <th scope="row">1</th>
-                                                                <td>Aydan Gasimova</td>
-                                                                <td>UAV Networks</td>
-                                                                <td>fdfdf</td>
-                                                                <td>                                                                  
-                                                                    
-                                                    
-                                                              </tr>
-                                                              <tr>
-                                                                <th scope="row">2</th>
-                                                                <td>Jacob</td>
-                                                                <td>Thornton</td>
-                                                                <td>fdfd</td>
-                                                                <td>fdd</td>
-                        
-                                                              </tr>
-                        
-                                                            </tbody>
-                                                          </table>
+                                      </tr> -->
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Firstname, Latname</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Topic</th>
+                    <th scope="col">See more</th>
+                    <th scope="col">Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  
 
-                                                    
-                                             </div>
-                                                    <div class="modal-footer">
-                                                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                      <button type="button" class="btn btn-primary">Accept</button>
-                                                    </div>
-                                                    
-                                                  </div>
-                                                </div>
-                                              </div></td>
-                                            
-                                        <td>  <i class="fa fa-check-circle " style="font-size:48px;color:rgb(47, 194, 47)"></i>
-                                            <i class="fa fa-spinner" style="font-size:48px;color:rgb(243, 197, 113)"></i>
-                                            <i class="fa fa-ban" style="font-size:48px;color:red" aria-hidden="true"></i></td>
-
-                                      </tr>
-                                      <tr>
-                                        <th scope="row">2</th>
-                                        <td>Jacob</td>
-                                        <td>Thornton</td>
-                                        <td><!-- Button trigger modal -->
-                                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                                                See More
-                                              </button>
-                                              
-                                              <!-- Modal -->
-                                              <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                                                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                                                  <div class="modal-content">
-                                            
-                                                    <div class="modal-header">
-                                                      <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
-                                                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                    </div>
-                                                    <div class="modal-body">
-
-                                                        <table class="table table-primary table-striped">
-                                                            <thead>
-                                                              <tr>
-                                                                <th scope="col">#</th>
-                                                                <th scope="col">FirstName,Lastname</th>
-                                                                <th scope="col">Title</th>
-                                                                <th scope="col">DTopic</th>
-                                                                <th scope="col">Accept/Rejected</th>
-                                                              </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                              <tr>
-                                                                <th scope="row">1</th>
-                                                                <td>Aydan Gasimova</td>
-                                                                <td>UAV Networks</td>
-                                                                <td>fdfdf</td>
-                                                                <td>...</td>
-                        
-                                                              </tr>
-                                                              <tr>
-                                                                <th scope="row">2</th>
-                                                                <td>Jacob</td>
-                                                                <td>Thornton</td>
-                                                                <td>fdfd</td>
-                                                                <td>...</td>
-                        
-                                                              </tr>
-                        
-                                                            </tbody>
-                                                          </table>                                                    </div>
-                                                    <div class="modal-footer">
-                                                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                      <button type="button" class="btn btn-primary">Accept</button>
-                                                    </div>
-                                                    
-                                                  </div>
-                                                </div>
-                                              </div></td>
-                                        <td><i class="fa fa-check-circle " style="font-size:48px;color:rgb(47, 194, 47)"></i>
-                                            <i class="fa fa-spinner" style="font-size:48px;color:rgb(243, 197, 113)"></i>
-                                        <i class="fa fa-ban" style="font-size:48px;color:red" aria-hidden="true"></i></td>
-
-                                      </tr>
-
-                                    </tbody>
-                                  </table>
-
-                                <!-- <input type="submit" class="btnRegister"  value="Register"/> -->
+                  {% for i in papers %}
+                  <tr>
+                    <th scope="row">{{ i.id }}</th>
+                    <td>Ali Aliyev</td>
+                    <td>{{ i.title }}</td>
+                    <td>{{ i.topic }}</td>
+                    <td>
+                      <!-- Button trigger modal -->
+                      <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                        data-bs-target="#staticBackdrop{{i.id}}">
+                        more
+                      </button>
+                
+                      <!-- Modal -->
+                      <div class="modal fade" id="staticBackdrop{{i.id}}" data-bs-backdrop="static" data-bs-keyboard="false"
+                        tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                          <div class="modal-content">
+                
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="staticBackdropLabel">{{i.title}}</h5>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
                             </div>
+                            <div class="modal-body">
+                
+                
+                              <figure class="text-center">
+                                <blockquote class="blockquote">
+                                  <p>{{i.body}}</p>
+                                </blockquote>
+                                <figcaption class="blockquote-footer">
+                                  by <cite title="Source Title">Ali Aliyev</cite>
+                                </figcaption>
+                              </figure>
+                
+                
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-danger">Reject</button>
+                              <button type="button" class="btn btn-primary">Accept</button>
+                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    <td>Pending...</td>
 
-                </div>
+
+                  </tr>
+
+                </tbody>
+                {% endfor %}
+
+                </tbody>
+              </table>
+
+              <!-- <input type="submit" class="btnRegister"  value="Register"/> -->
             </div>
 
+          </div>
         </div>
+
+      </div>
 
     </div>
 
-</div>
-{% endblock %}
+  </div>
+  {% endblock %}
+
+
+
+
