@@ -48,23 +48,33 @@
                     
                    
                     <div class="tab-pane fade show" id="add" role="tabpanel" aria-labelledby="add-tab">
-                        <h3 class="register-heading">Log in as an Author</h3>
-                        <form  method="POST">
+                        <h3 class="register-heading">Add a paper</h3>
+                        <form  action="/submit_paper" method="POST">
             
                             <div class="row register-form">
                                 <div class="col-md-6">
             
                                     <div class="form-group">
-                                        <input type="email" class="form-control" placeholder="Email" value="" name="email" />
+                                        <input type="text" class="form-control" placeholder="Title" name="title">
                                     </div>
                                     <div class="form-group">
-                                        <input type="password" class="form-control" placeholder="Password" value="" name="password" />
+                                        <input type="text" class="form-control" placeholder="Topic" name="topic">
                                     </div>
                                     <div class="form-group">
-                                        <button class="btn btn-primary btnRegister">Log in</button>
+                                        <input type="text" class="form-control" placeholder="Keywords" name="keyword">
                                     </div>
-            
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" placeholder="Abstract" name="abstract">
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" placeholder="Body" name="body">
+                                    </div>
                                 </div>
+                              
+     
+                                    <div class="form-group">
+                                        <button class="btn btn-primary btnRegister">Submit</button>
+                                    </div>
                         </form>
 
                         

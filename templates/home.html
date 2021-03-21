@@ -171,22 +171,77 @@
             <div class="tab-pane fade" id="nav-modifyreviewers" role="tabpanel"
                aria-labelledby="nav-modifyreviewers-tab">...3</div>
             <div class="tab-pane fade" id="nav-viewauthors" role="tabpanel" aria-labelledby="nav-viewauthors-tab">
-               <ul class="list-group">
-                  {% for i in authors %}
-                  <li class="list-group-item">{{ i.name }} {{ i.surname }}</li>
-                  {% endfor %}
-               </ul>
+
+
+
+              
+               <table class="table">
+                  <thead>
+                     <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Firstname</th>
+                        <th scope="col">Lastname</th>
+                        <th scope="col">Interests</th>
+                     </tr>
+                  </thead>
+                  <tbody>
+                   {% for i in authors %}
+                     <tr>
+                        <th scope="row">{{ i.id }}</th>
+                        <td>{{ i.name }}</td>
+                        <td>{{ i.surname }}</td>
+                        <td>{{ i.interests }}</td>
+
+                     </tr>
+                
+                  </tbody>
+ {% endfor %}
+
+               </table>
+
+
+
+
                <a href="../templates/home.html">make reviewer</a>
             </div>
 
-            <div class="tab-pane fade" id="nav-viewpapers" role="tabpanel" aria-labelledby="nav-viewpapers-tab">
-               <ul class="list-group">
+
+            <table class="table">
+               <thead>
+                  <tr>
+                     <th scope="col">#</th>
+                     <th scope="col">Firstname</th>
+                     <th scope="col">Lastname</th>
+       
+                  </tr>
+               </thead>
+               <tbody>
                   {% for i in papers %}
-                  <li class="list-group-item">{{ i.title }} {{ i.abstract }}</li>
-                  {% endfor %}
-               </ul>
+                  <tr>
+                     <th scope="row">{{ i.id }}</th>
+                     <td>{{ i.abstract }}</td>
+                     <td>{{ i.title }}</td>
+
+   
+                  </tr>
+             
+               </tbody>
+   {% endfor %}
+   
+            </table>
+
+            <div class="tab-pane fade" id="nav-viewpapers" role="tabpanel" aria-labelledby="nav-viewpapers-tab">
+              
             </div>
          </div>
+
+
+
+
+
+       
+
+
 
 
 
