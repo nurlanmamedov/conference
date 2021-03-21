@@ -257,6 +257,21 @@ def update_rewiever(id):
  
     return redirect(url_for('home'))
 
+
+
+
+
+@app.route('/direct', methods=["GET"])
+def direct_pages(): ##database name is papers
+    if request.method == "GET":
+        curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        curl.execute("SELECT * FROM authors")
+        authors = curl.fetchall()
+        curl.close()
+        return render_template("view.html", authors=authors)
+
+
+
 if __name__ == '__main__':
     app.debug = True
     app.run()

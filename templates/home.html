@@ -88,13 +88,9 @@
                         <th scope="row">{{ i.id }}</th>
                         <td>{{ i.firstname }}</td>
                         <td>{{ i.surname }}</td>
-                        <!-- <td><button type="button" class="btn btn-primary">Edit</button></td>
-                      <td><button type="button" class="btn btn-danger">Delete</button></td> -->
+
                         <td>
-                           <!-- <button  type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Edit</button> -->
-                           <!-- <a href="/update_test/{{i.id}}"  class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                           Edit
-                        </a> -->
+
                            <a href="/update_rewiever/{{i.id}}" class="btn btn-primary" data-bs-toggle="modal"
                               data-bs-target="#exampleModal{{i.id}}">
                               Edit
@@ -192,8 +188,9 @@
                         <td>{{ i.name }}</td>
                         <td>{{ i.surname }}</td>
                         <td>{{ i.interests }}</td>
-                        <td><button class="btn btn-primary">make reviewer</button></td>
-
+                        <td><form method="get" action="/direct">
+                           <button type="submit">make reviewer</button>
+                       </form>
                      </tr>
                 
                   </tbody>
