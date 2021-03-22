@@ -6,8 +6,8 @@ app = Flask(__name__)
 app.secret_key = 'sakoblexeyible'
 
 app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'aydan' ##'noor'
-app.config['MYSQL_PASSWORD'] ='a1w2k3i4m5..'##'noor123' #'
+app.config['MYSQL_USER'] = 'noor' #'aydan' 
+app.config['MYSQL_PASSWORD'] ='noor123' #'a1w2k3i4m5..'
 app.config['MYSQL_DB'] = 'conference'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 mysql = MySQL(app)
@@ -148,12 +148,22 @@ def login_author():
         user = curl.fetchone()
         print("User --> ",user)
         curl.close()
-
+        
         if len(user) > 0:
             if bcrypt.hashpw(password, user["password"].encode('utf-8')) == user["password"].encode('utf-8'):
                 session['name'] = user['name']
                 session['email'] = user['email']
-                return render_template("author.html", name=user['name'])
+                session['id'] = user['id']
+
+                print("Session --->>>", session)
+
+                curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+                user_id = session['id']
+                curl.execute("SELECT * FROM papers WHERE user_id=%s",(user_id,))
+                papers = curl.fetchall()
+                print("Papers ---->", papers)
+
+                return render_template("author.html", name=user['name'], papers=papers)
             else:
                 return "Error password and email not match"
         else:
@@ -187,8 +197,18 @@ def login_reviewer():
                 curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
                 curl.execute("SELECT * FROM papers")
                 papers = curl.fetchall()
-                print("Papers ---->", papers)
-                return render_template("reviewers.html", name=user['username'], papers=papers)
+                # print("Papers ---->", papers)
+
+                curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+                curl.execute("SELECT * FROM authors")
+                authors = curl.fetchall()
+
+
+
+                # print("Authors ---->", authors)
+
+                
+                return render_template("reviewers.html", name=user['username'], papers=papers, authors=authors)
             else:
                 return "Error password and email not match"
         else:
@@ -211,12 +231,13 @@ def submit_paper(): ##database name is papers
         abstract = request.form['abstract']
         body = request.form['body']
 
+        user_id = session['id']
+        user_name = session['name']
+
 
         cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO papers (title,topic,keyword,abstract, body) VALUES (%s,%s,%s,%s,%s)",(title,topic,keyword,abstract,body))
+        cur.execute("INSERT INTO papers (title,topic,keyword,abstract, body,user_id, user_name) VALUES (%s,%s,%s,%s,%s,%s, %s)",(title,topic,keyword,abstract,body,user_id, user_name))
         mysql.connection.commit()
-        session['title'] = request.form['title']
-        session['keyword'] = request.form['keyword']
         return redirect(url_for('submit_paper'))
 
 

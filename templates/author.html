@@ -46,9 +46,9 @@
                                                  
                                                   <tr>
                                                     <th scope="col">#</th>
-                                                    <th scope="col">Firstname, Latname</th>
                                                     <th scope="col">Title</th>
                                                     <th scope="col">Topic</th>
+                                                    <th scope="col">body</th>
                                                   </tr>
                                                 </thead>
                                                 <tbody>
@@ -56,18 +56,10 @@
                                 
                                                   {% for i in papers %}
                                                   <tr>
-                                                    <th scope="row">{{ i.id }}</th>
-                                                    <td>Ali Aliyev</td>
+                                                    <th scope="row">{{ loop.index }}</th>
                                                     <td>{{ i.title }}</td>
                                                     <td>{{ i.topic }}</td>
-                                                    
-                                                    <td>
-                                                   
-                                                     
-                                                    </td>
-                                                    <td>Pending...</td>
-                                
-                                
+                                                    <td>{{ i.body }}</td>
                                                   </tr>
                                 
                                                 </tbody>

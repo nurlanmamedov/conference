@@ -45,7 +45,7 @@
                   {% for i in papers %}
                   <tr>
                     <th scope="row">{{ i.id }}</th>
-                    <td>Ali Aliyev</td>
+                    <td>{{i.user_name}}</td>
                     <td>{{ i.title }}</td>
                     <td>{{ i.topic }}</td>
                     
@@ -73,7 +73,7 @@
                               <figure class="text-center">
                                 <blockquote class="blockquote">
                               <b>    <p>{{i.title}}</p>
-                                by <cite title="Source Title">Ali Aliyev</cite>
+                                by <cite title="Source Title">{{i.user_name}}</cite>
                                 </b>
                                  <p><b>Abstract.</b>{{i.abstract}}</p> 
                                  <p><b>  body.</b>{{i.body}}</p>
