@@ -10,7 +10,7 @@
     <div class="col-md-3 register-left">
       <img src="https://image.ibb.co/n7oTvU/logo_white.png" alt="" />
       <h3>Welcome</h3>
-      <h3> dear Reviewer : {{ firstname }} </h3>
+      <h3> dear Reviewer : {{ name }} </h3>
     </div>
 
 
@@ -34,7 +34,6 @@
                     <th scope="col">#</th>
                     <th scope="col">Firstname, Latname</th>
                     <th scope="col">Title</th>
-                    <th scope="col">Topic</th>
                     <th scope="col">See more</th>
                     <th scope="col">Status</th>
                   </tr>
@@ -47,7 +46,7 @@
                     <th scope="row">{{ i.id }}</th>
                     <td>Ali Aliyev</td>
                     <td>{{ i.title }}</td>
-                    <td>{{ i.topic }}</td>
+                    
                     <td>
                       <!-- Button trigger modal -->
                       <button type="button" class="btn btn-primary" data-bs-toggle="modal"
@@ -62,7 +61,7 @@
                           <div class="modal-content">
                 
                             <div class="modal-header">
-                              <h5 class="modal-title" id="staticBackdropLabel">Title-{{i.title}}</h5>
+                              <h5 class="modal-title" id="staticBackdropLabel"><b>{{i.title}}</b></h5>
                               <button type="button" class="btn-close" data-bs-dismiss="modal"
                                 aria-label="Close"></button>
                             </div>
@@ -71,10 +70,14 @@
                 
                               <figure class="text-center">
                                 <blockquote class="blockquote">
-                                  <p>{{i.body}}</p>
+                              <b>    <p>{{i.title}}</p>
+                                by <cite title="Source Title">Ali Aliyev</cite>
+                                </b>
+                                 <p><b>Abstract.</b>{{i.abstract}}</p> 
+                                 <p><b>  body.</b>{{i.body}}</p>
+
                                 </blockquote>
                                 <figcaption class="blockquote-footer">
-                                  by <cite title="Source Title">Ali Aliyev</cite>
                                 </figcaption>
                               </figure>
                 

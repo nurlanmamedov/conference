@@ -188,7 +188,7 @@ def login_reviewer():
                 curl.execute("SELECT * FROM papers")
                 papers = curl.fetchall()
                 print("Papers ---->", papers)
-                return render_template("reviewers.html", name=user['email'], papers=papers)
+                return render_template("reviewers.html", name=user['username'], papers=papers)
             else:
                 return "Error password and email not match"
         else:
