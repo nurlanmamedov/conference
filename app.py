@@ -217,7 +217,7 @@ def submit_paper(): ##database name is papers
         mysql.connection.commit()
         session['title'] = request.form['title']
         session['keyword'] = request.form['keyword']
-        return redirect(url_for('home'))
+        return redirect(url_for('submit_paper'))
 
 
 

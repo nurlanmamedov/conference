@@ -32,12 +32,68 @@
                     <div class="tab-content" id="myTabContent">
                         <div class="tab-pane fade show active" id="view" role="tabpanel" aria-labelledby="view-tab">
                             <h3 class="register-heading">Review a paper</h3>
-                            <form >
+                            <form method="GET" action="">
                                 <div class="row register-form">
                                     <div class="col-md-6">
                                     
                                         <div class="form-group">
-                                            <button class="btn btn-primary btnRegister">Log in</button>
+
+
+
+
+                                            <table class="table table-primary table-striped">
+                                                <thead>
+                                                 
+                                                  <tr>
+                                                    <th scope="col">#</th>
+                                                    <th scope="col">Firstname, Latname</th>
+                                                    <th scope="col">Title</th>
+                                                    <th scope="col">Topic</th>
+                                                  </tr>
+                                                </thead>
+                                                <tbody>
+                                                  
+                                
+                                                  {% for i in papers %}
+                                                  <tr>
+                                                    <th scope="row">{{ i.id }}</th>
+                                                    <td>Ali Aliyev</td>
+                                                    <td>{{ i.title }}</td>
+                                                    <td>{{ i.topic }}</td>
+                                                    
+                                                    <td>
+                                                   
+                                                     
+                                                    </td>
+                                                    <td>Pending...</td>
+                                
+                                
+                                                  </tr>
+                                
+                                                </tbody>
+                                                {% endfor %}
+                                
+                                                </tbody>
+                                              </table>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                                         </div>
                                     </div>
         
@@ -58,7 +114,21 @@
                                         <input type="text" class="form-control" placeholder="Title" name="title">
                                     </div>
                                     <div class="form-group">
-                                        <input type="text" class="form-control" placeholder="Topic" name="topic">
+
+
+                                        <div class="mb-3">
+         
+                                            <select class="form-select" aria-label="Default select example" name="topic">
+                                                <option selected>select interest</option>
+                                                <option value="UAV">UAV</option>
+                                                <option value="WSN">WSN</option>
+                                                <option value="football">FOOTBALL</option>
+                                                <option value="database">database</option>
+                                                <option value="SOFTWARE ENGINEERING">SOFTWARE ENGINEERING</option>
+                                                <option value="Cloud computing">Cloud computing</option>
+                    
+                                              </select>
+
                                     </div>
                                     <div class="form-group">
                                         <input type="text" class="form-control" placeholder="Keywords" name="keyword">
@@ -83,6 +153,7 @@
      
                                     <div class="form-group">
                                         <button class="btn btn-primary btnRegister">Submit</button>
+                                        
                                     </div>
                         </form>
 
