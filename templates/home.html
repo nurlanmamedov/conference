@@ -8,7 +8,7 @@
    
    <div class="row">     
 
-      <div class="col-md-6 col-md-offset-3">
+      <div class="col-md-12 col-md-offset-3">
 
          <nav>
             <div class="nav nav-tabs" id="nav-tab" role="tablist">
@@ -20,6 +20,9 @@
                   aria-controls="nav-viewauthors" aria-selected="false">View Authors</a>
                <a class="nav-link" id="nav-viewpapers-tab" data-bs-toggle="tab" href="#nav-viewpapers" role="tab"
                   aria-controls="nav-viewpapers" aria-selected="false">View all papers</a>
+
+                  <a class="nav-link" id="nav-chief-tab" data-bs-toggle="tab" href="#nav-chief" role="tab"
+                  aria-controls="nav-chief" aria-selected="false">Add chief editor</a>
             </div>
          </nav>
          <div class="tab-content" id="nav-tabContent">
@@ -232,8 +235,43 @@
       
                </table>
             </div>
+         
+            <div class="tab-pane fade" id="nav-chief" role="tabpanel" aria-labelledby="nav-chief-tab">
+               {% if chief_editor  %}
+               <h1> We have chief editor .... </h1>
+               {% else %}
+               <form action="/chief_editor" method="POST">
+                  <div class="mb-3">
+                     <label for="exampleInputEmail1" class="form-label">First Name</label>
+                     <input type="form-text" class="form-control form-control-sm" name="firstname" id="firstname"
+                        aria-describedby="firstnameHelp">
+                  </div>
+   
+                  <div class="mb-3">
+                     <label for="exampleInputEmail1" class="form-label">Lastname</label>
+                     <input type="form-text" class="form-control form-control-sm" name="lastname" id="surname"
+                        aria-describedby="surnameHelp">
+                  </div>
+   
+                  <div class="mb-3">
+                     <label for="exampleInputEmail1" class="form-label">Email address</label>
+                     <input type="email" class="form-control form-control-sm" id="email" name="email"
+                        aria-describedby="emailHelp">
+                  </div>
+                  <div class="mb-3">
+                     <label for="exampleInputPassword1" class="form-label">Password</label>
+                     <input type="password" class="form-control form-control-sm" id="password" name="password">
+                  </div>
+                  <button type="submit" class="btn btn-primary">Register</button>
+               </form>
+               {% endif %}
+
+
+            </div>
          </div>
 
+
+         
 
          {% else %}
          Not login

@@ -23,9 +23,14 @@ def home():
         authors = curl.fetchall()
         curl.execute("SELECT * FROM papers")
         papers=curl.fetchall()
+
+        curl.execute("SELECT * FROM chief_editor")
+        chief_editor=curl.fetchall()
+        chief_editor = True if len(chief_editor) > 0 else False
+                        
         curl.close()
 
-        return render_template("home.html", data=rewievers, authors=authors,papers=papers)
+        return render_template("home.html", data=rewievers, authors=authors,papers=papers,chief_editor=chief_editor)
     else:
         print("alalalal")
         return render_template("home.html")
@@ -40,20 +45,6 @@ def authors():
         curl.close()
         print(authors)
         return render_template("home.html", authors=authors)
-
-    # if request.method == 'POST':
-
-    #     username = request.form['username']
-    #     fullname = request.form['fullname']
-    #     institution = request.form['institution']
-    #     email = request.form['email']
-    #     password = request.form['password'].encode('utf-8')
-    #     hash_password = bcrypt.hashpw(password, bcrypt.gensalt())
-
-    #     cur = mysql.connection.cursor()
-    #     cur.execute("INSERT INTO rewievers (username, fullname, institution, email, password) VALUES (%s,%s,%s,%s,%s)",(username, fullname, institution, email, hash_password))
-    #     mysql.connection.commit()
-    #     return render_template("home.html")
     else:
         return render_template("home.html")
 
@@ -72,6 +63,24 @@ def reviewers():
 
         cur = mysql.connection.cursor()
         cur.execute("INSERT INTO rewievers (username, firstname, surname,interests, email, password) VALUES (%s,%s,%s,%s,%s,%s)",(username, firstname,surname,interests, email, hash_password))
+        mysql.connection.commit()
+        return render_template("home.html")
+    else:
+        print("lalal")
+        return render_template("home.html")
+
+@app.route('/chief_editor',methods=["GET", "POST"])
+def chief_editor():
+    if request.method == 'POST':
+
+        firstname = request.form['firstname']
+        lastname=request.form['lastname']
+        email = request.form['email']
+        password = request.form['password'].encode('utf-8')
+        hash_password = bcrypt.hashpw(password, bcrypt.gensalt())
+
+        cur = mysql.connection.cursor()
+        cur.execute("INSERT INTO chief_editor (firstname, lastname, email, password) VALUES (%s,%s,%s,%s)",(firstname,lastname, email, hash_password))
         mysql.connection.commit()
         return render_template("home.html")
     else:
@@ -191,7 +200,6 @@ def login_reviewer():
             if bcrypt.hashpw(password, user["password"].encode('utf-8')) == user["password"].encode('utf-8'):
                 session['firstname'] = user['firstname']
                 session['surname'] = user['surname']
-
                 session['email'] = user['email']
 
                 curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
