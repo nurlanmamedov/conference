@@ -47,7 +47,7 @@
                                                   <tr>
                                                     <th scope="col">#</th>
                                                     <th scope="col">Title</th>
-                                                    <th scope="col">Topic</th>
+                                                    <th scope="col">interests</th>
                                                     <th scope="col">body</th>
                                                   </tr>
                                                 </thead>
@@ -58,7 +58,7 @@
                                                   <tr>
                                                     <th scope="row">{{ loop.index }}</th>
                                                     <td>{{ i.title }}</td>
-                                                    <td>{{ i.topic }}</td>
+                                                    <td>{{ i.interests }}</td>
                                                     <td>{{ i.body }}</td>
                                                   </tr>
                                 
@@ -106,25 +106,27 @@
                                         <input type="text" class="form-control" placeholder="Title" name="title">
                                     </div>
                                     <div class="form-group">
-
-
-                                        <div class="mb-3">
-         
-                                            <select class="form-select" aria-label="Default select example" name="topic">
-                                                <option selected>select interest</option>
-                                                <option value="UAV">UAV</option>
-                                                <option value="WSN">WSN</option>
-                                                <option value="football">FOOTBALL</option>
-                                                <option value="database">database</option>
-                                                <option value="SOFTWARE ENGINEERING">SOFTWARE ENGINEERING</option>
-                                                <option value="Cloud computing">Cloud computing</option>
-                    
-                                              </select>
-
-                                    </div>
+                        
                                     <div class="form-group">
                                         <input type="text" class="form-control" placeholder="Keywords" name="keyword">
                                     </div>
+
+                                    <div class="mb-3">
+         
+                                        <select class="form-select" aria-label="Default select example" name="interests">
+                                            <option selected>select interest</option>
+                                            <option value="UAV">UAV</option>
+                                            <option value="WSN">WSN</option>
+                                            <option value="football">FOOTBALL</option>
+                                            <option value="database">database</option>
+                                            <option value="SOFTWARE ENGINEERING">SOFTWARE ENGINEERING</option>
+                                            <option value="Cloud computing">Cloud computing</option>
+                
+                                          </select>
+                  
+                                  </div>
+
+                                    
                                     <div class="form-group">
                                         <label for="abstract">abstract</label>
                                         <textarea id="abstract" placeholder="your abstract shoud not exceed 300word" name="abstract" rows="10" cols="50">

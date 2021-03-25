@@ -6,8 +6,8 @@ app = Flask(__name__)
 app.secret_key = 'sakoblexeyible'
 
 app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'noor'#'aydan'
-app.config['MYSQL_PASSWORD'] = 'noor123'#'a1w2k3i4m5..'
+app.config['MYSQL_USER'] = 'aydan' #'noor'#
+app.config['MYSQL_PASSWORD'] ='a1w2k3i4m5..' # 'noor123'
 app.config['MYSQL_DB'] = 'conference'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 mysql = MySQL(app)
@@ -55,14 +55,14 @@ def reviewers():
 
         username = request.form['username']
         firstname = request.form['firstname']
-        surname=request.form['surname']
+        lastname=request.form['lastname']
         interests = request.form['interests']
         email = request.form['email']
         password = request.form['password'].encode('utf-8')
         hash_password = bcrypt.hashpw(password, bcrypt.gensalt())
 
         cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO rewievers (username, firstname, surname,interests, email, password) VALUES (%s,%s,%s,%s,%s,%s)",(username, firstname,surname,interests, email, hash_password))
+        cur.execute("INSERT INTO rewievers (username, firstname, lastname,interests, email, password) VALUES (%s,%s,%s,%s,%s,%s)",(username, firstname,lastname,interests, email, hash_password))
         mysql.connection.commit()
         return render_template("home.html")
     else:
@@ -96,7 +96,7 @@ def login():
 
 
         curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        curl.execute("SELECT * FROM users WHERE email=%s",(email,))
+        curl.execute("SELECT * FROM admins WHERE email=%s",(email,))
         user = curl.fetchone()
         curl.close()
 
@@ -124,9 +124,8 @@ def register():
     if request.method == 'GET':
         return render_template("author_registration.html")
     else:
-        name = request.form['name']
-        surname = request.form['surname']
-        interests = request.form['interests']
+        firstname = request.form['firstname']
+        lastname = request.form['lastname']
         phone = request.form['phone']
         email = request.form['email']
         country = request.form['country']
@@ -136,9 +135,9 @@ def register():
         hash_password = bcrypt.hashpw(password, bcrypt.gensalt())
 
         cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO authors (name,surname,interests, phone, email, country, city,zipcode, password) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)",(name,surname,interests, phone, email, country, city,zip, hash_password))
+        cur.execute("INSERT INTO authors (firstname,lastname, phone, email, country, city,zipcode, password) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)",(firstname,lastname, phone, email, country, city,zip, hash_password))
         mysql.connection.commit()
-        session['name'] = request.form['name']
+        session['name'] = request.form['firstname']
         session['email'] = request.form['email']
         return redirect(url_for('home'))
 
@@ -160,7 +159,7 @@ def login_author():
         
         if len(user) > 0:
             if bcrypt.hashpw(password, user["password"].encode('utf-8')) == user["password"].encode('utf-8'):
-                session['name'] = user['name']
+                session['firstname'] = user['firstname']
                 session['email'] = user['email']
                 session['id'] = user['id']
 
@@ -172,7 +171,7 @@ def login_author():
                 papers = curl.fetchall()
                 print("Papers ---->", papers)
 
-                return render_template("author.html", name=user['name'], papers=papers)
+                return render_template("author.html", name=user['firstname'], papers=papers)
             else:
                 return "Error password and email not match"
         else:
@@ -199,7 +198,7 @@ def login_reviewer():
         if len(user) > 0:
             if bcrypt.hashpw(password, user["password"].encode('utf-8')) == user["password"].encode('utf-8'):
                 session['firstname'] = user['firstname']
-                session['surname'] = user['surname']
+                session['lastname'] = user['lastname']
                 session['email'] = user['email']
 
                 curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
@@ -216,7 +215,7 @@ def login_reviewer():
                 # print("Authors ---->", authors)
 
                 
-                return render_template("reviewers.html", name=user['username'], papers=papers, authors=authors)
+                return render_template("reviewers.html", firstname=user['lastname'], papers=papers, authors=authors)
             else:
                 return "Error password and email not match"
         else:
@@ -234,17 +233,17 @@ def submit_paper(): ##database name is papers
         return render_template("author.html")
     else:
         title = request.form['title']
-        topic = request.form['topic']
+        interests = request.form['interests']
         keyword = request.form['keyword']
         abstract = request.form['abstract']
         body = request.form['body']
 
         user_id = session['id']
-        user_name = session['name']
+        user_name = session['firstname']
 
 
         cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO papers (title,topic,keyword,abstract, body,user_id, user_name) VALUES (%s,%s,%s,%s,%s,%s, %s)",(title,topic,keyword,abstract,body,user_id, user_name))
+        cur.execute("INSERT INTO papers (title,interests,keyword,abstract, body,user_id, user_name) VALUES (%s,%s,%s,%s,%s,%s, %s)",(title,interests,keyword,abstract,body,user_id, user_name))
         mysql.connection.commit()
         return redirect(url_for('submit_paper'))
 
@@ -290,16 +289,16 @@ def delete_rewiever(id):
 def update_rewiever(id):
     username = request.form['username']
     firstname = request.form['firstname']
-    surname = request.form['surname']
+    lastname = request.form['lastname']
     interests = request.form['interests']
     email = request.form['email']
 
-    print("------->>>>>>>",username, firstname, surname, interests, email)
+    print("------->>>>>>>",username, firstname, lastname, interests, email)
     curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
     # curl.execute("SELECT * from rewievers WHERE id=%s",(id,))
 
-    sql = ("UPDATE rewievers SET username = %s, firstname=%s, surname=%s, interests=%s, email=%s WHERE id = %s")
-    val = (username, firstname, surname, interests, email, id)
+    sql = ("UPDATE rewievers SET username = %s, firstname=%s, lastname=%s, interests=%s, email=%s WHERE id = %s")
+    val = (username, firstname, lastname, interests, email, id)
     curl.execute(sql, val)
     curl.close()
     mysql.connection.commit()

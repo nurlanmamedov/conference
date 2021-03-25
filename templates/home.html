@@ -40,9 +40,9 @@
                   </div>
 
                   <div class="mb-3">
-                     <label for="exampleInputEmail1" class="form-label">Surname</label>
-                     <input type="form-text" class="form-control form-control-sm" name="surname" id="surname"
-                        aria-describedby="surnameHelp">
+                     <label for="exampleInputEmail1" class="form-label">lastname</label>
+                     <input type="form-text" class="form-control form-control-sm" name="lastname" id="lastname"
+                        aria-describedby="lastnameHelp">
                   </div>
 
 
@@ -90,7 +90,7 @@
                      <tr>
                         <th scope="row">{{ i.id }}</th>
                         <td>{{ i.firstname }}</td>
-                        <td>{{ i.surname }}</td>
+                        <td>{{ i.lastname }}</td>
 
                         <td>
 
@@ -129,9 +129,9 @@
                                     </div>
 
                                     <div class="mb-3">
-                                       <label for="exampleInputEmail1" class="form-label">Surname</label>
-                                       <input type="form-text" class="form-control form-control-sm" name="surname"
-                                          id="surname" aria-describedby="surnameHelp" value="{{i.surname}}">
+                                       <label for="exampleInputEmail1" class="form-label">lastname</label>
+                                       <input type="form-text" class="form-control form-control-sm" name="lastname"
+                                          id="lastname" aria-describedby="lastnameHelp" value="{{i.lastname}}">
                                     </div>
 
 
@@ -180,7 +180,7 @@
                         <th scope="col">#</th>
                         <th scope="col">Firstname</th>
                         <th scope="col">Lastname</th>
-                        <th scope="col">Interests</th>
+                        <th scope="col">Email</th>
 
                      </tr>
                   </thead>
@@ -188,9 +188,9 @@
                    {% for i in authors %}
                      <tr>
                         <th scope="row">{{ i.id }}</th>
-                        <td>{{ i.name }}</td>
-                        <td>{{ i.surname }}</td>
-                        <td>{{ i.interests }}</td>
+                        <td>{{ i.firstname }}</td>
+                        <td>{{ i.lastname }}</td>
+                        <td>{{ i.email }}</td>
                         <td><form method="get" action="/direct">
                            <button type="submit">make reviewer</button>
                        </form>
@@ -215,17 +215,17 @@
                   <thead>
                      <tr>
                         <th scope="col">#</th>
-                        <th scope="col">Firstname</th>
-                        <th scope="col">Lastname</th>
-          
+                        <th scope="col">title</th>
+                        <th scope="col">interests</th>
+
                      </tr>
                   </thead>
                   <tbody>
                      {% for i in papers %}
                      <tr>
                         <th scope="row">{{ i.id }}</th>
-                        <td>{{ i.abstract }}</td>
                         <td>{{ i.title }}</td>
+                        <td>{{ i.interests }}</td>
    
       
                      </tr>
@@ -249,8 +249,8 @@
    
                   <div class="mb-3">
                      <label for="exampleInputEmail1" class="form-label">Lastname</label>
-                     <input type="form-text" class="form-control form-control-sm" name="lastname" id="surname"
-                        aria-describedby="surnameHelp">
+                     <input type="form-text" class="form-control form-control-sm" name="lastname" id="lastname"
+                        aria-describedby="lastnameHelp">
                   </div>
    
                   <div class="mb-3">
