@@ -6,8 +6,8 @@ app = Flask(__name__)
 app.secret_key = 'sakoblexeyible'
 
 app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'aydan' #'noor'#
-app.config['MYSQL_PASSWORD'] ='a1w2k3i4m5..' # 'noor123'
+app.config['MYSQL_USER'] = 'noor' #'aydan' 
+app.config['MYSQL_PASSWORD'] ='noor123' #'a1w2k3i4m5..' # 
 app.config['MYSQL_DB'] = 'conference'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 mysql = MySQL(app)
@@ -104,7 +104,8 @@ def login():
             if user["password"].encode('utf-8'):
                 session['name'] = user['name']
                 session['email'] = user['email']
-                return render_template("home.html")
+                # return render_template("home.html")
+                return redirect(url_for('home'))
             else:
                 return "Error password and email not match"
         else:

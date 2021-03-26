@@ -6,9 +6,9 @@
 <div class="container" style="margin: 50px;
    background-color: #c4dff3;">
    
-   <div class="row">     
+   <div class="row" style="padding: 20px;">     
 
-      <div class="col-md-12 col-md-offset-3">
+      <div class="col-md-16 col-lg-12 col-xl-12 col-md-offset-3">
 
          <nav>
             <div class="nav nav-tabs" id="nav-tab" role="tablist">
@@ -217,6 +217,7 @@
                         <th scope="col">#</th>
                         <th scope="col">title</th>
                         <th scope="col">interests</th>
+                        <th scope="col">author</th>
 
                      </tr>
                   </thead>
@@ -226,6 +227,7 @@
                         <th scope="row">{{ i.id }}</th>
                         <td>{{ i.title }}</td>
                         <td>{{ i.interests }}</td>
+                        <td>{{ i.user_name }}</td>
    
       
                      </tr>
