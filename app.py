@@ -6,8 +6,8 @@ app = Flask(__name__)
 app.secret_key = 'sakoblexeyible'
 
 app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'aydan' #'noor'
-app.config['MYSQL_PASSWORD'] ='a1w2k3i4m5..' # 'noor123' 
+app.config['MYSQL_USER'] = 'noor' #'aydan' #'noor'
+app.config['MYSQL_PASSWORD'] ='noor123'  #'a1w2k3i4m5..' # 'noor123' 
 app.config['MYSQL_DB'] = 'conference'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 mysql = MySQL(app)
@@ -64,7 +64,7 @@ def reviewers():
         cur = mysql.connection.cursor()
         cur.execute("INSERT INTO rewievers (username, firstname, lastname,interests, email, password) VALUES (%s,%s,%s,%s,%s,%s)",(username, firstname,lastname,interests, email, hash_password))
         mysql.connection.commit()
-        return render_template("home.html")
+        return redirect(url_for('home'))
     else:
         print("lalal")
         return render_template("home.html")
@@ -201,19 +201,24 @@ def login_reviewer():
                 session['firstname'] = user['firstname']
                 session['lastname'] = user['lastname']
                 session['email'] = user['email']
-
+                
                 curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-                curl.execute("SELECT * FROM papers")
-                papers = curl.fetchall()
-                # print("Papers ---->", papers)
+                
 
-                curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+                # curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
                 curl.execute("SELECT * FROM authors")
                 authors = curl.fetchall()
 
+                # curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+                curl.execute("SELECT interests FROM rewievers WHERE email=%s", (email,))
+                interest = curl.fetchone()
 
+                print("current rewiever interest is ---> ", interest)
 
-                # print("Authors ---->", authors)
+                curl.execute("SELECT * FROM papers WHERE interests=%s", (interest['interests'],))
+                papers = curl.fetchall()
+
+                print("Papers ---->", papers)
 
                 
                 return render_template("reviewers.html", firstname=user['lastname'], papers=papers, authors=authors)
@@ -305,9 +310,6 @@ def update_rewiever(id):
     mysql.connection.commit()
  
     return redirect(url_for('home'))
-
-
-+
 
 
 @app.route('/direct', methods=["GET"])
