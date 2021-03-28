@@ -163,6 +163,7 @@ def login_author():
                 session['firstname'] = user['firstname']
                 session['email'] = user['email']
                 session['id'] = user['id']
+                session['lastname'] = user['lastname']
 
                 print("Session --->>>", session)
 
@@ -241,10 +242,10 @@ def submit_paper(): ##database name is papers
 
         user_id = session['id']
         user_name = session['firstname']
-
-
+        user_lastname=session['lastname']
+    
         cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO papers (title,interests,keyword,abstract, body,user_id, user_name) VALUES (%s,%s,%s,%s,%s,%s, %s)",(title,interests,keyword,abstract,body,user_id, user_name))
+        cur.execute("INSERT INTO papers (title,interests,keyword,abstract, body,user_id, user_name,user_lastname) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)",(title,interests,keyword,abstract,body,user_id, user_name,user_lastname))
         mysql.connection.commit()
         return redirect(url_for('submit_paper'))
 
@@ -307,7 +308,7 @@ def update_rewiever(id):
     return redirect(url_for('home'))
 
 
-+
+
 
 
 @app.route('/direct', methods=["GET"])
