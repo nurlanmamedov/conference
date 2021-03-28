@@ -6,8 +6,8 @@ app = Flask(__name__)
 app.secret_key = 'sakoblexeyible'
 
 app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'aydan' #'noor'
-app.config['MYSQL_PASSWORD'] ='a1w2k3i4m5..' # 'noor123' 
+app.config['MYSQL_USER'] = 'noor'#'aydan' #'noor'
+app.config['MYSQL_PASSWORD'] ='noor123'#'a1w2k3i4m5..' # 'noor123' 
 app.config['MYSQL_DB'] = 'conference'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 mysql = MySQL(app)
@@ -88,30 +88,7 @@ def chief_editor():
         return render_template("home.html")
 
 
-@app.route('/login', methods=["GET", "POST"])
-def login():
-    if request.method == 'POST':
-        email = request.form['email']
-        password = request.form['password'].encode('utf-8')
 
-
-        curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        curl.execute("SELECT * FROM admins WHERE email=%s",(email,))
-        user = curl.fetchone()
-        curl.close()
-
-        if len(user) > 0:
-            if user["password"].encode('utf-8'):
-                session['name'] = user['name']
-                session['email'] = user['email']
-                # return render_template("home.html")
-                return redirect(url_for('home'))
-            else:
-                return "Error password and email not match"
-        else:
-            return "Error user not found"
-    else:
-        return render_template("login.html")
 
 @app.route('/logout', methods=["GET", "POST"])
 def logout():
@@ -142,6 +119,30 @@ def register():
         session['email'] = request.form['email']
         return redirect(url_for('home'))
 
+@app.route('/login', methods=["GET", "POST"])
+def login():
+    if request.method == 'POST':
+        email = request.form['email']
+        password = request.form['password'].encode('utf-8')
+
+
+        curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        curl.execute("SELECT * FROM admins WHERE email=%s",(email,))
+        user = curl.fetchone()
+        curl.close()
+
+        if len(user) > 0:
+            if user["password"].encode('utf-8'):
+                session['name'] = user['name']
+                session['email'] = user['email']
+                # return render_template("home.html")
+                return redirect(url_for('home'))
+            else:
+                return "Error password and email not match"
+        else:
+            return "Error user not found"
+    else:
+        return render_template("login.html")
 
 @app.route('/login_author', methods=["GET", "POST"])
 def login_author():
@@ -188,20 +189,19 @@ def login_reviewer():
         email= request.form['email']
         password = request.form['password'].encode('utf-8')
 
-        print("email --> ",password)
-        print("password --> ",password)
-
         curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         curl.execute("SELECT * FROM rewievers WHERE email=%s",(email,))
         user = curl.fetchone()
-        print("User --> ",user)
+        
         curl.close()
-
+        print("beafore if ---> ", session)
         if len(user) > 0:
             if bcrypt.hashpw(password, user["password"].encode('utf-8')) == user["password"].encode('utf-8'):
-                session['firstname'] = user['firstname']
+                print("after if ---> ", session)
+                session['name'] = user['firstname']
                 session['lastname'] = user['lastname']
                 session['email'] = user['email']
+
 
                 curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
                 curl.execute("SELECT * FROM papers")
@@ -218,11 +218,13 @@ def login_reviewer():
 
                 
                 return render_template("reviewers.html", firstname=user['lastname'], papers=papers, authors=authors)
+                # return redirect(url_for('login_reviewer', firstname=user['lastname'], papers=papers, authors=authors) )
             else:
                 return "Error password and email not match"
         else:
             return "Error Author not found"
-    else: 
+    else:
+        print("else login if ---> ", session)
         return render_template("login.html")
 
 
