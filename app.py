@@ -161,7 +161,7 @@ def login_author():
         
         if len(user) > 0:
             if bcrypt.hashpw(password, user["password"].encode('utf-8')) == user["password"].encode('utf-8'):
-                session['firstname'] = user['firstname']
+                session['name'] = user['firstname']
                 session['email'] = user['email']
                 session['id'] = user['id']
                 session['lastname'] = user['lastname']
