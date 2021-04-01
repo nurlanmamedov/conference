@@ -183,6 +183,17 @@ def login_author():
         return render_template("login.html")
 
 
+@app.route('/rating', methods=["GET", "POST"])
+def rating():
+    # rate = request.form["star"]
+    if request.method == 'POST':
+        rate = request.form["star"]
+        print("rating --> ", rate)
+        # return redirect(url_for('login_reviewer'))
+        return render_template("reviewers.html")
+
+
+
 @app.route('/login_reviewer', methods=["GET", "POST"])
 def login_reviewer():
     if request.method == 'POST':
