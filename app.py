@@ -40,7 +40,7 @@ def home():
 def authors():
     if request.method == "GET":
         curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        curl.execute("SELECT * FROM authors")
+        curl.execute("SELECT * FROM authors_")
         authors = curl.fetchall()
         curl.close()
         print(authors)
@@ -113,7 +113,7 @@ def register():
         hash_password = bcrypt.hashpw(password, bcrypt.gensalt())
 
         cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO authors (firstname,lastname, phone, email, country, city,zipcode, password) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)",(firstname,lastname, phone, email, country, city,zip, hash_password))
+        cur.execute("INSERT INTO authors_ (firstname,lastname, phone, email, country, city,zipcode, password) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)",(firstname,lastname, phone, email, country, city,zip, hash_password))
         mysql.connection.commit()
         session['name'] = request.form['firstname']
         session['email'] = request.form['email']
@@ -154,7 +154,7 @@ def login_author():
         print("password --> ",password)
 
         curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        curl.execute("SELECT * FROM authors WHERE email=%s",(email,))
+        curl.execute("SELECT * FROM authors_ WHERE email=%s",(email,))
         user = curl.fetchone()
         print("User --> ",user)
         curl.close()
@@ -221,6 +221,7 @@ def login_reviewer():
 
                 curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
                 curl.execute("SELECT * FROM authors")
+                curl.execute("SELECT * FROM papers")
                 authors = curl.fetchall()
 
 
