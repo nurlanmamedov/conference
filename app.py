@@ -16,12 +16,12 @@ mysql = MySQL(app)
 def home():
     if request.method == "GET":
         curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        curl.execute("SELECT * FROM rewievers")
+        curl.execute("SELECT * FROM reviewers1")
         rewievers = curl.fetchall()
         print("All rewievers --> ", rewievers)
-        curl.execute("SELECT * FROM authors")
+        curl.execute("SELECT * FROM authors1 ")
         authors = curl.fetchall()
-        curl.execute("SELECT * FROM papers")
+        curl.execute("SELECT * FROM papers1 ")
         papers=curl.fetchall()
 
         curl.execute("SELECT * FROM chief_editor")
@@ -40,7 +40,7 @@ def home():
 def authors():
     if request.method == "GET":
         curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        curl.execute("SELECT * FROM authors_")
+        curl.execute("SELECT * FROM authors1")
         authors = curl.fetchall()
         curl.close()
         print(authors)
@@ -53,20 +53,19 @@ def authors():
 def reviewers():
     if request.method == 'POST':
 
-        username = request.form['username']
         firstname = request.form['firstname']
         lastname=request.form['lastname']
-        interests = request.form['interests']
+
         email = request.form['email']
         password = request.form['password'].encode('utf-8')
         hash_password = bcrypt.hashpw(password, bcrypt.gensalt())
 
         cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO rewievers (username, firstname, lastname,interests, email, password) VALUES (%s,%s,%s,%s,%s,%s)",(username, firstname,lastname,interests, email, hash_password))
+        cur.execute("INSERT INTO rewievers (firstname, lastname, email, password) VALUES (%s,%s,%s,%s)",( firstname,lastname, email, hash_password))
         mysql.connection.commit()
         return render_template("home.html")
     else:
-        print("lalal")
+
         return render_template("home.html")
 
 @app.route('/chief_editor',methods=["GET", "POST"])
@@ -113,7 +112,7 @@ def register():
         hash_password = bcrypt.hashpw(password, bcrypt.gensalt())
 
         cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO authors_ (firstname,lastname, phone, email, country, city,zipcode, password) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)",(firstname,lastname, phone, email, country, city,zip, hash_password))
+        cur.execute("INSERT INTO authors1 (firstname,lastname, phone, email, country, city,zipcode, password) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)",(firstname,lastname, phone, email, country, city,zip, hash_password))
         mysql.connection.commit()
         session['name'] = request.form['firstname']
         session['email'] = request.form['email']
@@ -154,7 +153,7 @@ def login_author():
         print("password --> ",password)
 
         curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        curl.execute("SELECT * FROM authors_ WHERE email=%s",(email,))
+        curl.execute("SELECT * FROM authors1 WHERE email=%s",(email,))
         user = curl.fetchone()
         print("User --> ",user)
         curl.close()
@@ -163,14 +162,14 @@ def login_author():
             if bcrypt.hashpw(password, user["password"].encode('utf-8')) == user["password"].encode('utf-8'):
                 session['name'] = user['firstname']
                 session['email'] = user['email']
-                session['id'] = user['id']
+                session['id'] = user['author_id']
                 session['lastname'] = user['lastname']
 
                 print("Session --->>>", session)
 
                 curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
                 user_id = session['id']
-                curl.execute("SELECT * FROM papers WHERE user_id=%s",(user_id,))
+                curl.execute("SELECT * FROM papers1 WHERE user_id=%s",(user_id,))
                 papers = curl.fetchall()
                 print("Papers ---->", papers)
 
@@ -254,12 +253,12 @@ def submit_paper(): ##database name is papers
         abstract = request.form['abstract']
         body = request.form['body']
 
-        user_id = session['id']
+        user_id = session['paper_id']
         user_name = session['firstname']
         user_lastname=session['lastname']
     
         cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO papers (title,interests,keyword,abstract, body,user_id, user_name,user_lastname) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)",(title,interests,keyword,abstract,body,user_id, user_name,user_lastname))
+        cur.execute("INSERT INTO papers (title,keyword,abstract, body,user_id, user_name,user_lastname) VALUES (%s,%s,%s,%s,%s,%s,%s)",(title,keyword,abstract,body,user_id, user_name,user_lastname))
         mysql.connection.commit()
         return redirect(url_for('submit_paper'))
 
@@ -270,7 +269,7 @@ def submit_paper(): ##database name is papers
 def papers():
     if request.method == "GET":
         curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        curl.execute("SELECT * FROM papers")
+        curl.execute("SELECT * FROM papers1 ")
         papers = curl.fetchall()
         curl.close()
         print(papers)
@@ -281,7 +280,7 @@ def papers():
 def get_papers():
     if request.method == "GET":
         curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        curl.execute("SELECT * FROM papers")
+        curl.execute("SELECT * FROM papers1 ")
         papers = curl.fetchall()
         curl.close()
         return papers
@@ -303,18 +302,18 @@ def delete_rewiever(id):
 
 @app.route('/update_rewiever/<int:id>/', methods = ['GET', 'POST'])
 def update_rewiever(id):
-    username = request.form['username']
+
     firstname = request.form['firstname']
     lastname = request.form['lastname']
-    interests = request.form['interests']
+   
     email = request.form['email']
 
-    print("------->>>>>>>",username, firstname, lastname, interests, email)
+    print("------->>>>>>>",firstname, lastname, email)
     curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
     # curl.execute("SELECT * from rewievers WHERE id=%s",(id,))
 
-    sql = ("UPDATE rewievers SET username = %s, firstname=%s, lastname=%s, interests=%s, email=%s WHERE id = %s")
-    val = (username, firstname, lastname, interests, email, id)
+    sql = ("UPDATE rewievers SET firstname=%s, lastname=%s, email=%s WHERE id = %s")
+    val = ( firstname, lastname, email, id)
     curl.execute(sql, val)
     curl.close()
     mysql.connection.commit()
@@ -329,7 +328,7 @@ def update_rewiever(id):
 def direct_pages(): ##database name is papers
     if request.method == "GET":
         curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        curl.execute("SELECT * FROM authors")
+        curl.execute("SELECT * FROM authors1 ")
         authors = curl.fetchall()
         curl.close()
         return render_template("view.html", authors=authors)
