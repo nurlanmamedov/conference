@@ -6,8 +6,8 @@ app = Flask(__name__)
 app.secret_key = 'sakoblexeyible'
 
 app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'aydan'#'noor'#'noor''noor''noor'#'aydan'
-app.config['MYSQL_PASSWORD'] ='a1w2k3i4m5..'#'noor123'# # 'noor123' 'noor123' 'noor123' 
+app.config['MYSQL_USER'] = 'noor'#'noor'#'noor''noor''noor'#'aydan'
+app.config['MYSQL_PASSWORD'] ='noor123'#'noor123'# # 'noor123' 'noor123' 'noor123' 
 app.config['MYSQL_DB'] = 'conference'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 mysql = MySQL(app)
@@ -24,13 +24,18 @@ def home():
         curl.execute("SELECT * FROM papers1 ")
         papers=curl.fetchall()
 
+        curl.execute("SELECT * FROM interests1")
+        interests=curl.fetchall()
+
+        print("interests list --> ", interests)
+
         curl.execute("SELECT * FROM chief_editor")
         chief_editor=curl.fetchall()
         chief_editor = True if len(chief_editor) > 0 else False
                         
         curl.close()
 
-        return render_template("home.html", data=rewievers, authors=authors,papers=papers,chief_editor=chief_editor)
+        return render_template("home.html", data=rewievers, authors=authors,papers=papers,chief_editor=chief_editor, interests=interests)
     else:
         print("alalalal")
         return render_template("home.html")
@@ -55,13 +60,13 @@ def reviewers():
 
         firstname = request.form['firstname']
         lastname=request.form['lastname']
-
         email = request.form['email']
+        interest_id = int(request.form['interest_id'])
         password = request.form['password'].encode('utf-8')
         hash_password = bcrypt.hashpw(password, bcrypt.gensalt())
 
         cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO rewievers (firstname, lastname, email, password) VALUES (%s,%s,%s,%s)",( firstname,lastname, email, hash_password))
+        cur.execute("INSERT INTO reviewers1 (firstname, lastname, interest_id, email, password) VALUES (%s,%s,%s,%s,%s)",( firstname,lastname,interest_id,email, hash_password))
         mysql.connection.commit()
         return render_template("home.html")
     else:
@@ -168,8 +173,8 @@ def login_author():
                 print("Session --->>>", session)
 
                 curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-                user_id = session['id']
-                curl.execute("SELECT * FROM papers1 WHERE user_id=%s",(user_id,))
+                author_id = session['id']
+                curl.execute("SELECT * FROM papers1 WHERE author_id=%s",(author_id,))
                 papers = curl.fetchall()
                 print("Papers ---->", papers)
 

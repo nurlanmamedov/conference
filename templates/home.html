@@ -2,11 +2,11 @@
 {% block title %} Home {% endblock %}
 {% block content %}
 {% if session['name'] %}
-<h1>  Welcome {{ session['name'] }}</h1>
+<h1> Welcome {{ session['name'] }}</h1>
 <div class="container" style="margin: 50px;
    background-color: #c4dff3;">
-   
-   <div class="row" style="padding: 20px;">     
+
+   <div class="row" style="padding: 20px;">
 
       <div class="col-md-16 col-lg-12 col-xl-7 col-md-offset-3">
 
@@ -21,7 +21,7 @@
                <a class="nav-link" id="nav-viewpapers-tab" data-bs-toggle="tab" href="#nav-viewpapers" role="tab"
                   aria-controls="nav-viewpapers" aria-selected="false">View all papers</a>
 
-                  <a class="nav-link" id="nav-chief-tab" data-bs-toggle="tab" href="#nav-chief" role="tab"
+               <a class="nav-link" id="nav-chief-tab" data-bs-toggle="tab" href="#nav-chief" role="tab"
                   aria-controls="nav-chief" aria-selected="false">Add chief editor</a>
             </div>
          </nav>
@@ -43,19 +43,22 @@
 
 
                   <div class="mb-3">
-         
-                        <select class="form-select" aria-label="Default select example" name="interests">
-                            <option selected>select interest</option>
-                            <option value="Ad Hoc and Sensor Networks">Ad Hoc and Sensor Networks</option>
+
+                     <select class="form-select" aria-label="Default select example" name="interest_id">
+                        <option selected>select interest</option>
+                        {% for interest in interests %}
+                        <option value="{{ interest.interest_id }}">{{ interest.interest_name }}</option>
+                        {% endfor %}
+                        <!-- <option value="Ad Hoc and Sensor Networks">Ad Hoc and Sensor Networks</option>
                             <option value="Intelligent Systems and Multi-agent Systems">Intelligent Systems and Multi-agent Systems</option>
                             <option value="Internet of Things">Internet of Things</option>
                             <option value="Machine Learning">Machine Learning</option>
                             <option value="Sustainable Computing and Systems">Sustainable Computing and Systems</option>
                             <option value="Wireless communications and Networking">Wireless communications and Networking</option>
-                            <option value="5G and Multi-Gigabit Communications">5G and Multi-Gigabit Communications</option>
-                            
-                          </select>
-  
+                            <option value="5G and Multi-Gigabit Communications">5G and Multi-Gigabit Communications</option> -->
+
+                     </select>
+
                   </div>
                   <div class="mb-3">
                      <label for="exampleInputEmail1" class="form-label">Email address</label>
@@ -85,25 +88,25 @@
                   <tbody>
                      {% for i in data %}
                      <tr>
-                        <th scope="row">{{ i.id }}</th>
+                        <th scope="row">{{ i.reviewer_id }}</th>
                         <td>{{ i.firstname }}</td>
                         <td>{{ i.lastname }}</td>
 
                         <td>
 
-                           <a href="/update_rewiever/{{i.id}}" class="btn btn-primary" data-bs-toggle="modal"
+                           <a href="/update_rewiever/{{i.reviewer_id}}" class="btn btn-primary" data-bs-toggle="modal"
                               data-bs-target="#exampleModal{{i.id}}">
                               Edit
                            </a>
                         </td>
 
                         <td>
-                           <a href="/delete_rewiever/{{i.id}}" class="btn btn-danger btn-xs"
+                           <a href="/delete_rewiever/{{i.reviewer_id}}" class="btn btn-danger btn-xs"
                               onclick="return confirm('Are You Sure To Delete ?')">Delete</a>
                         </td>
                      </tr>
                      <!-- modal  -->
-                     <div class="modal fade" id="exampleModal{{i.id}}" tabindex="-1" aria-labelledby="exampleModalLabel"
+                     <div class="modal fade" id="exampleModal{{i.reviewer_id}}" tabindex="-1" aria-labelledby="exampleModalLabel"
                         aria-hidden="true">
                         <div class="modal-dialog">
                            <div class="modal-content">
@@ -113,7 +116,7 @@
                                     aria-label="Close"></button>
                               </div>
                               <div class="modal-body">
-                                 <form action="{{ url_for('update_rewiever', id=i.id) }}" method="POST">
+                                 <form action="{{ url_for('update_rewiever', id=i.reviewer_id) }}" method="POST">
 
                                     <div class="mb-3">
                                        <label for="exampleInputEmail1" class="form-label">First Name</label>
@@ -138,7 +141,7 @@
                                        <input type="email" class="form-control form-control-sm" id="email" name="email"
                                           aria-describedby="emailHelp" value="{{i.email}}">
                                     </div>
-                                    
+
                                     <div class="modal-footer">
                                        <button type="button" class="btn btn-secondary"
                                           data-bs-dismiss="modal">Close</button>
@@ -166,7 +169,7 @@
 
 
 
-              
+
                <table class="table">
                   <thead>
                      <tr>
@@ -178,19 +181,20 @@
                      </tr>
                   </thead>
                   <tbody>
-                   {% for i in authors %}
+                     {% for i in authors %}
                      <tr>
                         <th scope="row">{{ i.id }}</th>
                         <td>{{ i.firstname }}</td>
                         <td>{{ i.lastname }}</td>
                         <td>{{ i.email }}</td>
-                        <td><form method="get" action="/direct">
-                           <button type="submit">make reviewer</button>
-                       </form>
+                        <td>
+                           <form method="get" action="/direct">
+                              <button type="submit">make reviewer</button>
+                           </form>
                      </tr>
-                
+
                   </tbody>
- {% endfor %}
+                  {% endfor %}
 
                </table>
 
@@ -200,7 +204,7 @@
             </div>
 
 
- 
+
 
             <div class="tab-pane fade" id="nav-viewpapers" role="tabpanel" aria-labelledby="nav-viewpapers-tab">
                <table class="table">
@@ -220,18 +224,18 @@
                         <td>{{ i.title }}</td>
                         <td>{{ i.interests }}</td>
                         <td>{{ i.user_name }}</td>
-   
-      
+
+
                      </tr>
-                
+
                   </tbody>
-      {% endfor %}
-      
+                  {% endfor %}
+
                </table>
             </div>
-         
+
             <div class="tab-pane fade" id="nav-chief" role="tabpanel" aria-labelledby="nav-chief-tab">
-               {% if chief_editor  %}
+               {% if chief_editor %}
                <h1> We have chief editor .... </h1>
                {% else %}
                <form action="/chief_editor" method="POST">
@@ -240,13 +244,13 @@
                      <input type="form-text" class="form-control form-control-sm" name="firstname" id="firstname"
                         aria-describedby="firstnameHelp">
                   </div>
-   
+
                   <div class="mb-3">
                      <label for="exampleInputEmail1" class="form-label">Lastname</label>
                      <input type="form-text" class="form-control form-control-sm" name="lastname" id="lastname"
                         aria-describedby="lastnameHelp">
                   </div>
-   
+
                   <div class="mb-3">
                      <label for="exampleInputEmail1" class="form-label">Email address</label>
                      <input type="email" class="form-control form-control-sm" id="email" name="email"
@@ -265,7 +269,7 @@
          </div>
 
 
-         
+
 
          {% else %}
 
@@ -302,42 +306,52 @@
 
          <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-indicators">
-              <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-              <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
-              <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
+               <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active"
+                  aria-current="true" aria-label="Slide 1"></button>
+               <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1"
+                  aria-label="Slide 2"></button>
+               <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2"
+                  aria-label="Slide 3"></button>
             </div>
             <div class="carousel-inner">
-              <div class="carousel-item">
-                <img src="https://www.activefootprint.co.uk/js/plugins/imagemanager/files/events/conference-and-events.jpg" class="d-block w-0" alt="...">
-                <div class="carousel-caption d-none d-md-block">
-                  <h5>We orgonize best conferences</h5>
-                  <p>Some representative placeholder content for the first slide.</p>
-                </div>
-              </div>
-              <div class="carousel-item active">
-                <img src="https://www.activefootprint.co.uk/js/plugins/imagemanager/files/events/conference-and-events.jpg" class="d-block w-100" alt="...">
-                <div class="carousel-caption d-none d-md-block">
-                  <h5>We Can Handle Your Responsibilities</h5>
-                  <p>Some representative placeholder content for the second slide.</p>
-                </div>
-              </div>
-              <div class="carousel-item">
-                <img src="https://i.pinimg.com/originals/ef/75/33/ef75331c6ef5da622bd3fa7c166750cb.jpg" class="d-block w-0" alt="...">
-                <div class="carousel-caption d-none d-md-block">
-                  <h5>Trust us</h5>
-                  <p>We orgonize best conferences</p>
-                </div>
-              </div>
+               <div class="carousel-item">
+                  <img
+                     src="https://www.activefootprint.co.uk/js/plugins/imagemanager/files/events/conference-and-events.jpg"
+                     class="d-block w-0" alt="...">
+                  <div class="carousel-caption d-none d-md-block">
+                     <h5>We orgonize best conferences</h5>
+                     <p>Some representative placeholder content for the first slide.</p>
+                  </div>
+               </div>
+               <div class="carousel-item active">
+                  <img
+                     src="https://www.activefootprint.co.uk/js/plugins/imagemanager/files/events/conference-and-events.jpg"
+                     class="d-block w-100" alt="...">
+                  <div class="carousel-caption d-none d-md-block">
+                     <h5>We Can Handle Your Responsibilities</h5>
+                     <p>Some representative placeholder content for the second slide.</p>
+                  </div>
+               </div>
+               <div class="carousel-item">
+                  <img src="https://i.pinimg.com/originals/ef/75/33/ef75331c6ef5da622bd3fa7c166750cb.jpg"
+                     class="d-block w-0" alt="...">
+                  <div class="carousel-caption d-none d-md-block">
+                     <h5>Trust us</h5>
+                     <p>We orgonize best conferences</p>
+                  </div>
+               </div>
             </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
-              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-              <span class="visually-hidden">Previous</span>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions"
+               data-bs-slide="prev">
+               <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+               <span class="visually-hidden">Previous</span>
             </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
-              <span class="carousel-control-next-icon" aria-hidden="true"></span>
-              <span class="visually-hidden">Next</span>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions"
+               data-bs-slide="next">
+               <span class="carousel-control-next-icon" aria-hidden="true"></span>
+               <span class="visually-hidden">Next</span>
             </button>
-          </div>
+         </div>
 
 
 
@@ -359,7 +373,7 @@
 
 
 
-         
+
 
          {% endif %}
       </div>
