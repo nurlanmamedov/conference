@@ -17,8 +17,8 @@
                   <table class="table table-primary table-striped">
                      <thead>
                         <tr>
-                           <th scope="col">#</th>
-                           <th scope="col">Firstname, Lastname</th>
+                           <th scope="col">Firstname</th>
+                           <th scope="col">Lastname</th>
                            <th scope="col">Title</th>
                            <th scope="col">Interests</th>
                            <th scope="col">See more</th>
@@ -27,12 +27,12 @@
                         </tr>
                      </thead>
                      <tbody>
-                        {% for i in papers %}
+                        {% for i in answer %}
                         <tr>
-                           <th scope="row">{{ i.id }}</th>
-                           <td>{{i.user_name}} {{i.user_lastname}}</td>
+                           <td>{{i.firstname}}</td>
+                           <td> {{i.lastname}}</td>
                            <td>{{ i.title }}</td>
-                           <td>{{ i.interests }}</td>
+                           <td>{{ i.interest_name }}</td>
                            <td>
                               <!-- Button trigger modal -->
                               <button type="button" class="btn btn-primary" data-bs-toggle="modal"

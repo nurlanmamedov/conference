@@ -212,7 +212,9 @@ def login_reviewer():
         password = request.form['password'].encode('utf-8')
 
         curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        curl.execute("SELECT * FROM rewievers WHERE email=%s",(email,))
+        curl.execute("SELECT * FROM reviewers1 WHERE email=%s",(email,))
+        
+        
         user = curl.fetchone()
         
         curl.close()
@@ -226,21 +228,21 @@ def login_reviewer():
 
 
                 curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-                curl.execute("SELECT * FROM papers")
+                curl.execute("SELECT * FROM papers1")
                 papers = curl.fetchall()
                 # print("Papers ---->", papers)
 
                 curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-                curl.execute("SELECT * FROM authors")
-                curl.execute("SELECT * FROM papers")
+                curl.execute("SELECT * FROM authors1")
+                curl.execute("SELECT * FROM papers1")
                 authors = curl.fetchall()
 
-
-
-                # print("Authors ---->", authors)
+                curl.execute("SELECT Distinct papers1.paper_id, authors1.firstname,authors1.lastname, papers1.title, papers1.body, interests1.interest_name FROM papers1 INNER JOIN authors1 INNER JOIN reviewers1 INNER JOIN interests1 ON (papers1.author_id = authors1.author_id AND papers1.interest_id = 4 AND reviewers1.reviewer_id=1 AND interests1.interest_id=4)")
+                answer = curl.fetchall()
+                print("answer ----++++++++++++_________++++++++++++++++++----------------+++++++++++++++++++", answer)
 
                 
-                return render_template("reviewers.html", firstname=user['lastname'], papers=papers, authors=authors)
+                return render_template("reviewers.html", firstname=user['lastname'], papers=papers, authors=authors, answer=answer)
                 # return redirect(url_for('login_reviewer', firstname=user['lastname'], papers=papers, authors=authors) )
             else:
                 return "Error password and email not match"
@@ -265,7 +267,7 @@ def submit_paper(): ##database name is papers
         keywords = request.form['keywords']
         abstract = request.form['abstract']
         body = request.form['body']
-        
+
         cur = mysql.connection.cursor()
         cur.execute("INSERT INTO papers1 (title, interest_id, author_id, keywords, abstract, body) VALUES (%s,%s,%s,%s,%s,%s)",(title,interest_id,author_id,keywords,abstract,body, ))
         mysql.connection.commit()
