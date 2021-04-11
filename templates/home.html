@@ -5,11 +5,8 @@
 <h1> Welcome {{ session['name'] }}</h1>
 <div class="container" style="margin: 50px;
    background-color: #c4dff3;">
-
    <div class="row" style="padding: 20px;">
-
       <div class="col-md-16 col-lg-12 col-xl-7 col-md-offset-3">
-
          <nav>
             <div class="nav nav-tabs" id="nav-tab" role="tablist">
                <a class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" href="#nav-home" role="tab"
@@ -20,7 +17,6 @@
                   aria-controls="nav-viewauthors" aria-selected="false">View Authors</a>
                <a class="nav-link" id="nav-viewpapers-tab" data-bs-toggle="tab" href="#nav-viewpapers" role="tab"
                   aria-controls="nav-viewpapers" aria-selected="false">View all papers</a>
-
                <a class="nav-link" id="nav-chief-tab" data-bs-toggle="tab" href="#nav-chief" role="tab"
                   aria-controls="nav-chief" aria-selected="false">Add chief editor</a>
             </div>
@@ -28,29 +24,23 @@
          <div class="tab-content" id="nav-tabContent">
             <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
                <form action="/rewievers" method="POST">
-
                   <div class="mb-3">
                      <label for="exampleInputEmail1" class="form-label">First Name</label>
                      <input type="form-text" class="form-control form-control-sm" name="firstname" id="firstname"
                         aria-describedby="firstnameHelp">
                   </div>
-
                   <div class="mb-3">
                      <label for="exampleInputEmail1" class="form-label">lastname</label>
                      <input type="form-text" class="form-control form-control-sm" name="lastname" id="lastname"
                         aria-describedby="lastnameHelp">
                   </div>
-
-
                   <div class="mb-3">
-
                      <select class="form-select" aria-label="Default select example" name="interest_id">
                         <option selected>select interest</option>
                         {% for interest in interests %}
                         <option value="{{ interest.interest_id }}">{{ interest.interest_name }}</option>
                         {% endfor %}
                      </select>
-
                   </div>
                   <div class="mb-3">
                      <label for="exampleInputEmail1" class="form-label">Email address</label>
@@ -64,9 +54,7 @@
                   <button type="submit" class="btn btn-primary">Register</button>
                </form>
             </div>
-
             <div class="tab-pane fade" id="nav-viewreviewers" role="tabpanel" aria-labelledby="nav-viewreviewers-tab">
-
                <table class="table">
                   <thead>
                      <tr>
@@ -83,15 +71,12 @@
                         <th scope="row">{{ i.reviewer_id }}</th>
                         <td>{{ i.firstname }}</td>
                         <td>{{ i.lastname }}</td>
-
                         <td>
-
                            <a href="/update_rewiever/{{i.reviewer_id}}" class="btn btn-primary" data-bs-toggle="modal"
                               data-bs-target="#exampleModal{{i.id}}">
-                              Edit
+                           Edit
                            </a>
                         </td>
-
                         <td>
                            <a href="/delete_rewiever/{{i.reviewer_id}}" class="btn btn-danger btn-xs"
                               onclick="return confirm('Are You Sure To Delete ?')">Delete</a>
@@ -109,20 +94,16 @@
                               </div>
                               <div class="modal-body">
                                  <form action="{{ url_for('update_rewiever', id=i.reviewer_id) }}" method="POST">
-
                                     <div class="mb-3">
                                        <label for="exampleInputEmail1" class="form-label">First Name</label>
                                        <input type="form-text" class="form-control form-control-sm" name="firstname"
                                           id="firstname" aria-describedby="firstnameHelp" value="{{i.firstname}}">
                                     </div>
-
                                     <div class="mb-3">
                                        <label for="exampleInputEmail1" class="form-label">lastname</label>
                                        <input type="form-text" class="form-control form-control-sm" name="lastname"
                                           id="lastname" aria-describedby="lastnameHelp" value="{{i.lastname}}">
                                     </div>
-
-
                                     <div class="mb-3">
                                        <label for="exampleInputEmail1" class="form-label">interests</label>
                                        <input type="form-text" class="form-control form-control-sm" name="interests"
@@ -133,7 +114,6 @@
                                        <input type="email" class="form-control form-control-sm" id="email" name="email"
                                           aria-describedby="emailHelp" value="{{i.email}}">
                                     </div>
-
                                     <div class="modal-footer">
                                        <button type="button" class="btn btn-secondary"
                                           data-bs-dismiss="modal">Close</button>
@@ -141,27 +121,17 @@
                                     </div>
                                  </form>
                               </div>
-
                            </div>
                         </div>
                      </div>
                      <!-- modal end  -->
                      {% endfor %}
                   </tbody>
-
                </table>
             </div>
-
-
-
-
             <div class="tab-pane fade" id="nav-modifyreviewers" role="tabpanel"
                aria-labelledby="nav-modifyreviewers-tab">...3</div>
             <div class="tab-pane fade" id="nav-viewauthors" role="tabpanel" aria-labelledby="nav-viewauthors-tab">
-
-
-
-
                <table class="table">
                   <thead>
                      <tr>
@@ -169,7 +139,6 @@
                         <th scope="col">Firstname</th>
                         <th scope="col">Lastname</th>
                         <th scope="col">Email</th>
-
                      </tr>
                   </thead>
                   <tbody>
@@ -184,20 +153,10 @@
                               <button type="submit">make reviewer</button>
                            </form>
                      </tr>
-
                   </tbody>
                   {% endfor %}
-
                </table>
-
-
-
-
             </div>
-
-
-
-
             <div class="tab-pane fade" id="nav-viewpapers" role="tabpanel" aria-labelledby="nav-viewpapers-tab">
                <table class="table">
                   <thead>
@@ -206,7 +165,6 @@
                         <th scope="col">title</th>
                         <th scope="col">interests</th>
                         <th scope="col">author</th>
-
                      </tr>
                   </thead>
                   <tbody>
@@ -216,16 +174,11 @@
                         <td>{{ i.title }}</td>
                         <td>{{ i.interests }}</td>
                         <td>{{ i.user_name }}</td>
-
-
                      </tr>
-
                   </tbody>
                   {% endfor %}
-
                </table>
             </div>
-
             <div class="tab-pane fade" id="nav-chief" role="tabpanel" aria-labelledby="nav-chief-tab">
                {% if chief_editor %}
                <h1> We have chief editor .... </h1>
@@ -236,13 +189,11 @@
                      <input type="form-text" class="form-control form-control-sm" name="firstname" id="firstname"
                         aria-describedby="firstnameHelp">
                   </div>
-
                   <div class="mb-3">
                      <label for="exampleInputEmail1" class="form-label">Lastname</label>
                      <input type="form-text" class="form-control form-control-sm" name="lastname" id="lastname"
                         aria-describedby="lastnameHelp">
                   </div>
-
                   <div class="mb-3">
                      <label for="exampleInputEmail1" class="form-label">Email address</label>
                      <input type="email" class="form-control form-control-sm" id="email" name="email"
@@ -255,47 +206,9 @@
                   <button type="submit" class="btn btn-primary">Register</button>
                </form>
                {% endif %}
-
-
             </div>
          </div>
-
-
-
-
          {% else %}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
          <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-indicators">
                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active"
@@ -335,43 +248,17 @@
             </div>
             <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions"
                data-bs-slide="prev">
-               <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-               <span class="visually-hidden">Previous</span>
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
             </button>
             <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions"
                data-bs-slide="next">
-               <span class="carousel-control-next-icon" aria-hidden="true"></span>
-               <span class="visually-hidden">Next</span>
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
             </button>
          </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
          {% endif %}
       </div>
    </div>
 </div>
-
-
-
 {% endblock %}
