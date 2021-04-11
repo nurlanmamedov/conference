@@ -174,9 +174,12 @@ def login_author():
 
                 curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
                 author_id = session['id']
-                curl.execute("SELECT * FROM papers1 WHERE author_id=%s",(author_id,))
+                
+                # curl.execute("SELECT * FROM papers1 WHERE author_id=%s",(author_id,))
+                curl.execute("SELECT * FROM papers1 LEFT JOIN interests1 using(interest_id) WHERE author_id=%s",(author_id,))
+
                 papers = curl.fetchall()
-                print("Papers ---->", papers)
+                print("Papers for nurlan ---->", papers)
 
                 return render_template("author.html", name=user['firstname'], papers=papers)
             else:
