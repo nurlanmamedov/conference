@@ -34,7 +34,7 @@
 
                   <div class="mb-3">
          
-                        <select class="form-select" aria-label="Default select example" name="interests">
+                        <!-- <select class="form-select" aria-label="Default select example" name="interests">
                             <option selected>select interest</option>
                             <option value="UAV">UAV</option>
                             <option value="WSN">WSN</option>
@@ -43,7 +43,14 @@
                             <option value="SOFTWARE ENGINEERING">SOFTWARE ENGINEERING</option>
                             <option value="Cloud computing">Cloud computing</option>
 
-                          </select>
+                          </select> -->
+
+                          <select class="form-select" aria-label="Default select example" name="interest_id">
+                           <option selected>select interest</option>
+                           {% for interest in interests %}
+                           <option value="{{ interest.interest_id }}">{{ interest.interest_name }}</option>
+                           {% endfor %}
+                        </select>
   
                   </div>
                   <div class="mb-3">

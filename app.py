@@ -179,9 +179,13 @@ def login_author():
                 curl.execute("SELECT * FROM papers1 LEFT JOIN interests1 using(interest_id) WHERE author_id=%s",(author_id,))
 
                 papers = curl.fetchall()
+
+                curl.execute("SELECT * FROM interests1")
+
+                interests = curl.fetchall()
                 print("Papers for nurlan ---->", papers)
 
-                return render_template("author.html", name=user['firstname'], papers=papers)
+                return render_template("author.html", name=user['firstname'], papers=papers, interests=interests)
             else:
                 return "Error password and email not match"
         else:
@@ -256,17 +260,14 @@ def submit_paper(): ##database name is papers
         return render_template("author.html")
     else:
         title = request.form['title']
-        interests = request.form['interests']
-        keyword = request.form['keyword']
+        interest_id = request.form['interest_id']
+        author_id = session['id']
+        keywords = request.form['keywords']
         abstract = request.form['abstract']
         body = request.form['body']
-
-        user_id = session['paper_id']
-        user_name = session['firstname']
-        user_lastname=session['lastname']
-    
+        
         cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO papers (title,keyword,abstract, body,user_id, user_name,user_lastname) VALUES (%s,%s,%s,%s,%s,%s,%s)",(title,keyword,abstract,body,user_id, user_name,user_lastname))
+        cur.execute("INSERT INTO papers1 (title, interest_id, author_id, keywords, abstract, body) VALUES (%s,%s,%s,%s,%s,%s)",(title,interest_id,author_id,keywords,abstract,body, ))
         mysql.connection.commit()
         return redirect(url_for('submit_paper'))
 
