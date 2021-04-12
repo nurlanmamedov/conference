@@ -225,8 +225,13 @@ def login_reviewer():
                 session['name'] = user['firstname']
                 session['lastname'] = user['lastname']
                 session['email'] = user['email']
+                session['reviewer_id'] = user['reviewer_id']
+                session['interest_id'] = user['interest_id']
 
+                rew_id = session['reviewer_id'];
+                int_id = session['interest_id'];
 
+                print("+_+_+_+_+_+_+_+_+_+_+", rew_id, int_id)
                 curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
                 curl.execute("SELECT * FROM papers1")
                 papers = curl.fetchall()
@@ -237,7 +242,7 @@ def login_reviewer():
                 curl.execute("SELECT * FROM papers1")
                 authors = curl.fetchall()
 
-                curl.execute("SELECT Distinct papers1.paper_id, authors1.firstname,authors1.lastname, papers1.title, papers1.body, interests1.interest_name FROM papers1 INNER JOIN authors1 INNER JOIN reviewers1 INNER JOIN interests1 ON (papers1.author_id = authors1.author_id AND papers1.interest_id = 4 AND reviewers1.reviewer_id=1 AND interests1.interest_id=4)")
+                curl.execute("SELECT Distinct papers1.paper_id, authors1.firstname,authors1.lastname, papers1.title, papers1.body, interests1.interest_name FROM papers1 INNER JOIN authors1 INNER JOIN reviewers1 INNER JOIN interests1 ON (papers1.author_id = authors1.author_id AND papers1.interest_id = %s AND reviewers1.reviewer_id=%s AND interests1.interest_id=%s)", (int_id,rew_id,int_id,))
                 answer = curl.fetchall()
                 print("answer ----++++++++++++_________++++++++++++++++++----------------+++++++++++++++++++", answer)
 
