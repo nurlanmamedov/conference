@@ -198,8 +198,18 @@ def login_author():
 def rating():
     # rate = request.form["star"]
     if request.method == 'POST':
-        rate = request.form["star"]
-        print("rating --> ", rate)
+        rating = request.form["star"]
+        comment = request.form["comment"]
+        paper_id = request.form["submit_b"]
+        reviewer_id = session["reviewer_id"]
+        curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        curl.execute("INSERT INTO paper_status1 (reviewer_id, paper_id, rating, comment) VALUES (%s,%s,%s,%s)",(reviewer_id,paper_id,rating,comment, ))
+        mysql.connection.commit()
+        result = curl.fetchall();
+        print("rating --> ", rating, "comment -->", comment, "id -->", paper_id, "reviewer id --> ", reviewer_id);
+        print("rating result --->", result)
+
+
         # return redirect(url_for('login_reviewer'))
         return render_template("reviewers.html")
 
@@ -242,7 +252,7 @@ def login_reviewer():
                 curl.execute("SELECT * FROM papers1")
                 authors = curl.fetchall()
 
-                curl.execute("SELECT Distinct papers1.paper_id, authors1.firstname,authors1.lastname, papers1.title, papers1.body, interests1.interest_name FROM papers1 INNER JOIN authors1 INNER JOIN reviewers1 INNER JOIN interests1 ON (papers1.author_id = authors1.author_id AND papers1.interest_id = %s AND reviewers1.reviewer_id=%s AND interests1.interest_id=%s)", (int_id,rew_id,int_id,))
+                curl.execute("SELECT Distinct papers1.paper_id, papers1.abstract, authors1.firstname,authors1.lastname, papers1.title, papers1.body, interests1.interest_name FROM papers1 INNER JOIN authors1 INNER JOIN reviewers1 INNER JOIN interests1 ON (papers1.author_id = authors1.author_id AND papers1.interest_id = %s AND reviewers1.reviewer_id=%s AND interests1.interest_id=%s)", (int_id,rew_id,int_id,))
                 answer = curl.fetchall()
                 print("answer ----++++++++++++_________++++++++++++++++++----------------+++++++++++++++++++", answer)
 

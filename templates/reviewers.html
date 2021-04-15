@@ -36,16 +36,16 @@
                            <td>
                               <!-- Button trigger modal -->
                               <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                 data-bs-target="#staticBackdrop{{i.id}}">
+                                 data-bs-target="#moreModal{{i.paper_id}}">
                               more
                               </button>
                               <!-- Modal -->
-                              <div class="modal fade" id="staticBackdrop{{i.id}}" data-bs-backdrop="static" data-bs-keyboard="false"
-                                 tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                              <div class="modal fade" id="moreModal{{i.paper_id}}" data-bs-backdrop="static" data-bs-keyboard="false"
+                                 tabindex="-1" aria-labelledby="moreLabel" aria-hidden="true">
                                  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                                     <div class="modal-content">
                                        <div class="modal-header">
-                                          <h5 class="modal-title" id="staticBackdropLabel"><b>{{i.title}}</b></h5>
+                                          <h5 class="modal-title" id="moreLabel"><b>{{i.title}}</b></h5>
                                           <button type="button" class="btn-close" data-bs-dismiss="modal"
                                              aria-label="Close"></button>
                                        </div>
@@ -54,7 +54,7 @@
                                              <blockquote class="blockquote">
                                                 <b>
                                                    <p>{{i.title}}</p>
-                                                   by <cite title="Source Title">{{i.user_name}}{{i.user_lastname}}</cite>
+                                                   by <cite title="Source Title">{{i.firstname}}{{i.lastname}}</cite>
                                                 </b>
                                                 <p><b>Abstract.</b>{{i.abstract}}</p>
                                                 <p><b>  body.</b>{{i.body}}</p>
@@ -73,40 +73,42 @@
                            <td>Pending...</td>
                            <td>
                               <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                 data-bs-target="#staticBackdrop">
+                                 data-bs-target="#ratingModal{{i.paper_id}}">
                               rate
                               </button>
                               <!-- Modal -->
-                              <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"
-                                 tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                              <div class="modal fade" id="ratingModal{{i.paper_id}}" data-bs-backdrop="static" data-bs-keyboard="false"
+                                 tabindex="-1" aria-labelledby="ratingModalLabel{{i.paper_id}}" aria-hidden="true">
                                  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                                     <div class="modal-content">
                                        <div class="modal-header">
-                                          <h5 class="modal-title" id="staticBackdropLabel"><b></b></h5>
+                                          <h5 class="modal-title" id="ratingModalLabel{{i.paper_id}}"><b></b></h5>
                                           <button type="button" class="btn-close" data-bs-dismiss="modal"
                                              aria-label="Close"></button>
                                        </div>
                                        <div class="modal-body">
-                                          <div class="form-floating mb-2">
-                                             <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea" style="height: 200px; max-height: 200px;min-height: 200px;"></textarea>
-                                             <label for="floatingTextarea">Comments</label>
-                                          </div>
+                                          
                                           <div class="container d-flex justify-content-center">
                                              <div class="row">
                                                 <div class="col-md-12">
                                                    <div class="stars">
-                                                      <form action="/rating" method="POST"> 
-                                                         <input class="star star-5" id="star-5" type="radio" name="star" value="5" /> 
-                                                         <label class="star star-5" for="star-5"></label>
-                                                         <input class="star star-4" id="star-4" type="radio" name="star" value="4" />
-                                                         <label class="star star-4" for="star-4"></label> 
-                                                         <input class="star star-3" id="star-3" type="radio" name="star" value="3"/> 
-                                                         <label class="star star-3" for="star-3"></label>
-                                                         <input class="star star-2" id="star-2" type="radio" name="star" value="2"/> 
-                                                         <label class="star star-2" for="star-2"></label> 
-                                                         <input class="star star-1 form-control is-invalid" id="star-1" type="radio" name="star" value="1" checked required/>
-                                                         <label class="star star-1" for="star-1"></label> 
-                                                         <button class="btn btn-primary">Save</button>
+                                                      <form action="/rating" method="POST">
+                                                         <div class="form-floating mb-2">
+                                                            <textarea  name="comment" class="form-control" placeholder="Leave a comment here" id="floatingTextarea{{i.paper_id}}" style="height: 200px; max-height: 200px;min-height: 200px;"></textarea>
+                                                            <label for="floatingTextarea{{i.paper_id}}" >Comments</label>
+                                                         </div>
+                                                         
+                                                         <input class="star star-5" id="star-5{{i.paper_id}}" type="radio" name="star" value="5" /> 
+                                                         <label class="star star-5" for="star-5{{i.paper_id}}"></label>
+                                                         <input class="star star-4" id="star-4{{i.paper_id}}" type="radio" name="star" value="4" />
+                                                         <label class="star star-4" for="star-4{{i.paper_id}}"></label> 
+                                                         <input class="star star-3" id="star-3{{i.paper_id}}" type="radio" name="star" value="3"/> 
+                                                         <label class="star star-3" for="star-3{{i.paper_id}}"></label>
+                                                         <input class="star star-2" id="star-2{{i.paper_id}}" type="radio" name="star" value="2"/> 
+                                                         <label class="star star-2" for="star-2{{i.paper_id}}"></label> 
+                                                         <input class="star star-1 form-control is-invalid" id="star-1{{i.paper_id}}" type="radio" name="star" value="1" checked required/>
+                                                         <label class="star star-1" for="star-1{{i.paper_id}}"></label> 
+                                                         <button class="btn btn-primary" name="submit_b" value={{i.paper_id}}>Save</button>
                                                       </form>
                                                    </div>
                                                 </div>
