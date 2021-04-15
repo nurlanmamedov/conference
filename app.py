@@ -6,8 +6,8 @@ app = Flask(__name__)
 app.secret_key = 'sakoblexeyible'
 
 app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'noor'#'noor'#'noor''noor''noor'#'aydan'
-app.config['MYSQL_PASSWORD'] ='noor123'#'noor123'# # 'noor123' 'noor123' 'noor123' 
+app.config['MYSQL_USER'] = 'aydan'#'noor'#'noor''noor''noor'#'aydan'
+app.config['MYSQL_PASSWORD'] ="a1w2k3i4m5.."#'noor123'#'noor123'# # 'noor123' 'noor123' 'noor123' 
 app.config['MYSQL_DB'] = 'conference'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 mysql = MySQL(app)
@@ -142,7 +142,7 @@ def login():
                 # return render_template("home.html")
                 return redirect(url_for('home'))
             else:
-                return "Error password and email not match"
+                return render_template('error.html')
         else:
             return "Error user not found"
     else:
@@ -187,7 +187,7 @@ def login_author():
 
                 return render_template("author.html", name=user['firstname'], papers=papers, interests=interests)
             else:
-                return "Error password and email not match"
+                return render_template('error.html')
         else:
             return "Error Author not found"
     else:
@@ -250,7 +250,7 @@ def login_reviewer():
                 return render_template("reviewers.html", firstname=user['lastname'], papers=papers, authors=authors, answer=answer)
                 # return redirect(url_for('login_reviewer', firstname=user['lastname'], papers=papers, authors=authors) )
             else:
-                return "Error password and email not match"
+                return render_template('error.html')
         else:
             return "Error Author not found"
     else:
