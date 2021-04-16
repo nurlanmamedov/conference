@@ -173,32 +173,53 @@ def login_author():
             if bcrypt.hashpw(password, user["password"].encode('utf-8')) == user["password"].encode('utf-8'):
                 session['name'] = user['firstname']
                 session['email'] = user['email']
-                session['id'] = user['author_id']
+                session['author_id'] = user['author_id']
                 session['lastname'] = user['lastname']
 
                 print("Session --->>>", session)
 
                 curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-                author_id = session['id']
+                author_id = session['author_id']
 
                 # curl.execute("SELECT * FROM papers1 WHERE author_id=%s",(author_id,))
                 curl.execute(
                     "SELECT * FROM papers1 LEFT JOIN interests1 using(interest_id) WHERE author_id=%s", (author_id,))
 
                 papers = curl.fetchall()
-
                 curl.execute("SELECT * FROM interests1")
-
                 interests = curl.fetchall()
-                print("Papers for nurlan ---->", papers)
+                data = {
+                    "name": user['firstname'],
+                    "papers": papers,
+                    "interests": interests,
+                }
+                session['author_data'] = data
 
-                return render_template("author.html", name=user['firstname'], papers=papers, interests=interests)
+                # return render_template("author.html", name=user['firstname'], papers=papers, interests=interests)
+                return redirect(url_for('author_page'))
             else:
                 return render_template('error.html')
         else:
             return "Error Author not found"
     else:
         return render_template("login.html")
+
+
+@app.route('/author_page', methods=["GET", "POST"])
+def author_page():
+    if session.get('author_id') != None:
+        if session['author_data']:
+            name = session['author_data']['name']
+            # papers = session['author_data']['papers']
+            interests = session['author_data']['interests']
+        cur = mysql.connection.cursor()
+        cur.execute(
+            "SELECT * FROM papers1 LEFT JOIN interests1 using(interest_id) WHERE author_id=%s", (session.get('author_id'),))
+        papers = cur.fetchall()
+        session['author_data']['papers'] = papers
+        return render_template("author.html", name=name, papers=papers, interests=interests)
+    else:
+        redirect(url_for("login_author"))
 
 
 @app.route('/rating', methods=["GET", "POST"])
@@ -266,11 +287,11 @@ def login_reviewer():
                     "firstname": user['lastname'],
                     "papers": papers,
                     "authors": authors,
-                    "answer":answer
+                    "answer": answer
                 }
                 session['data'] = data
                 # return render_template("reviewers.html", firstname=user['lastname'], papers=papers, authors=authors, answer=answer)
-                return redirect(url_for('reviewer_page') )
+                return redirect(url_for('reviewer_page'))
             else:
                 return render_template('error.html')
         else:
@@ -288,7 +309,7 @@ def reviewer_page():
             papers = session['data']['papers']
             authors = session['data']['authors']
             answer = session['data']['answer']
-        return render_template("reviewers.html",firstname=firstname, papers=papers, authors=authors, answer=answer )
+        return render_template("reviewers.html", firstname=firstname, papers=papers, authors=authors, answer=answer)
     else:
         redirect(url_for("login_reviewer"))
 
@@ -300,7 +321,7 @@ def submit_paper():  # database name is papers
     else:
         title = request.form['title']
         interest_id = request.form['interest_id']
-        author_id = session['id']
+        author_id = session['author_id']
         keywords = request.form['keywords']
         abstract = request.form['abstract']
         body = request.form['body']
@@ -309,7 +330,8 @@ def submit_paper():  # database name is papers
         cur.execute("INSERT INTO papers1 (title, interest_id, author_id, keywords, abstract, body) VALUES (%s,%s,%s,%s,%s,%s)",
                     (title, interest_id, author_id, keywords, abstract, body, ))
         mysql.connection.commit()
-        return redirect(url_for('submit_paper'))
+
+        return redirect(url_for('author_page'))
 
 
 @app.route('/papers', methods=["GET", "POST"])
