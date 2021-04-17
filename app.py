@@ -7,8 +7,7 @@ app.secret_key = 'sakoblexeyible'
 
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'noor'  # 'noor''noor''noor'#'aydan'
-# 'noor123'# # 'noor123' 'noor123' 'noor123' "a1w2k3i4m5.."
-app.config['MYSQL_PASSWORD'] = 'noor123'
+app.config['MYSQL_PASSWORD'] = 'noor123'# 'noor123'# # 'noor123' 'noor123' 'noor123' "a1w2k3i4m5.."
 app.config['MYSQL_DB'] = 'conference'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 mysql = MySQL(app)
