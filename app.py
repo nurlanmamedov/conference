@@ -67,10 +67,23 @@ def reviewers():
         hash_password = bcrypt.hashpw(password, bcrypt.gensalt())
 
         cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO reviewers1 (firstname, lastname, interest_id, email, password) VALUES (%s,%s,%s,%s,%s)",
-                    (firstname, lastname, interest_id, email, hash_password))
-        mysql.connection.commit()
-        return render_template("home.html")
+
+        cur.execute("SELECT count(*) FROM conference.reviewers1 where interest_id=%s",(interest_id,))
+        count = cur.fetchall()
+        print("current interest_id count --->", count)
+        print("current interest_id count result --->", type (count[0]["count(*)"]))
+        count =  count[0]["count(*)"]
+
+        if int(count) < 3:
+            cur.execute("INSERT INTO reviewers1 (firstname, lastname, interest_id, email, password) VALUES (%s,%s,%s,%s,%s)",
+                        (firstname, lastname, interest_id, email, hash_password))
+            mysql.connection.commit()
+            return render_template("home.html")
+        else:
+            message = "Sorry, but limit of interests is exceed"
+            backUrl = '/'
+            return render_template("error.html",message=message, backUrl=backUrl )
+            
     else:
 
         return render_template("home.html")
@@ -229,7 +242,10 @@ def rating():
         comment = request.form["comment"]
         paper_id = request.form["submit_b"]
         reviewer_id = session["reviewer_id"]
+
         curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        curl.execute("SELECT * paper_status1")
+        status = curl.fetchall()
         curl.execute("INSERT INTO paper_status1 (reviewer_id, paper_id, rating, comment) VALUES (%s,%s,%s,%s)",
                      (reviewer_id, paper_id, rating, comment, ))
         mysql.connection.commit()
@@ -360,7 +376,7 @@ def get_papers():
 def delete_rewiever(id):
     print("Delete id --> ", id)
     curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-    curl.execute("DELETE from rewievers WHERE id=%s", (id,))
+    curl.execute("DELETE from reviewers1 WHERE reviewer_id=%s", (id,))
     curl.close()
     mysql.connection.commit()
     return redirect(url_for('home'))
@@ -378,7 +394,7 @@ def update_rewiever(id):
     curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
     # curl.execute("SELECT * from rewievers WHERE id=%s",(id,))
 
-    sql = ("UPDATE rewievers SET firstname=%s, lastname=%s, email=%s WHERE id = %s")
+    sql = ("UPDATE reviewers1 SET firstname=%s, lastname=%s, email=%s WHERE reviewer_id = %s")
     val = (firstname, lastname, email, id)
     curl.execute(sql, val)
     curl.close()

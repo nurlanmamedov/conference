@@ -73,7 +73,7 @@
                         <td>{{ i.lastname }}</td>
                         <td>
                            <a href="/update_rewiever/{{i.reviewer_id}}" class="btn btn-primary" data-bs-toggle="modal"
-                              data-bs-target="#exampleModal{{i.id}}">
+                              data-bs-target="#exampleModal{{i.reviewer_id}}">
                            Edit
                            </a>
                         </td>
@@ -104,11 +104,7 @@
                                        <input type="form-text" class="form-control form-control-sm" name="lastname"
                                           id="lastname" aria-describedby="lastnameHelp" value="{{i.lastname}}">
                                     </div>
-                                    <div class="mb-3">
-                                       <label for="exampleInputEmail1" class="form-label">interests</label>
-                                       <input type="form-text" class="form-control form-control-sm" name="interests"
-                                          id="interests" aria-describedby="interestsnHelp" value="{{i.interests}}">
-                                    </div>
+                                    
                                     <div class="mb-3">
                                        <label for="exampleInputEmail1" class="form-label">Email address</label>
                                        <input type="email" class="form-control form-control-sm" id="email" name="email"

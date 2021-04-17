@@ -3,17 +3,16 @@
 {% block content %}
 
 <div class="col-md-6 col-md-offset-3">
-    <h1>password is not correct please try again</h1>
+    <h1>{{message}}</h1>
 
 
-<form action="/login" method="get">
+
 
     <div class="row register-form">
-            <button type="submit" class="btn btn-primary">go back</button>
+            <a type="submit" class="btn btn-primary" href="/">go back</a>
         </div>
     </div>
 
-</form>
 </div>
 {% endblock %}
 
