@@ -49,9 +49,9 @@
                                           more
                                        </button>
                                        <!-- Modal -->
-                                       <div class="modal fade" id="staticBackdrop{{i.paper_id}}" data-bs-backdrop="static"
-                                          data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"
-                                          aria-hidden="true">
+                                       <div class="modal fade" id="staticBackdrop{{i.paper_id}}"
+                                          data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                                          aria-labelledby="staticBackdropLabel" aria-hidden="true">
                                           <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                                              <div class="modal-content">
                                                 <div class="modal-header">
@@ -93,7 +93,7 @@
                                           <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                                              <div class="modal-content">
                                                 <div class="modal-header">
-                                                   <h5 class="modal-title" id="statusLabel"> lalal  {{i.paper_id}} </h5>
+                                                   <h5 class="modal-title" id="statusLabel"></h5>
                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                       aria-label="Close"></button>
                                                 </div>
@@ -101,6 +101,7 @@
                                                 <div class="modal-body">
 
                                                    <table class="table table-primary table-striped">
+                                                      {% if rate_list[i.paper_id]['reviewers_count'] == 3 %}
                                                       <thead>
                                                          <tr>
                                                             <th scope="col">Point</th>
@@ -109,18 +110,27 @@
                                                          </tr>
                                                       </thead>
                                                       <tbody>
-                                                         <td> {{rate_list[i.paper_id]['res']}} </td>
-                                                         {% if rate_list[i.paper_id]['res'] and rate_list[i.paper_id]['res'] > 11 %}
-                                                         <td>
-                                                            <p class="text-success"> Accepted </p>
-                                                         </td>
+                                                         
+                                                            <td> {{rate_list[i.paper_id]['res']}} </td>
+                                                            {% if rate_list[i.paper_id]['res'] and
+                                                            rate_list[i.paper_id]['res'] > 11 %}
+                                                            <td>
+                                                               <p class="text-success"> Accepted </p>
+                                                            </td>
+                                                            {% endif %}
+                                                            {% if rate_list[i.paper_id]['res'] and
+                                                            rate_list[i.paper_id]['res'] <= 11 %} 
+                                                            <td><p class="text-danger"> Rejected </p></td>
+                                                            {% endif %}
+                                                            <td> {{rate_list[i.paper_id]['comments']}} </td>
+                                                         </tbody>
                                                          {% endif %}
-                                                         {% if rate_list[i.paper_id]['res'] and rate_list[i.paper_id]['res'] <= 11 %} <td>
-                                                            <p class="text-danger"> Rejected </p>
-                                    </td>
-                                    {% endif %}
-                                    <td> {{rate_list[i.paper_id]['comments']}} </td>
-                              </tbody>
+                                                         {% if rate_list[i.paper_id]['reviewers_count'] < 3 %}
+                                                            <h3 class="text-warning"> Not rating yet... </h3>
+                                                         {% endif %}
+
+                                                         
+                              
                            </table>
                         </div>
                         <div class="modal-footer">

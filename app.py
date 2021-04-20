@@ -233,7 +233,7 @@ def author_page():
         rate_list={}
         for i in papers:
             print("Papers   ----> ", i['paper_id'], type(i['paper_id']))
-            cur.execute("SELECT sum(rating) as res, GROUP_CONCAT(comment) as comments FROM paper_status1 WHERE paper_id=%s", (i['paper_id'],))
+            cur.execute("SELECT sum(rating) as res, GROUP_CONCAT(comment) as comments, count(reviewer_id) as reviewers_count FROM paper_status1 WHERE paper_id=%s", (i['paper_id'],))
             rate_list[i["paper_id"]] = cur.fetchone();
         print("Rate list result  --->", rate_list)
             
