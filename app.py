@@ -6,8 +6,8 @@ app = Flask(__name__)
 app.secret_key = 'sakoblexeyible'
 
 app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'aydan'  # 'aydan''noor''noor'#'aydan'
-app.config['MYSQL_PASSWORD'] = 'a1w2k3i4m5..'# 'noor123'# # 'noor123' 'noor123' 'noor123' "a1w2k3i4m5.."
+app.config['MYSQL_USER'] = 'noor'  # 'noor'#'aydan'
+app.config['MYSQL_PASSWORD'] = 'noor123'# "a1w2k3i4m5.."
 app.config['MYSQL_DB'] = 'conference'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 mysql = MySQL(app)
@@ -229,7 +229,15 @@ def author_page():
             "SELECT * FROM papers1 LEFT JOIN interests1 using(interest_id) WHERE author_id=%s", (session.get('author_id'),))
         papers = cur.fetchall()
         session['author_data']['papers'] = papers
-        return render_template("author.html", name=name, papers=papers, interests=interests)
+
+        rate_list={}
+        for i in papers:
+            print("Papers   ----> ", i['paper_id'], type(i['paper_id']))
+            cur.execute("SELECT sum(rating) as res, GROUP_CONCAT(comment) as comments FROM paper_status1 WHERE paper_id=%s", (i['paper_id'],))
+            rate_list[i["paper_id"]] = cur.fetchone();
+        print("Rate list result  --->", rate_list)
+            
+        return render_template("author.html", name=name, papers=papers, interests=interests, rate_list=rate_list)
     else:
         redirect(url_for("login_author"))
 
