@@ -25,6 +25,10 @@ def home():
         curl.execute("SELECT * FROM papers1 ")
         papers = curl.fetchall()
 
+        # curl.execute("SELECT Distinct papers1.paper_id, papers1.abstract, authors1.firstname,authors1.lastname, papers1.title, papers1.body, interests1.interest_name FROM papers1 INNER JOIN authors1 INNER JOIN reviewers1 INNER JOIN interests1 ON (papers1.author_id = authors1.author_id AND papers1.interest_id = %s AND reviewers1.reviewer_id=%s AND interests1.interest_id=%s)", (int_id, rew_id, int_id,))
+        # test_papers = curl.fetchall();
+
+        # print("test_papers --->", test_papers)
         curl.execute("SELECT * FROM interests1")
         interests = curl.fetchall()
 
