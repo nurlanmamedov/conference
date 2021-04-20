@@ -244,7 +244,7 @@ def rating():
         reviewer_id = session["reviewer_id"]
 
         curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        curl.execute("SELECT * paper_status1")
+        curl.execute("SELECT * FROM paper_status1")
         status = curl.fetchall()
         curl.execute("INSERT INTO paper_status1 (reviewer_id, paper_id, rating, comment) VALUES (%s,%s,%s,%s)",
                      (reviewer_id, paper_id, rating, comment, ))

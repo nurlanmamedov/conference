@@ -26,12 +26,12 @@
                <form action="/rewievers" method="POST">
                   <div class="mb-3">
                      <label for="exampleInputEmail1" class="form-label">First Name</label>
-                     <input type="form-text" class="form-control form-control-sm" name="firstname" id="firstname"
+                     <input type="form-text" required  class="form-control form-control-sm" name="firstname" id="firstname"
                         aria-describedby="firstnameHelp">
                   </div>
                   <div class="mb-3">
                      <label for="exampleInputEmail1" class="form-label">lastname</label>
-                     <input type="form-text" class="form-control form-control-sm" name="lastname" id="lastname"
+                     <input type="form-text" required  class="form-control form-control-sm" name="lastname" id="lastname"
                         aria-describedby="lastnameHelp">
                   </div>
                   <div class="mb-3">
@@ -44,12 +44,12 @@
                   </div>
                   <div class="mb-3">
                      <label for="exampleInputEmail1" class="form-label">Email address</label>
-                     <input type="email" class="form-control form-control-sm" id="email" name="email"
+                     <input type="email" required  class="form-control form-control-sm" id="email" name="email"
                         aria-describedby="emailHelp">
                   </div>
                   <div class="mb-3">
                      <label for="exampleInputPassword1" class="form-label">Password</label>
-                     <input type="password" class="form-control form-control-sm" id="password" name="password">
+                     <input type="password" required  class="form-control form-control-sm" id="password" name="password">
                   </div>
                   <button type="submit" class="btn btn-primary">Register</button>
                </form>
@@ -96,18 +96,18 @@
                                  <form action="{{ url_for('update_rewiever', id=i.reviewer_id) }}" method="POST">
                                     <div class="mb-3">
                                        <label for="exampleInputEmail1" class="form-label">First Name</label>
-                                       <input type="form-text" class="form-control form-control-sm" name="firstname"
+                                       <input type="form-text" required  class="form-control form-control-sm" name="firstname"
                                           id="firstname" aria-describedby="firstnameHelp" value="{{i.firstname}}">
                                     </div>
                                     <div class="mb-3">
                                        <label for="exampleInputEmail1" class="form-label">lastname</label>
-                                       <input type="form-text" class="form-control form-control-sm" name="lastname"
+                                       <input type="form-text" required  class="form-control form-control-sm" name="lastname"
                                           id="lastname" aria-describedby="lastnameHelp" value="{{i.lastname}}">
                                     </div>
                                     
                                     <div class="mb-3">
                                        <label for="exampleInputEmail1" class="form-label">Email address</label>
-                                       <input type="email" class="form-control form-control-sm" id="email" name="email"
+                                       <input type="email" required  class="form-control form-control-sm" id="email" name="email"
                                           aria-describedby="emailHelp" value="{{i.email}}">
                                     </div>
                                     <div class="modal-footer">
@@ -158,6 +158,7 @@
                   <thead>
                      <tr>
                         <th scope="col">#</th>
+                        <th scope="col">Author's fullname</th>
                         <th scope="col">title</th>
                         <th scope="col">interests</th>
                         <th scope="col">author</th>
@@ -167,6 +168,7 @@
                      {% for i in papers %}
                      <tr>
                         <th scope="row">{{ i.id }}</th>
+                        <td>name,lastmane</td>
                         <td>{{ i.title }}</td>
                         <td>{{ i.interests }}</td>
                         <td>{{ i.user_name }}</td>
@@ -182,22 +184,22 @@
                <form action="/chief_editor" method="POST">
                   <div class="mb-3">
                      <label for="exampleInputEmail1" class="form-label">First Name</label>
-                     <input type="form-text" class="form-control form-control-sm" name="firstname" id="firstname"
+                     <input type="form-text" class="form-control form-control-sm" required  name="firstname" id="firstname"
                         aria-describedby="firstnameHelp">
                   </div>
                   <div class="mb-3">
                      <label for="exampleInputEmail1" class="form-label">Lastname</label>
-                     <input type="form-text" class="form-control form-control-sm" name="lastname" id="lastname"
+                     <input type="form-text" class="form-control form-control-sm" required  name="lastname" id="lastname"
                         aria-describedby="lastnameHelp">
                   </div>
                   <div class="mb-3">
                      <label for="exampleInputEmail1" class="form-label">Email address</label>
-                     <input type="email" class="form-control form-control-sm" id="email" name="email"
+                     <input type="email" class="form-control form-control-sm" required  id="email" name="email"
                         aria-describedby="emailHelp">
                   </div>
                   <div class="mb-3">
                      <label for="exampleInputPassword1" class="form-label">Password</label>
-                     <input type="password" class="form-control form-control-sm" id="password" name="password">
+                     <input type="password" class="form-control form-control-sm" required  id="password" name="password">
                   </div>
                   <button type="submit" class="btn btn-primary">Register</button>
                </form>
