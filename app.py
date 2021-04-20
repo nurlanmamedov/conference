@@ -252,10 +252,16 @@ def rating():
         reviewer_id = session["reviewer_id"]
 
         curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        curl.execute("SELECT count(*) as cnt FROM paper_status1 WHERE reviewer_id=%s AND paper_id=%s",(reviewer_id,paper_id));
+        count = curl.fetchone()
         curl.execute("SELECT * FROM paper_status1")
         status = curl.fetchall()
-        curl.execute("INSERT INTO paper_status1 (reviewer_id, paper_id, rating, comment) VALUES (%s,%s,%s,%s)",
-                     (reviewer_id, paper_id, rating, comment, ))
+        if count['cnt'] == 0:
+            curl.execute("INSERT INTO paper_status1 (reviewer_id, paper_id, rating, comment) VALUES (%s,%s,%s,%s)",
+                        (reviewer_id, paper_id, rating, comment, ))
+        else:
+            curl.execute("UPDATE paper_status1 SET rating = %s, comment=%s WHERE reviewer_id = %s",
+                        (rating, comment,reviewer_id, ))
         mysql.connection.commit()
         result = curl.fetchall()
         print("rating --> ", rating, "comment -->", comment,
