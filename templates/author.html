@@ -33,7 +33,9 @@
                                     <th scope="col">Title</th>
                                     <th scope="col">interests</th>
                                     <th scope="col">see more</th>
-                                    <th scope="col">see your papers status</th>
+                                    <th scope="col">papers status</th>
+                                    <th scope="col">delete paper</th>
+                                    <th scope="col">update paper</th>
                                  </tr>
                               </thead>
                               <tbody>
@@ -63,11 +65,13 @@
                                                    <figure class="text-center">
                                                       <blockquote class="blockquote">
                                                          <b>
+                                                            <p> s{{i.firstname}}{{i.lastname}}</p>
                                                             <p>{{i.title}}</p>
                                                          </b>
-                                                         <p><b>Abstract.</b>{{i.interest_name}}</p>
+                                                         <p><b>Abstract.</b>{{i.abstract}}</p>
                                                          <p><b> body.</b>{{i.body}}</p>
                                                       </blockquote>
+
                                                       <figcaption class="blockquote-footer">
                                                       </figcaption>
                                                    </figure>
@@ -132,11 +136,62 @@
                                                 <div class="modal-footer">
                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                                 </div>
+                                                <td>
+                                                   <a href="/delete_paper/{{i.paper_id}}" class="btn btn-danger btn-xs"
+                                                      onclick="return confirm('Are You Sure To Delete ?')">Delete</a>
+                                                </td> 
+                                                <td>
+                                                   <a href="/update_paper/{{i.paper_id}}" class="btn btn-primary" data-bs-toggle="modal"
+                                                      data-bs-target="#exampleModal{{i.paper_id}}">
+                                                   Modify
+                                                   </a>
+                                                </td>
                                              </div>
                                           </div>
                                        </div>
                                     </td>
                                  </tr>
+                                 <div class="modal fade" id="exampleModal{{i.paper_id}}" tabindex="-1" aria-labelledby="exampleModalLabel"
+                                                    aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                       <div class="modal-content">
+                                                          <div class="modal-header">
+                                                             <h5 class="modal-title" id="exampleModalLabel">Update reviewer</h5>
+                                                             <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                                aria-label="Close"></button>
+                                                          </div>
+                                                          <div class="modal-body">
+                                                             <form action="{{ url_for('update_paper', id=i.paper_id) }}" method="POST">
+                                                                <div class="mb-3">
+                                                                   <label for="exampleInputEmail1" class="form-label">Title</label>
+                                                                   <input type="form-text" required  class="form-control form-control-sm" name="title"
+                                                                      id="title" aria-describedby="titleHelp" value="{{i.title}}">
+                                                                </div>
+                                                                <div class="mb-3">
+                                                                   <label for="exampleInputEmail1" class="form-label">Keywords</label>
+                                                                   <input type="form-text" required  class="form-control form-control-sm" name="keywords"
+                                                                      id="keywords" aria-describedby="keywordsHelp" value="{{i.keywords}}">
+                                                                </div>
+                                                                <div class="mb-3">
+                                                                   <label for="exampleInputEmail1" class="form-label">Body</label>
+                                                                   <input type="form-text" required  class="form-control form-control-sm" name="body"
+                                                                      id="body" aria-describedby="bodyHelp" value="{{i.body}}">
+                                                                </div>
+                                                                <div class="mb-3">
+                                                                   <label for="exampleInputEmail1" class="form-label">Abstract</label>
+                                                                   <input type="form-text" required  class="form-control form-control-sm" id="abstract" 
+                                                                   name="abstract" aria-describedby="abstractHelp" value="{{i.abstract}}">
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                   <button type="button" class="btn btn-secondary"
+                                                                      data-bs-dismiss="modal">Close</button>
+                                                                   <button type="submit" class="btn btn-primary">Update</button>
+                                                                </div>
+                                                             </form>
+                                                          </div>
+                                                       </div>
+                                                    </div>
+                                                 </div>
                                  {% endfor %}
                               </tbody>
                            </table>

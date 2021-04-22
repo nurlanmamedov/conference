@@ -431,6 +431,38 @@ def direct_pages():  # database name is papers
         return render_template("view.html", authors=authors)
 
 
+
+
+@app.route('/delete_paper/<id>/', methods=["GET", "POST"])
+def delete_paper(id):
+    print("Delete paper --> ", id)
+    curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    curl.execute("DELETE from papers1 WHERE paper_id=%s", (id,))
+    curl.close()
+    mysql.connection.commit()
+    return redirect(url_for('author_page'))
+    
+    
+    
+@app.route('/update_paper/<int:id>/', methods=['GET', 'POST'])
+def update_paper(id):
+
+    title = request.form['title']
+    keywords = request.form['keywords']
+    body = request.form['body']
+    abstract = request.form['abstract']
+
+    print("------->>>>>>>", title,keywords,body,abstract)
+    curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        # curl.execute("SELECT * from rewievers WHERE id=%s",(id,))
+    
+    sql = ("UPDATE papers1 SET title=%s, keywords=%s, body=%s, abstract=%s WHERE paper_id = %s")
+    val = (title,keywords,body,abstract, id)
+    curl.execute(sql, val)
+    curl.close()
+    mysql.connection.commit()
+    return redirect(url_for('home'))
+
 if __name__ == '__main__':
     app.debug = True
     app.run()
