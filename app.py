@@ -6,8 +6,8 @@ app = Flask(__name__)
 app.secret_key = 'sakoblexeyible'
 
 app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'aydan'  # 'noor'#'aydan'
-app.config['MYSQL_PASSWORD'] = 'a1w2k3i4m5..'# "a1w2k3i4m5.."'noor123'
+app.config['MYSQL_USER'] = 'noor'  # 'noor'#'aydan'
+app.config['MYSQL_PASSWORD'] = 'noor123'# "a1w2k3i4m5.."'noor123'
 app.config['MYSQL_DB'] = 'conference'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 mysql = MySQL(app)
@@ -187,9 +187,9 @@ def login_author():
 
         if len(user) > 0:
             if bcrypt.hashpw(password, user["password"].encode('utf-8')) == user["password"].encode('utf-8'):
-                session['name'] = user['firstname']
                 session['email'] = user['email']
                 session['author_id'] = user['author_id']
+                session['name'] = user['firstname']
                 session['lastname'] = user['lastname']
 
                 print("Session --->>>", session)
@@ -206,6 +206,7 @@ def login_author():
                 interests = curl.fetchall()
                 data = {
                     "name": user['firstname'],
+                    "lastname": user['lastname'],
                     "papers": papers,
                     "interests": interests,
                 }
@@ -226,6 +227,7 @@ def author_page():
     if session.get('author_id') != None:
         if session['author_data']:
             name = session['author_data']['name']
+            lastname = session['author_data']['lastname']
             # papers = session['author_data']['papers']
             interests = session['author_data']['interests']
         cur = mysql.connection.cursor()
@@ -241,7 +243,7 @@ def author_page():
             rate_list[i["paper_id"]] = cur.fetchone();
         print("Rate list result  --->", rate_list)
             
-        return render_template("author.html", name=name, papers=papers, interests=interests, rate_list=rate_list)
+        return render_template("author.html", name=name, lastname=lastname, papers=papers, interests=interests, rate_list=rate_list)
     else:
         redirect(url_for("login_author"))
 
@@ -435,6 +437,7 @@ def direct_pages():  # database name is papers
 
 @app.route('/delete_paper/<id>/', methods=["GET", "POST"])
 def delete_paper(id):
+    
     print("Delete paper --> ", id)
     curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
     curl.execute("DELETE from papers1 WHERE paper_id=%s", (id,))
@@ -444,24 +447,30 @@ def delete_paper(id):
     
     
     
-@app.route('/update_paper/<int:id>/', methods=['GET', 'POST'])
-def update_paper(id):
+@app.route('/update_papers/<int:id>/', methods=['GET', 'POST'])
+def update_papers(id):
 
-    title = request.form['title']
-    keywords = request.form['keywords']
-    body = request.form['body']
-    abstract = request.form['abstract']
-    
-    print("------->>>>>>>", title,keywords,body,abstract)
-    curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        # curl.execute("SELECT * from rewievers WHERE id=%s",(id,))
+    if request.method == 'GET':
+        print("lalalalalalalalalal")
+        return render_template("author.html")
+    else:
+        print("-------UPDATE PAPER -------")
+        title = request.form['title']
+        keywords = request.form['keywords']
+        body = request.form['body']
+        abstract = request.form['abstract']
+        
+        print("457------->>>>>>>", title,keywords,body,abstract)
+        curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+            # curl.execute("SELECT * from rewievers WHERE id=%s",(id,))
 
-    sql = ("UPDATE papers1 SET title=%s, keywords=%s, body=%s, abstract=%s WHERE paper_id = %s")
-    val = (title,keywords,body,abstract, id)
-    curl.execute(sql, val)
-    curl.close()
-    mysql.connection.commit()
-    return redirect(url_for('author_page'))
+        sql = ("UPDATE papers1 SET title=%s, keywords=%s, body=%s, abstract=%s WHERE paper_id = %s")
+        val = (title,keywords,body,abstract, id)
+        curl.execute(sql, val)
+        # curl.close()
+        mysql.connection.commit()
+        # return render_template('author.html')
+        return redirect(url_for('author_page'))
 
 
     
