@@ -461,8 +461,10 @@ def update_paper(id):
     curl.execute(sql, val)
     curl.close()
     mysql.connection.commit()
-    return redirect(url_for('author_page',papers_update=papers_update))
+    return redirect(url_for('author_page'))
 
+
+    
 if __name__ == '__main__':
     app.debug = True
     app.run()
