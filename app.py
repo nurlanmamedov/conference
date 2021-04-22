@@ -256,7 +256,7 @@ def rating():
         reviewer_id = session["reviewer_id"]
 
         curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        curl.execute("SELECT count(*) as cnt FROM paper_status1 WHERE reviewer_id=%s AND paper_id=%s",(reviewer_id,paper_id));
+        curl.execute("SELECT count(*) as cnt FROM paper_status1 WHERE reviewer_id=%s AND paper_id=%s",(reviewer_id,paper_id))
         count = curl.fetchone()
         curl.execute("SELECT * FROM paper_status1")
         status = curl.fetchall()
@@ -451,17 +451,17 @@ def update_paper(id):
     keywords = request.form['keywords']
     body = request.form['body']
     abstract = request.form['abstract']
-
+    
     print("------->>>>>>>", title,keywords,body,abstract)
     curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         # curl.execute("SELECT * from rewievers WHERE id=%s",(id,))
-    
+
     sql = ("UPDATE papers1 SET title=%s, keywords=%s, body=%s, abstract=%s WHERE paper_id = %s")
     val = (title,keywords,body,abstract, id)
     curl.execute(sql, val)
     curl.close()
     mysql.connection.commit()
-    return redirect(url_for('home'))
+    return redirect(url_for('author_page',papers_update=papers_update))
 
 if __name__ == '__main__':
     app.debug = True
