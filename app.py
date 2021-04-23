@@ -496,8 +496,12 @@ def login_chief_editor():
                 session['lastname'] = user['lastname']
                 session['email'] = user['email']
 
-                print("Session --->>>", session)
-                return redirect(url_for('chief_editor_page'))
+                curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+                curl.execute("SELECT sum(rating) as point, GROUP_CONCAT(comment) as comments, firstname, lastname, author_id FROM  conference.paper_status1 LEFT JOIN conference.authors1 using(author_id) WHERE author_id=author_id GROUP BY conference.paper_status1.paper_id HAVING SUM(conference.paper_status1.rating) > 8")
+                
+                data = curl.fetchall()
+                print("Chef editor data  --->>>", data)
+                return render_template("chief_editor.html", data=data)
                 curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
             else:
                 return render_template('error.html')

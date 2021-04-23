@@ -29,7 +29,7 @@
                            <table class="table table-primary table-striped">
                               <thead>
                                  <tr>
-                                    <th scope="col">#</th>
+                                    
                                     <th scope="col">All Authors</th>
                                     <th scope="col">Accepted papers </th>
                                     <th scope="col">Accept/Reject</th>
@@ -40,11 +40,13 @@
                                  </tr>
                               </thead>
                               <tbody>
-                                 {% for i in papers %}
+                                 {% for i in data %}
                                  <tr>
-                                    <th scope="row">g</th>
-                                    <td>{dd</td>
-                                    <td>f</td>
+                                    <th scope="row">{{i.firstname}} {{i.lastname}}</th>
+                                    <td>{{i.point}}</td>
+                                    <td>OK</td>
+                                    <td>{{i.comments}}</td>
+                                    {% endfor %}
                               </tbody>}
                            </table>
                         </div>
@@ -53,7 +55,6 @@
             </div>
             </td>
             </tr>
-            {% endfor %}
             </tbody>
             </table>
          </div>
