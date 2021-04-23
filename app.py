@@ -423,7 +423,7 @@ def update_rewiever(id):
     return redirect(url_for('home'))
 
 
-@app.route('/direct', methods=["GET"])
+@app.route('/direct_page', methods=["GET"])
 def direct_pages():  # database name is papers
     if request.method == "GET":
         curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
@@ -490,7 +490,7 @@ def login_chief_editor():
         curl.close()
         if len(user) > 0:
             if  user["password"].encode('utf-8'):
-                session['firstname'] = user['firstname']
+                session["firstname"] = user['firstname']
                 session['lastname'] = user['lastname']
                 session['email'] = user['email']
 

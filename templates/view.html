@@ -2,7 +2,7 @@
 {% block title %} view page {% endblock %}
 {% block content %}
 {% if session['authors'] %}
-<h1>  Welcome {{ session['authors'] }}</h1>
+<h1>  Welcome {{ session['reviewers'] }}</h1>
 {%endif%}
 <div class="container" style="margin: 50px;
    background-color: #cce3f3;">
@@ -12,7 +12,7 @@
          <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
             <form action="/rewievers" method="POST">
                <div class="mb-3">
-                  <label for="exampleInputEmail1" class="form-label">firstname</label>
+                  <label for="exampleInputEmail1" class="form-label">First Name</label>
                   <input type="form-text" required  class="form-control form-control-sm" name="firstname" id="firstname"
                      aria-describedby="firstnameHelp">
                </div>

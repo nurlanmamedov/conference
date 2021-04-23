@@ -17,8 +17,6 @@
                   aria-controls="nav-viewauthors" aria-selected="false">View Authors</a>
                <a class="nav-link" id="nav-viewpapers-tab" data-bs-toggle="tab" href="#nav-viewpapers" role="tab"
                   aria-controls="nav-viewpapers" aria-selected="false">View all papers</a>
-               <a class="nav-link" id="nav-chief-tab" data-bs-toggle="tab" href="#nav-chief" role="tab"
-                  aria-controls="nav-chief" aria-selected="false">Add chief editor</a>
             </div>
          </nav>
          <div class="tab-content" id="nav-tabContent">
@@ -117,7 +115,7 @@
                                     </div>
                                  </form>
                               </div>
-                           </div>
+                           </div> 
                         </div>
                      </div>
                      <!-- modal end  -->
@@ -145,7 +143,7 @@
                         <td>{{ i.lastname }}</td>
                         <td>{{ i.email }}</td>
                         <td>
-                           <form method="get" action="/direct">
+                           <form method="get" action="/direct_page">
                               <button type="submit">make reviewer</button>
                            </form>
                      </tr>
@@ -168,7 +166,7 @@
                      {% for i in papers %}
                      <tr>
                         <th scope="row">{{ i.paper_id }}</th>
-                        <td>name,lastmane</td>
+                        <td>name,lastname</td>
                         <td>{{ i.title }}</td>
                         <td>{{ i.interests }}</td>
                         <td>{{ i.user_name }}</td>
@@ -176,36 +174,7 @@
                   </tbody>
                   {% endfor %}
                </table>
-            </div>
-            <div class="tab-pane fade" id="nav-chief" role="tabpanel" aria-labelledby="nav-chief-tab">
-               {% if chief_editor %}
-               <h1> We have chief editor .... </h1>
-               {% else %}
-               <form action="/chief_editor" method="POST">
-                  <div class="mb-3">
-                     <label for="exampleInputEmail1" class="form-label">First Name</label>
-                     <input type="form-text" class="form-control form-control-sm" required  name="firstname" id="firstname"
-                        aria-describedby="firstnameHelp">
-                  </div>
-                  <div class="mb-3">
-                     <label for="exampleInputEmail1" class="form-label">Lastname</label>
-                     <input type="form-text" class="form-control form-control-sm" required  name="lastname" id="lastname"
-                        aria-describedby="lastnameHelp">
-                  </div>
-                  <div class="mb-3">
-                     <label for="exampleInputEmail1" class="form-label">Email address</label>
-                     <input type="email" class="form-control form-control-sm" required  id="email" name="email"
-                        aria-describedby="emailHelp">
-                  </div>
-                  <div class="mb-3">
-                     <label for="exampleInputPassword1" class="form-label">Password</label>
-                     <input type="password" class="form-control form-control-sm" required  id="password" name="password">
-                  </div>
-                  <button type="submit" class="btn btn-primary">Register</button>
-               </form>
-               {% endif %}
-            </div>
-         </div>
+
          {% else %}
          <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-indicators">
