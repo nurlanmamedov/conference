@@ -522,6 +522,14 @@ def chief_editor_page():
     else:
         redirect(url_for("login_chief_editor"))
 
+
+
+@app.route('/info', methods=["GET"])
+def info():  # database name is papers
+    return render_template("info.html")
+
+
+
     
 if __name__ == '__main__':
     app.debug = True
