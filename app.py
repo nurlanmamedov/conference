@@ -6,8 +6,8 @@ app = Flask(__name__)
 app.secret_key = 'sakoblexeyible'
 
 app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'noor'  # 'noor'#'aydan'
-app.config['MYSQL_PASSWORD'] = 'noor123'# "a1w2k3i4m5.."'noor123'
+app.config['MYSQL_USER'] = 'aydan'  # 'noor'#'aydan'
+app.config['MYSQL_PASSWORD'] = 'a1w2k3i4m5..'# "a1w2k3i4m5.."'noor123'
 app.config['MYSQL_DB'] = 'conference'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 mysql = MySQL(app)
@@ -515,7 +515,7 @@ def login_chief_editor():
 
 @app.route('/chief_editor_page', methods=["GET", "POST"])
 def chief_editor_page():
-    if session:
+    if session['name']:
         email = session['email']
         firstname = session['firstname']
         return render_template("chief_editor.html", firstname=firstname)

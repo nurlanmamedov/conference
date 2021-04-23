@@ -12,7 +12,7 @@
                <a class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" href="#nav-home" role="tab"
                   aria-controls="nav-home" aria-selected="true">Add Reviewer</a>
                <a class="nav-link" id="nav-viewreviewers-tab" data-bs-toggle="tab" href="#nav-viewreviewers" role="tab"
-                  aria-controls="nav-viewreviewers" aria-selected="false">View Rewievers</a>
+                  aria-controls="nav-viewreviewers" aria-selected="false">View Reviewers</a>
                <a class="nav-link" id="nav-viewauthors-tab" data-bs-toggle="tab" href="#nav-viewauthors" role="tab"
                   aria-controls="nav-viewauthors" aria-selected="false">View Authors</a>
                <a class="nav-link" id="nav-viewpapers-tab" data-bs-toggle="tab" href="#nav-viewpapers" role="tab"
@@ -157,7 +157,7 @@
                      <tr>
                         <th scope="col">#</th>
                         <th scope="col">Author's fullname</th>
-                        <th scope="col">All papers' title</th>
+                        <th scope="col">All papers</th>
                         <th scope="col">interests</th>
                         <th scope="col">Status(accepted/rejected)</th>
                      </tr>
@@ -167,7 +167,45 @@
                      <tr>
                         <th scope="row">{{ i.paper_id }}</th>
                         <td>name,lastname</td>
-                        <td>{{ i.title }}</td>
+                        <td>
+                           <!-- Button trigger modal -->
+                           <a type="button" class="btn btn-primary" data-bs-toggle="modal"
+                              data-bs-target="#staticBackdrop{{i.paper_id}}">
+                              more
+                           </a>
+                           <!-- Modal -->
+                           <div class="modal fade" id="staticBackdrop{{i.paper_id}}"
+                              data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                              aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                              <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                                 <div class="modal-content">
+                                    <div class="modal-header">
+                                       <h5 class="modal-title" id="staticBackdropLabel"></h5>
+                                       <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                          aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                       <figure class="text-center">
+                                          <blockquote class="blockquote">
+                                             <b>
+                                                <p> {{name}} {{lastname}}</p>
+                                                <p>{{i.title}}</p>
+                                             </b>
+                                             <p><b>Abstract.</b>{{i.abstract}}</p>
+                                             <p><b> body.</b>{{i.body}}</p>
+                                          </blockquote>
+                                          <figcaption class="blockquote-footer">
+                                          </figcaption>
+                                       </figure>
+                                    </div>
+                                    <div class="modal-footer">
+                                       <button type="button" class="btn btn-secondary"
+                                          data-bs-dismiss="modal">Close</button>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </td>
                         <td>{{ i.interests }}</td>
                         <td>{{ i.user_name }}</td>
                      </tr>

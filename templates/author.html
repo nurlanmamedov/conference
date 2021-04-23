@@ -9,16 +9,6 @@
          <h1>to Author page {{ name }} </h1>
       </div>
       <div class="col-md-9 register-right">
-         <!-- <ul class="nav nav-tabs nav-justified" id="Tab" role="tablist">
-            <li class="nav-item">
-               <a class="nav-link" id="view-tab" data-toggle="tab" href="#view" role="tab" aria-controls="view"
-                  aria-selected="true">View Papers</a>
-            </li>
-            <li class="nav-item">
-               <a class="nav-link" id="add-tab" data-toggle="tab" href="#add" role="tab" aria-controls="add"
-                  aria-selected="true">Add Paper</a>
-            </li>
-         </ul> -->
          <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist">
             <li class="nav-item" role="presentation">
                <a class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button"
@@ -31,7 +21,6 @@
          </ul>
          <div class="tab-content" id="myTabContent">
             <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-
                <form method="GET" action="">
                   <div class="row register-form">
                      <div class="col-md-10">
@@ -135,9 +124,8 @@
                                                             </td>
                                                             {% endif %}
                                                             <td>
-                                                               {% for comment in
-                                                               (rate_list[i.paper_id]['comments']).split(",") %}
-                                                               <p> {{comment}} </p>
+                                                               {% for i,comment in (rate_list[i.paper_id]['comments']).split(",") %}
+                                                               <p>{{i}} {{comment}} </p>
                                                                {% endfor %}
                                                             </td>
                                                          </tbody>
@@ -237,7 +225,6 @@
                         </tr>
                         {% endfor %}
                         </tbody>
-
                         </table>
                      </div>
                   </div>

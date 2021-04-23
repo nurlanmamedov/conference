@@ -1,22 +1,22 @@
 {% extends 'layout.html' %}
-{% block title %} Chief editor page {% endblock %}
+{% block title %} sefi gardaw {% endblock %}
 {% block content %}
 <div class="container register">
    <div class="row">
       <div class="col-md-3 register-left">
          <img src="https://image.ibb.co/n7oTvU/logo_white.png" alt="" />
          <h3>Welcome</h3>
-         <h1>to Chief editor page {{ firstname }} </h1>
+         <h1>to shief editor page {{ name }} </h1>
       </div>
       <div class="col-md-9 register-right">
-         <ul class="nav nav-tabs nav-justified" id="Tab" role="tablist">
-            <li class="nav-item">
-               <a class="nav-link" id="view-tab" data-toggle="tab" href="#view" role="tab" aria-controls="view"
-                  aria-selected="true">View Papers</a>
+         <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+               <a class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button"
+                  role="tab" aria-controls="home" aria-selected="true">aLL Papers</a>
             </li>
-            <li class="nav-item">
-               <a class="nav-link" id="add-tab" data-toggle="tab" href="#add" role="tab" aria-controls="add"
-                  aria-selected="true">Add Paper</a>
+            <li class="nav-item" role="presentation">
+               <a class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button"
+                  role="tab" aria-controls="profile" aria-selected="false">Accepted paper</a>
             </li>
          </ul>
          <div class="tab-content" id="myTabContent">
@@ -29,29 +29,48 @@
                            <table class="table table-primary table-striped">
                               <thead>
                                  <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Title</th>
-                                    <th scope="col">interests</th>
-                                    <th scope="col">see more</th>
-                                    <th scope="col">papers status</th>
-                                    <th scope="col">delete paper</th>
-                                    <th scope="col">update paper</th>
+                                    <th scope="col">All Authors</th>
+                                    <th scope="col">Accepted papers </th>
+                                    <th scope="col">Accept/Reject</th>
+                                    <th scope="col">Comments by Reviewers</th>
                                  </tr>
                               </thead>
                               <tbody>
-                                 {% for i in papers %}
+                                 {% for i in data %}
                                  <tr>
-                                    <th scope="row">{{ i.index }}</th>
-                                    <td>{{ i.title }}</td>
-                                    <td>{{ i.interest_name }}</td>
-                            </tbody>
-     
-                        </div>
-                    </div>
-                    </div>  
+                                    <td> scope="row">{{i.firstname}} {{i.lastname}}</td>
+                                    <td>{{i.point}}</td>
+                                    <td>OK</td>
+                                    <td>{{i.comments}}</td>
+                        </td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                        </table>
+                     </div>
+                  </div>
+                </div>
+            </form>
+
+         </div>
+         <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+            <h3 class="register-heading">Add a paper</h3>
+            <div class="col-md-9" style="margin: 20% 10%;">
+               <form action="/submit_paper" method="POST" class="form-inline">
+                  </div>
+                  <button type="submit" class="btn btn-primary mb-2"
+                     style="margin-bottom: 10px; margin-top: 10px; float: right;">Add</button>
+               </form>
             </div>
-        </div>
-        </div>
-    </div>
+
+
+         </div>
+      </div>
+
+
+   </div>
+</div>
+</div>
+</div>
 </div>
 {% endblock %}
