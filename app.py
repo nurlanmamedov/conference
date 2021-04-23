@@ -6,8 +6,8 @@ app = Flask(__name__)
 app.secret_key = 'sakoblexeyible'
 
 app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'noor'  # 'noor'#'aydan'
-app.config['MYSQL_PASSWORD'] = 'noor123'# "a1w2k3i4m5.."'noor123'
+app.config['MYSQL_USER'] = 'aydan'  # 'noor'#'aydan'
+app.config['MYSQL_PASSWORD'] = 'a1w2k3i4m5..'# "a1w2k3i4m5.."'noor123'
 app.config['MYSQL_DB'] = 'conference'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 mysql = MySQL(app)
@@ -471,6 +471,40 @@ def update_papers(id):
         mysql.connection.commit()
         # return render_template('author.html')
         return redirect(url_for('author_page'))
+
+
+
+@app.route('/login_chief_editor', methods=["GET", "POST"])
+def login_chief_editorr():
+    if request.method == 'POST':
+        email = request.form['email']
+        password = request.form['password'].encode('utf-8')
+
+        print("email --> ", password)
+        print("password --> ", password)
+
+        curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        curl.execute("SELECT * FROM chief_editor WHERE email=%s", (email,))
+        user = curl.fetchone()
+        print("User --> ", user)
+        curl.close()
+
+        if len(user) > 0:
+            if  user["password"].encode('utf-8'):
+                session['firstname'] = user['firstname']
+                session['lastname'] = user['lastname']
+                session['email'] = user['email']
+
+                print("Session --->>>", session)
+                return redirect(url_for('login'))
+                curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+            else:
+                return render_template('error.html')
+        else:
+            return "Error Author not found"
+    else:
+        return render_template("login.html")
+
 
 
     
