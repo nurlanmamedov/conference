@@ -6,8 +6,8 @@ app = Flask(__name__)
 app.secret_key = 'sakoblexeyible'
 
 app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'aydan'  # 'noor'#'aydan'
-app.config['MYSQL_PASSWORD'] = 'a1w2k3i4m5..'# "a1w2k3i4m5.."'noor123'
+app.config['MYSQL_USER'] = 'noor'  # 'noor'#'aydan'
+app.config['MYSQL_PASSWORD'] = 'noor123'# "a1w2k3i4m5.."'noor123'
 app.config['MYSQL_DB'] = 'conference'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 mysql = MySQL(app)
@@ -447,8 +447,8 @@ def delete_paper(id):
     
     
     
-@app.route('/update_papers/<int:id>/', methods=['GET', 'POST'])
-def update_papers(id):
+@app.route('/update_papers', methods=['GET', 'POST'])
+def update_papers():
 
     if request.method == 'GET':
         print("lalalalalalalalalal")
@@ -459,13 +459,15 @@ def update_papers(id):
         keywords = request.form['keywords']
         body = request.form['body']
         abstract = request.form['abstract']
+
+        paperID = request.form['paperID']
         
         print("457------->>>>>>>", title,keywords,body,abstract)
         curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
             # curl.execute("SELECT * from rewievers WHERE id=%s",(id,))
 
         sql = ("UPDATE papers1 SET title=%s, keywords=%s, body=%s, abstract=%s WHERE paper_id = %s")
-        val = (title,keywords,body,abstract, id)
+        val = (title,keywords,body,abstract, paperID)
         curl.execute(sql, val)
         # curl.close()
         mysql.connection.commit()
