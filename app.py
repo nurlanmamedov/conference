@@ -93,24 +93,24 @@ def reviewers():
         return render_template("home.html")
 
 
-@app.route('/chief_editor', methods=["GET", "POST"])
-def chief_editor():
-    if request.method == 'POST':
+   # @app.route('/chief_editor', methods=["GET", "POST"])
+    #def chief_editor():
+     #   if request.method == 'POST':
+#
+ #           firstname = request.form['firstname']
+  #          lastname = request.form['lastname']
+   #         email = request.form['email']
+    #        password = request.form['password'].encode('utf-8')
+     #       hash_password = bcrypt.hashpw(password, bcrypt.gensalt())
 
-        firstname = request.form['firstname']
-        lastname = request.form['lastname']
-        email = request.form['email']
-        password = request.form['password'].encode('utf-8')
-        hash_password = bcrypt.hashpw(password, bcrypt.gensalt())
-
-        cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO chief_editor (firstname, lastname, email, password) VALUES (%s,%s,%s,%s)",
-                    (firstname, lastname, email, hash_password))
-        mysql.connection.commit()
-        return render_template("home.html")
-    else:
-        print("lalal")
-        return render_template("home.html")
+      #      cur = mysql.connection.cursor()
+       #     cur.execute("INSERT INTO chief_editor (firstname, lastname, email, password) VALUES (%s,%s,%s,%s)",
+        #                (firstname, lastname, email, hash_password))
+         #   mysql.connection.commit()
+          #  return render_template("home.html")
+        #else:
+        #    print("lalal")
+         #   return render_template("home.html")
 
 
 @app.route('/logout', methods=["GET", "POST"])
@@ -475,7 +475,7 @@ def update_papers(id):
 
 
 @app.route('/login_chief_editor', methods=["GET", "POST"])
-def login_chief_editorr():
+def login_chief_editor():
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password'].encode('utf-8')
@@ -488,7 +488,6 @@ def login_chief_editorr():
         user = curl.fetchone()
         print("User --> ", user)
         curl.close()
-
         if len(user) > 0:
             if  user["password"].encode('utf-8'):
                 session['firstname'] = user['firstname']
@@ -496,7 +495,7 @@ def login_chief_editorr():
                 session['email'] = user['email']
 
                 print("Session --->>>", session)
-                return redirect(url_for('login'))
+                return redirect(url_for('chief_editor_page'))
                 curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
             else:
                 return render_template('error.html')
@@ -506,6 +505,16 @@ def login_chief_editorr():
         return render_template("login.html")
 
 
+
+
+@app.route('/chief_editor_page', methods=["GET", "POST"])
+def chief_editor_page():
+    if session:
+        email = session['email']
+        firstname = session['firstname']
+        return render_template("chief_editor.html", firstname=firstname)
+    else:
+        redirect(url_for("login_chief_editor"))
 
     
 if __name__ == '__main__':
