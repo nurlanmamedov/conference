@@ -6,8 +6,8 @@ app = Flask(__name__)
 app.secret_key = 'sakoblexeyible'
 
 app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'noor'  # 'noor'#'aydan'
-app.config['MYSQL_PASSWORD'] = 'noor123'# "a1w2k3i4m5.."'noor123'
+app.config['MYSQL_USER'] = 'aydan'  # 'noor'#'aydan'
+app.config['MYSQL_PASSWORD'] = 'a1w2k3i4m5..'# "a1w2k3i4m5.."'noor123'
 app.config['MYSQL_DB'] = 'conference'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 mysql = MySQL(app)
@@ -93,24 +93,24 @@ def reviewers():
         return render_template("home.html")
 
 
-@app.route('/chief_editor', methods=["GET", "POST"])
-def chief_editor():
-    if request.method == 'POST':
+   # @app.route('/chief_editor', methods=["GET", "POST"])
+    #def chief_editor():
+     #   if request.method == 'POST':
+#
+ #           firstname = request.form['firstname']
+  #          lastname = request.form['lastname']
+   #         email = request.form['email']
+    #        password = request.form['password'].encode('utf-8')
+     #       hash_password = bcrypt.hashpw(password, bcrypt.gensalt())
 
-        firstname = request.form['firstname']
-        lastname = request.form['lastname']
-        email = request.form['email']
-        password = request.form['password'].encode('utf-8')
-        hash_password = bcrypt.hashpw(password, bcrypt.gensalt())
-
-        cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO chief_editor (firstname, lastname, email, password) VALUES (%s,%s,%s,%s)",
-                    (firstname, lastname, email, hash_password))
-        mysql.connection.commit()
-        return render_template("home.html")
-    else:
-        print("lalal")
-        return render_template("home.html")
+      #      cur = mysql.connection.cursor()
+       #     cur.execute("INSERT INTO chief_editor (firstname, lastname, email, password) VALUES (%s,%s,%s,%s)",
+        #                (firstname, lastname, email, hash_password))
+         #   mysql.connection.commit()
+          #  return render_template("home.html")
+        #else:
+        #    print("lalal")
+         #   return render_template("home.html")
 
 
 @app.route('/logout', methods=["GET", "POST"])
@@ -423,7 +423,7 @@ def update_rewiever(id):
     return redirect(url_for('home'))
 
 
-@app.route('/direct', methods=["GET"])
+@app.route('/direct_page', methods=["GET"])
 def direct_pages():  # database name is papers
     if request.method == "GET":
         curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
@@ -471,6 +471,61 @@ def update_papers():
         mysql.connection.commit()
         # return render_template('author.html')
         return redirect(url_for('author_page'))
+
+
+
+@app.route('/login_chief_editor', methods=["GET", "POST"])
+def login_chief_editor():
+    if request.method == 'POST':
+        email = request.form['email']
+        password = request.form['password'].encode('utf-8')
+
+        print("email --> ", password)
+        print("password --> ", password)
+
+        curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        curl.execute("SELECT * FROM chief_editor WHERE email=%s", (email,))
+        user = curl.fetchone()
+        print("User --> ", user)
+        curl.close()
+        if len(user) > 0:
+            if  user["password"].encode('utf-8'):
+                session["firstname"] = user['firstname']
+                session['lastname'] = user['lastname']
+                session['email'] = user['email']
+
+                curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+                curl.execute("SELECT sum(rating) as point, GROUP_CONCAT(comment) as comments, firstname, lastname, author_id FROM  conference.paper_status1 LEFT JOIN conference.authors1 using(author_id) WHERE author_id=author_id GROUP BY conference.paper_status1.paper_id HAVING SUM(conference.paper_status1.rating) > 8")
+                
+                data = curl.fetchall()
+                print("Chef editor data  --->>>", data)
+                return render_template("chief_editor.html", data=data)
+                curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+            else:
+                return render_template('error.html')
+        else:
+            return "Error Author not found"
+    else:
+        return render_template("login.html")
+
+
+
+
+@app.route('/chief_editor_page', methods=["GET", "POST"])
+def chief_editor_page():
+    if session['name']:
+        email = session['email']
+        firstname = session['firstname']
+        return render_template("chief_editor.html", firstname=firstname)
+    else:
+        redirect(url_for("login_chief_editor"))
+
+
+
+@app.route('/info', methods=["GET"])
+def info():  # database name is papers
+    return render_template("info.html")
+
 
 
     

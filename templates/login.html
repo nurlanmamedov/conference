@@ -14,7 +14,7 @@
             <h4>Login</h4>
         </div>
         <div class="col-md-9 register-right">
-            <ul class="nav nav-tabs nav-justified" id="Tab" role="tablist">
+            <ul class="nav nav-tabs nav-justified" style="width: 300pt;height:25pt ;" id="Tab" role="tablist">
                 <li class="nav-item">
                     <a class="nav-link" id="admin-tab" data-toggle="tab" href="#admin" role="tab" aria-controls="admin"
                         aria-selected="true"> Admin</a>
@@ -27,6 +27,10 @@
                     <a class="nav-link" id="author-tab" data-toggle="tab" href="#author" role="tab"
                         aria-controls="author" aria-selected="true"> Author</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="chief_editor-tab" data-toggle="tab" href="#chief_editor" role="tab"
+                        aria-controls="chief_editor" aria-selected="true">Chief Editor</a>
+                </li>
             </ul>
 
             <div class="tab-content" id="myTabContent">
@@ -35,7 +39,7 @@
                     <h3 class="register-heading">Log in as an admin</h3>
                     <form action="/login" method="POST">
                         <div class="row register-form">
-                            <div class="col-md-6">
+                            <div class="col-md-12">
 
                                 <div class="mb-3">
                                     <label for="exampleInputEmail1" class="form-label">Email address</label>
@@ -64,7 +68,7 @@
                     <form action="/login_reviewer" method="POST">
 
                         <div class="row register-form">
-                            <div class="col-md-6">
+                            <div class="col-md-12">
 
                                 <div class="mb-3">
                                     <label for="exampleInputEmail1" class="form-label">Email address</label>
@@ -93,7 +97,33 @@
                     <form action="/login_author" method="POST">
 
                         <div class="row register-form">
-                            <div class="col-md-6">
+                            <div class="col-md-12">
+
+                                <div class="mb-3">
+                                    <label for="exampleInputEmail1" class="form-label">Email address</label>
+                                    <input type="email" required  class="form-control" placeholder="Email" value="" name="email"
+                                        id="exampleInputEmail1" />
+                                    <div id="emailHelp" class="form-text">We'll never share your email with anyone else.
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="exampleInputPassword1" class="form-label">Password</label>
+                                    <input type="password" required  class="form-control" placeholder="Password" value=""
+                                        name="password" id="exampleInputPassword1" />
+                                </div>
+
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div> 
+                     </div> 
+                </form>
+            </div>
+
+                <div class="tab-pane fade show" id="chief_editor" role="tabpanel" aria-labelledby="chief_editor-tab">
+                    <h3 class="register-heading">Log in as a Chief Editor</h3>
+                    <form action="/login_chief_editor" method="POST">
+
+                        <div class="row register-form">
+                            <div class="col-md-12">
 
                                 <div class="mb-3">
                                     <label for="exampleInputEmail1" class="form-label">Email address</label>
@@ -110,7 +140,10 @@
 
                                 <button type="submit" class="btn btn-primary">Submit</button>
                             </div>
+                        </div>
+
                     </form>
+
                 </div>
 
             </div>
