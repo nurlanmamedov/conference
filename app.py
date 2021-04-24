@@ -6,8 +6,8 @@ app = Flask(__name__)
 app.secret_key = 'sakoblexeyible'
 
 app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'aydan'  # 'noor'#'aydan'
-app.config['MYSQL_PASSWORD'] = 'a1w2k3i4m5..'# "a1w2k3i4m5.."'noor123'
+app.config['MYSQL_USER'] = 'noor'  # 'noor'#'aydan'
+app.config['MYSQL_PASSWORD'] = 'noor123'# "a1w2k3i4m5.."'noor123'
 app.config['MYSQL_DB'] = 'conference'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 mysql = MySQL(app)
@@ -495,7 +495,7 @@ def login_chief_editor():
                 session['email'] = user['email']
 
                 curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-                curl.execute("SELECT sum(rating) as point, GROUP_CONCAT(comment) as comments, firstname, lastname, author_id FROM  conference.paper_status1 LEFT JOIN conference.authors1 using(author_id) WHERE author_id=author_id GROUP BY conference.paper_status1.paper_id HAVING SUM(conference.paper_status1.rating) > 8")
+                curl.execute("SELECT sum(rating) as point, GROUP_CONCAT(comment) as comments, firstname, lastname, author_id, paper_id FROM  conference.paper_status1 LEFT JOIN conference.authors1 using(author_id) WHERE author_id=author_id GROUP BY conference.paper_status1.paper_id HAVING SUM(conference.paper_status1.rating) > 10")
                 
                 data = curl.fetchall()
                 print("Chef editor data  --->>>", data)
@@ -508,6 +508,18 @@ def login_chief_editor():
     else:
         return render_template("login.html")
 
+
+@app.route('/evaluate_accept', methods=["GET", "POST"])
+def evaluate_accept():
+    data = request.form['data']
+    print("----------->>>>>> dataaaaaaaaaaaaa",data)
+    return redirect(url_for("chief_editor_page"))
+    keywords = request.form['keywords']
+    curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cur.execute("INSERT INTO final_status (evaluate, paper_id, author_id) VALUES (%s,%s,%s)",
+                        (firstname, lastname, interest_id,))
+    mysql.connection.commit()
+    return render_template(url_for("chief_editor_page"))
 
 
 
