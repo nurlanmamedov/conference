@@ -42,7 +42,7 @@
                                  {% for i in papers %}
                                  <tr>
                                     <th scope="row">{{ i.index }}</th>
-                                    <td>{{ i.title }}</td>
+                                    <td>{{i.paper_id}}  {{ i.title }}</td>
                                     <td>{{ i.interest_name }}</td>
                                     <td>
                                        <!-- Button trigger modal -->
@@ -140,7 +140,7 @@
                               onclick="return confirm('Are You Sure To Delete ?')">Delete</a>
                         </td>
                         <td>
-                           <a href="/update_papers/{{i.paper_id}}" class="btn btn-primary" data-bs-toggle="modal"
+                           <a class="btn btn-primary" data-bs-toggle="modal"
                               data-bs-target="#updatePaper{{i.paper_id}}">
                               Modify
                            </a>
@@ -155,7 +155,7 @@
                                           aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                       <form action="{{ url_for('update_papers', id=i.paper_id) }}" method="POST">
+                                       <form action="/update_papers" method="POST">
                                           <div class="mb-3">
                                              <label for="exampleInputEmail1" class="form-label">Title</label>
                                              <input type="form-text" required class="form-control form-control-sm"
@@ -182,9 +182,11 @@
                                           <div class="modal-footer">
                                              <button type="button" class="btn btn-secondary"
                                                 data-bs-dismiss="modal">Close</button>
-                                             <button type="submit" class="btn btn-primary">Update</button>
+                                             <button type="submit" class="btn btn-primary" name="paperID" value="{{i.paper_id}}">Update123</button>
                                           </div>
                                        </form>
+
+                                       
                                     </div>
                                  </div>
                               </div>

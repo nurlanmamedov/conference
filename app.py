@@ -240,7 +240,7 @@ def author_page():
         for i in papers:
             print("Papers   ----> ", i['paper_id'], type(i['paper_id']))
             cur.execute("SELECT sum(rating) as res, GROUP_CONCAT(comment) as comments, count(reviewer_id) as reviewers_count FROM paper_status1 WHERE paper_id=%s", (i['paper_id'],))
-            rate_list[i["paper_id"]] = cur.fetchone();
+            rate_list[i["paper_id"]] = cur.fetchone()
         print("Rate list result  --->", rate_list)
             
         return render_template("author.html", name=name, lastname=lastname, papers=papers, interests=interests, rate_list=rate_list)
@@ -447,25 +447,25 @@ def delete_paper(id):
     
     
     
-@app.route('/update_papers/<int:id>/', methods=['GET', 'POST'])
-def update_papers(id):
-
+@app.route('/update_papers', methods=['GET', 'POST'])
+def update_papers():
     if request.method == 'GET':
-        print("lalalalalalalalalal")
         return render_template("author.html")
     else:
-        print("-------UPDATE PAPER -------")
         title = request.form['title']
         keywords = request.form['keywords']
         body = request.form['body']
         abstract = request.form['abstract']
+        paperID = request.form['paperID']
         
+        print("PAPER id ------", paperID, "----------------------------")
+        return
         print("457------->>>>>>>", title,keywords,body,abstract)
         curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
             # curl.execute("SELECT * from rewievers WHERE id=%s",(id,))
 
         sql = ("UPDATE papers1 SET title=%s, keywords=%s, body=%s, abstract=%s WHERE paper_id = %s")
-        val = (title,keywords,body,abstract, id)
+        val = (title,keywords,body,abstract, paperID)
         curl.execute(sql, val)
         # curl.close()
         mysql.connection.commit()
