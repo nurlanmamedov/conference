@@ -6,8 +6,8 @@ app = Flask(__name__)
 app.secret_key = 'sakoblexeyible'
 
 app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'aydan'  # 'noor'#'aydan'
-app.config['MYSQL_PASSWORD'] = 'a1w2k3i4m5..'# "a1w2k3i4m5.."'noor123'
+app.config['MYSQL_USER'] = 'noor'  # 'noor'#'aydan'
+app.config['MYSQL_PASSWORD'] = 'noor123'# "a1w2k3i4m5.."'noor123'
 app.config['MYSQL_DB'] = 'conference'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 mysql = MySQL(app)
@@ -68,6 +68,11 @@ def reviewers():
         email = request.form['email']
         interest_id = int(request.form['interest_id'])
         password = request.form['password'].encode('utf-8')
+        password2 = request.form['password2'].encode('utf-8')
+
+
+        if password != password2:
+            return render_template("error.html")
         hash_password = bcrypt.hashpw(password, bcrypt.gensalt())
 
         cur = mysql.connection.cursor()
@@ -82,7 +87,7 @@ def reviewers():
             cur.execute("INSERT INTO reviewers1 (firstname, lastname, interest_id, email, password) VALUES (%s,%s,%s,%s,%s)",
                         (firstname, lastname, interest_id, email, hash_password))
             mysql.connection.commit()
-            return render_template("home.html")
+            return redirect("/")
         else:
             message = "Sorry, but limit of interests is exceed"
             backUrl = '/'
@@ -408,15 +413,17 @@ def update_rewiever(id):
 
     firstname = request.form['firstname']
     lastname = request.form['lastname']
+    password = request.form['password'].encode('utf-8')
 
+    password = bcrypt.hashpw(password, bcrypt.gensalt())
     email = request.form['email']
 
     print("------->>>>>>>", firstname, lastname, email)
     curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
     # curl.execute("SELECT * from rewievers WHERE id=%s",(id,))
 
-    sql = ("UPDATE reviewers1 SET firstname=%s, lastname=%s, email=%s WHERE reviewer_id = %s")
-    val = (firstname, lastname, email, id)
+    sql = ("UPDATE reviewers1 SET firstname=%s, lastname=%s, email=%s, password=%s WHERE reviewer_id = %s")
+    val = (firstname, lastname, email, password, id)
     curl.execute(sql, val)
     curl.close()
     mysql.connection.commit()
@@ -430,8 +437,11 @@ def direct_pages():  # database name is papers
         curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         curl.execute("SELECT * FROM authors1 ")
         authors = curl.fetchall()
+
+        curl.execute("SELECT * FROM interests1")
+        interests = curl.fetchall()
         curl.close()
-        return render_template("view.html", authors=authors)
+        return render_template("view.html", authors=authors, interests=interests)
 
 
 
@@ -496,13 +506,18 @@ def login_chief_editor():
                     session['lastname'] = user['lastname']
                     session['email'] = user['email']
 
+
                     curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
                     curl.execute("SELECT sum(rating) as point, GROUP_CONCAT(comment) as comments, firstname, lastname, author_id, paper_id FROM  conference.paper_status1 LEFT JOIN conference.authors1 using(author_id) WHERE author_id=author_id GROUP BY conference.paper_status1.paper_id HAVING SUM(conference.paper_status1.rating) > 10")
                     
                     data = curl.fetchall()
-                    print("Chef editor data  --->>>", data)
-                    return render_template("chief_editor.html", data=data)
-                    curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+                    for i in data:
+                        i['point'] = int(i['point'])
+                        print("=====>>>>>>>>>>>>>>>",i['point'])
+                
+                    session['data'] = data
+                    return redirect(url_for('chief_editor_page'))
+                    # return render_template("chief_editor.html", data=data)
                     
                 else:
                     return render_template('error.html')
@@ -513,10 +528,18 @@ def login_chief_editor():
         return render_template("login.html")
 
 
-@app.route('/evaluate_accept', methods=["GET", "POST"])
+
+@app.route('/evaluate_accept', methods=["GET","POST"])
 def evaluate_accept():
-    data = request.form['data']
-    print("----------->>>>>> dataaaaaaaaaaaaa",data)
+
+    if request.method == 'GET':
+        print("+++++++++GET++++++++++")
+    else:
+        print("++++++++++++POST++++++++++")
+    data = request.form['evaluate']
+
+    print("----------->>>>>> evaluatee",data)
+    return 
     return redirect(url_for("chief_editor_page"))
     keywords = request.form['keywords']
     curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
@@ -529,10 +552,12 @@ def evaluate_accept():
 
 @app.route('/chief_editor_page', methods=["GET", "POST"])
 def chief_editor_page():
-    if session['name']:
+    if session['firstname']:
         email = session['email']
         firstname = session['firstname']
-        return render_template("chief_editor.html", firstname=firstname)
+        data = session['data']
+        print("session data -----+++++", data)
+        return render_template("chief_editor.html", firstname=firstname, data=data )
     else:
         redirect(url_for("login_chief_editor"))
 
