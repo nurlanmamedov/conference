@@ -6,8 +6,8 @@ app = Flask(__name__)
 app.secret_key = 'sakoblexeyible'
 
 app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'noor'  # 'noor'#'aydan'
-app.config['MYSQL_PASSWORD'] = 'noor123'# "a1w2k3i4m5.."'noor123'
+app.config['MYSQL_USER'] = 'aydan'  # 'noor'#'aydan'
+app.config['MYSQL_PASSWORD'] = 'a1w2k3i4m5..'# "a1w2k3i4m5.."'noor123'
 app.config['MYSQL_DB'] = 'conference'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 mysql = MySQL(app)
@@ -184,40 +184,40 @@ def login_author():
         user = curl.fetchone()
         print("User --> ", user)
         curl.close()
+        try:
+            if len(user) > 0:
+                if bcrypt.hashpw(password, user["password"].encode('utf-8')) == user["password"].encode('utf-8'):
+                    session['email'] = user['email']
+                    session['author_id'] = user['author_id']
+                    session['name'] = user['firstname']
+                    session['lastname'] = user['lastname']
 
-        if len(user) > 0:
-            if bcrypt.hashpw(password, user["password"].encode('utf-8')) == user["password"].encode('utf-8'):
-                session['email'] = user['email']
-                session['author_id'] = user['author_id']
-                session['name'] = user['firstname']
-                session['lastname'] = user['lastname']
+                    print("Session --->>>", session)
 
-                print("Session --->>>", session)
+                    curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+                    author_id = session['author_id']
 
-                curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-                author_id = session['author_id']
+                    # curl.execute("SELECT * FROM papers1 WHERE author_id=%s",(author_id,))
+                    curl.execute(
+                        "SELECT * FROM papers1 LEFT JOIN interests1 using(interest_id) WHERE author_id=%s", (author_id,))
 
-                # curl.execute("SELECT * FROM papers1 WHERE author_id=%s",(author_id,))
-                curl.execute(
-                    "SELECT * FROM papers1 LEFT JOIN interests1 using(interest_id) WHERE author_id=%s", (author_id,))
+                    papers = curl.fetchall()
+                    curl.execute("SELECT * FROM interests1")
+                    interests = curl.fetchall()
+                    data = {
+                        "name": user['firstname'],
+                        "lastname": user['lastname'],
+                        "papers": papers,
+                        "interests": interests,
+                    }
+                    session['author_data'] = data
 
-                papers = curl.fetchall()
-                curl.execute("SELECT * FROM interests1")
-                interests = curl.fetchall()
-                data = {
-                    "name": user['firstname'],
-                    "lastname": user['lastname'],
-                    "papers": papers,
-                    "interests": interests,
-                }
-                session['author_data'] = data
-
-                # return render_template("author.html", name=user['firstname'], papers=papers, interests=interests)
-                return redirect(url_for('author_page'))
-            else:
-                return render_template('error.html')
-        else:
-            return "Error Author not found"
+                    # return render_template("author.html", name=user['firstname'], papers=papers, interests=interests)
+                    return redirect(url_for('author_page'))
+                else:
+                    return render_template('error.html')
+        except:
+            return render_template('notfound.html')
     else:
         return render_template("login.html")
 
@@ -290,47 +290,48 @@ def login_reviewer():
         user = curl.fetchone()
         curl.close()
         print("beafore if ---> ", session)
-        if len(user) > 0:
-            if bcrypt.hashpw(password, user["password"].encode('utf-8')) == user["password"].encode('utf-8'):
-                print("after if ---> ", session)
-                session['name'] = user['firstname']
-                session['lastname'] = user['lastname']
-                session['email'] = user['email']
-                session['reviewer_id'] = user['reviewer_id']
-                session['interest_id'] = user['interest_id']
+        try:
+            if len(user) > 0:
+                if bcrypt.hashpw(password, user["password"].encode('utf-8')) == user["password"].encode('utf-8'):
+                    print("after if ---> ", session)
+                    session['name'] = user['firstname']
+                    session['lastname'] = user['lastname']
+                    session['email'] = user['email']
+                    session['reviewer_id'] = user['reviewer_id']
+                    session['interest_id'] = user['interest_id']
 
-                rew_id = session['reviewer_id']
-                int_id = session['interest_id']
+                    rew_id = session['reviewer_id']
+                    int_id = session['interest_id']
 
-                print("+_+_+_+_+_+_+_+_+_+_+", rew_id, int_id)
-                curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-                curl.execute("SELECT * FROM papers1")
-                papers = curl.fetchall()
-                # print("Papers ---->", papers)
+                    print("+_+_+_+_+_+_+_+_+_+_+", rew_id, int_id)
+                    curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+                    curl.execute("SELECT * FROM papers1")
+                    papers = curl.fetchall()
+                    # print("Papers ---->", papers)
 
-                curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-                curl.execute("SELECT * FROM authors1")
-                curl.execute("SELECT * FROM papers1")
-                authors = curl.fetchall()
+                    curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+                    curl.execute("SELECT * FROM authors1")
+                    curl.execute("SELECT * FROM papers1")
+                    authors = curl.fetchall()
 
-                curl.execute("SELECT Distinct papers1.paper_id, papers1.abstract, authors1.firstname,authors1.lastname, papers1.title, papers1.body, interests1.interest_name FROM papers1 INNER JOIN authors1 INNER JOIN reviewers1 INNER JOIN interests1 ON (papers1.author_id = authors1.author_id AND papers1.interest_id = %s AND reviewers1.reviewer_id=%s AND interests1.interest_id=%s)", (int_id, rew_id, int_id,))
-                answer = curl.fetchall()
-                print(
-                    "answer ----++++++++++++_________++++++++++++++++++----------------+++++++++++++++++++", answer)
+                    curl.execute("SELECT Distinct papers1.paper_id, papers1.abstract, authors1.firstname,authors1.lastname, papers1.title, papers1.body, interests1.interest_name FROM papers1 INNER JOIN authors1 INNER JOIN reviewers1 INNER JOIN interests1 ON (papers1.author_id = authors1.author_id AND papers1.interest_id = %s AND reviewers1.reviewer_id=%s AND interests1.interest_id=%s)", (int_id, rew_id, int_id,))
+                    answer = curl.fetchall()
+                    print(
+                        "answer ----++++++++++++_________++++++++++++++++++----------------+++++++++++++++++++", answer)
 
-                data = {
-                    "firstname": user['lastname'],
-                    "papers": papers,
-                    "authors": authors,
-                    "answer": answer
-                }
-                session['data'] = data
-                # return render_template("reviewers.html", firstname=user['lastname'], papers=papers, authors=authors, answer=answer)
-                return redirect(url_for('reviewer_page'))
-            else:
-                return render_template('error.html')
-        else:
-            return "Error Author not found"
+                    data = {
+                        "firstname": user['lastname'],
+                        "papers": papers,
+                        "authors": authors,
+                        "answer": answer
+                    }
+                    session['data'] = data
+                    # return render_template("reviewers.html", firstname=user['lastname'], papers=papers, authors=authors, answer=answer)
+                    return redirect(url_for('reviewer_page'))
+                else:
+                    return render_template('error.html')
+        except:
+                return render_template('notfound.html')
     else:
         print("else login if ---> ", session)
         return render_template("login.html")
@@ -488,23 +489,26 @@ def login_chief_editor():
         user = curl.fetchone()
         print("User --> ", user)
         curl.close()
-        if len(user) > 0:
-            if  user["password"].encode('utf-8'):
-                session["firstname"] = user['firstname']
-                session['lastname'] = user['lastname']
-                session['email'] = user['email']
+        try:
+            if len(user) > 0:
+                if  user["password"].encode('utf-8'):
+                    session["firstname"] = user['firstname']
+                    session['lastname'] = user['lastname']
+                    session['email'] = user['email']
 
-                curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-                curl.execute("SELECT sum(rating) as point, GROUP_CONCAT(comment) as comments, firstname, lastname, author_id, paper_id FROM  conference.paper_status1 LEFT JOIN conference.authors1 using(author_id) WHERE author_id=author_id GROUP BY conference.paper_status1.paper_id HAVING SUM(conference.paper_status1.rating) > 10")
-                
-                data = curl.fetchall()
-                print("Chef editor data  --->>>", data)
-                return render_template("chief_editor.html", data=data)
-                curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-            else:
-                return render_template('error.html')
-        else:
-            return "Error Author not found"
+                    curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+                    curl.execute("SELECT sum(rating) as point, GROUP_CONCAT(comment) as comments, firstname, lastname, author_id, paper_id FROM  conference.paper_status1 LEFT JOIN conference.authors1 using(author_id) WHERE author_id=author_id GROUP BY conference.paper_status1.paper_id HAVING SUM(conference.paper_status1.rating) > 10")
+                    
+                    data = curl.fetchall()
+                    print("Chef editor data  --->>>", data)
+                    return render_template("chief_editor.html", data=data)
+                    curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+                    
+                else:
+                    return render_template('error.html')
+
+        except:
+                return render_template('notfound.html')
     else:
         return render_template("login.html")
 

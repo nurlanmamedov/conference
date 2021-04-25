@@ -124,8 +124,8 @@
                                                             </td>
                                                             {% endif %}
                                                             <td>
-                                                               {% for i,comment in (rate_list[i.paper_id]['comments']).split(",") %}
-                                                               <p>{{i}} {{comment}} </p>
+                                                               {% for comment in (rate_list[i.paper_id]['comments']).split(",") %}
+                                                               <p> {{comment}} </p>
                                                                {% endfor %}
                                                             </td>
                                                          </tbody>

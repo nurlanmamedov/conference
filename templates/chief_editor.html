@@ -54,19 +54,22 @@
                                           <div class="modal-dialog">
                                              <div class="modal-content">
                                                 <div class="modal-header">
-                                                   <h5 class="modal-title" id="staticBackdropLabel">{{i.paper_id}}</h5>
+                                                   <h5 class="modal-title" id="staticBackdropLabel">Evaluate</h5>
                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                       aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
-                                                   Accept or reject
+                                                   <p>To accept paper click on <i class="fa fa-arrow-circle-down" aria-hidden="true"></i></p>
+                                                    <button type="button"  data-bs-dismiss="modal"
+                                                          class="btn btn-primary">Accept</button> or
+                                                   <p>To reject paper click on <i class="fa fa-arrow-circle-down" aria-hidden="true"></i></p>
+                                                   <button type="button" class="btn btn-danger" 
+                                                         data-bs-dismiss="modal">Reject</button>
                                                 </div>
                                                 <div class="modal-footer">
                                                    <button type="button" class="btn btn-secondary"
                                                       data-bs-dismiss="modal">Close</button>
-                                                      <button type="button" class="btn btn-danger"
-                                                      data-bs-dismiss="modal">Reject</button>
-                                                   <button type="button" class="btn btn-primary">Accept</button>
+                     
                                                 </div>
                                              </div>
                                           </div>
@@ -86,11 +89,74 @@
             </div>
             <div class="tab-pane fade" id="accept" role="tabpanel" aria-labelledby="accept-tab">
                <h3 class="register-heading">Accepted papers</h3>
-               <div class="col-md-9" style="margin: 20% 10%;">
-                  <form action="/submit_paper" method="POST" class="form-inline">
-               </div>
-               <button type="submit" class="btn btn-primary mb-2"
-                  style="margin-bottom: 10px; margin-top: 10px; float: right;">Add</button>
+               <div class="tab-content" id="myTabContent">
+                   <form method="GET" action="">
+                        <div class="row register-form">
+                           <div class="col-md-10">
+                              <div class="form-group">
+                                 <table class="table table-primary table-striped">
+                                    <thead>
+                                       <tr>
+                                          <th scope="col">All Authors</th>
+                                          <th scope="col">Accepted papers </th>
+                                          <th scope="col">Accept/Reject</th>
+                                          <th scope="col">Comments by Reviewers</th>
+                                       </tr>
+                                    </thead>
+                                    <tbody>
+                                       {% for i in data %}
+                                       <tr>
+                                          <td scope="row">{{i.firstname}} {{i.lastname}}</td>
+                                       
+                                          <td>{{i.point}} </td>
+                                          <td>
+                                             <!-- Button trigger modal -->
+                                             <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                                data-bs-target="#staticBackdrop{{i.paper_id}}">
+                                                evaluate
+                                             </button>
+                                           
+                                             <!-- Modal -->
+                                             <div class="modal fade" id="staticBackdrop{{i.paper_id}}" data-bs-backdrop="static"
+                                                data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"
+                                                aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                   <div class="modal-content">
+                                                      <div class="modal-header">
+                                                         <h5 class="modal-title" id="staticBackdropLabel">Evaluate</h5>
+                                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
+                                                      </div>
+                                                      <div class="modal-body">
+                                                         <p>To accept paper click on <i class="fa fa-arrow-circle-down" aria-hidden="true"></i></p>
+                                                          <button type="button"  data-bs-dismiss="modal"
+                                                                class="btn btn-primary">Accept</button> or
+                                                         <p>To reject paper click on <i class="fa fa-arrow-circle-down" aria-hidden="true"></i></p>
+                                                         <button type="button" class="btn btn-danger" 
+                                                               data-bs-dismiss="modal">Reject</button>
+                                                      </div>
+                                                      <div class="modal-footer">
+                                                         <button type="button" class="btn btn-secondary"
+                                                            data-bs-dismiss="modal">Close</button>
+                           
+                                                      </div>
+                                                   </div>
+                                                </div>
+                                             </div>
+                                          </td>
+                                          <td>{{i.comments}}</td>
+                                          </td>
+                                       </tr>
+                                       {% endfor %}
+                                    </tbody>
+                                 </table>
+                              </div>
+                           </div>
+                        </div>
+                     </form>
+      
+                  </div>
+   
                </form>
             </div>
 
