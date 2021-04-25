@@ -86,7 +86,7 @@ def reviewers():
         else:
             message = "Sorry, but limit of interests is exceed"
             backUrl = '/'
-            return render_template("error.html",message=message, backUrl=backUrl )
+            return render_template("reviewer_exceed.html",message=message, backUrl=backUrl )
             
     else:
 
@@ -155,9 +155,9 @@ def login():
         curl.execute("SELECT * FROM admins WHERE email=%s", (email,))
         user = curl.fetchone()
         curl.close()
-
+    
         if len(user) > 0:
-            if user["password"].encode('utf-8'):
+            if bcrypt.hashpw(password, user["password"].encode('utf-8')) == user["password"].encode('utf-8'):
                 session['name'] = user['name']
                 session['email'] = user['email']
                 # return render_template("home.html")
@@ -491,7 +491,7 @@ def login_chief_editor():
         curl.close()
         try:
             if len(user) > 0:
-                if  user["password"].encode('utf-8'):
+                if  bcrypt.hashpw(password, user["password"].encode('utf-8')) == user["password"].encode('utf-8'):
                     session["firstname"] = user['firstname']
                     session['lastname'] = user['lastname']
                     session['email'] = user['email']
