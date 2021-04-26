@@ -47,52 +47,47 @@
                                           evaluate
                                        </button> -->
 
-                                       <button class="nav-link" id="evaluate-tab" data-bs-toggle="tab" data-bs-target="#evaluate" type="button"
-                                                   role="tab" aria-controls="accept" aria-selected="false">Evaluate</button>
+                                       <a href="/evaluate_accept/{{i.paper_id}}" class="btn btn-primary"
+                                          data-bs-toggle="modal" data-bs-target="#exampleModal{{i.paper_id}}">
+                                          Evaluate
+                                       </a>
+
+                                       <!-- <button class="nav-link" id="evaluate-tab" data-bs-toggle="tab" data-bs-target="#evaluate" type="button"
+                                                   role="tab" aria-controls="accept" aria-selected="false">Evaluate</button> -->
 
                                        <!-- Modal -->
-                                       <div class="modal fade" id="staticBackdrop{{i.paper_id}}"
-                                          data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-                                          aria-labelledby="staticBackdropLabel" aria-hidden="true">
+
+
+                                       <div class="modal fade" id="exampleModal{{i.paper_id}}" tabindex="-1"
+                                          aria-labelledby="exampleModalLabel" aria-hidden="true">
                                           <div class="modal-dialog">
                                              <div class="modal-content">
                                                 <div class="modal-header">
-                                                   <h5 class="modal-title" id="staticBackdropLabel">Evaluate</h5>
-                                                   <a class="nav-link" id="evaluate-tab" data-bs-toggle="tab" data-bs-target="#evaluate" type="button"
-                                                   role="tab" aria-controls="accept" aria-selected="false">Evaluate</a>
+                                                   <h5 class="modal-title" id="exampleModalLabel">Evaluate</h5>
                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                       aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
-                                                   <!-- <p>To accept paper click on <i class="fa fa-arrow-circle-down" aria-hidden="true"></i></p>
-                                                    <button type="button"  data-bs-dismiss="modal"
-                                                          class="btn btn-primary">Accept</button> or
-                                                   <p>To reject paper click on <i class="fa fa-arrow-circle-down" aria-hidden="true"></i></p>
-                                                   <button type="button" class="btn btn-danger" 
-                                                         data-bs-dismiss="modal">Reject</button> -->
-
-                                                   <form action="/evaluate_accept" method="POST">
-
-
+                                                   <form action="/evaluate_accept"
+                                                      method="post">
                                                       <div class="mb-3">
-                                                         <label for="disabledSelect" class="form-label">Disabled select
-                                                            menu</label>
+                                                         <label for="disabledSelect" class="form-label">Set status</label>
                                                          <select id="disabledSelect" class="form-select"
-                                                            name="evaluate">
+                                                            name="evaluate" aria-label="Default select example" >
+                                                           <option selected> Select ..... </option>
                                                             <option value="accept">Accept</option>
                                                             <option value="reject">Reject</option>
                                                          </select>
+                                                         <input style="display: none;" type="text" value="{{i.paper_id}}" name="author_id" />
+                                                         <input style="display: none;" type="text" value="{{i.author_id}}" name="paper_id" />
                                                       </div>
-
-                                                      <button type="submit" class="btn btn-primary">Submit</button>
+                                                      
+                                                      <div class="modal-footer">
+                                                         <button type="button" class="btn btn-secondary"
+                                                            data-bs-dismiss="modal">Close</button>
+                                                         <button type="submit" class="btn btn-primary">Submit</button>
+                                                      </div>
                                                    </form>
-                                                </div>
-
-
-                                                <div class="modal-footer">
-                                                   <button type="button" class="btn btn-secondary"
-                                                      data-bs-dismiss="modal">Close</button>
-
                                                 </div>
                                              </div>
                                           </div>
@@ -192,8 +187,7 @@
                   <div class="mb-3">
                      <label for="disabledSelect" class="form-label">Disabled select
                         menu</label>
-                     <select id="disabledSelect" class="form-select"
-                        name="evaluate">
+                     <select id="disabledSelect" class="form-select" name="evaluate">
                         <option value="accept">Accept</option>
                         <option value="reject">Reject</option>
                      </select>

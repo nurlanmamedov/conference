@@ -1,13 +1,14 @@
 from flask import Flask, render_template, flash, request, redirect, url_for, session
 from flask_mysqldb import MySQL, MySQLdb
 import bcrypt
+import json
 
 app = Flask(__name__)
 app.secret_key = 'sakoblexeyible'
 
 app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'nurlan'  # 'noor'#'aydan'
-app.config['MYSQL_PASSWORD'] = 'nurlan123'# "a1w2k3i4m5.."'noor123'
+app.config['MYSQL_USER'] = 'noor'  # 'noor'#'aydan'
+app.config['MYSQL_PASSWORD'] = 'noor123'# "a1w2k3i4m5.."'noor123'
 app.config['MYSQL_DB'] = 'conference'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 mysql = MySQL(app)
@@ -539,7 +540,7 @@ def login_chief_editor():
 
 @app.route('/evaluate_accept', methods=["GET","POST"])
 def evaluate_accept():
-
+    
     if request.method == 'GET':
         print("+++++++++GET++++++++++")
     else:
@@ -560,6 +561,26 @@ def evaluate_accept():
 
 @app.route('/chief_editor_page', methods=["GET", "POST"])
 def chief_editor_page():
+    if request.args.get("evaluate"):
+        print(request.args.get("evaluate"), "+++++++++++++++++++++++++++++++++++++++++++")
+        # print(request.args.get("allData"), "+++++++++++++++++++++++++++++++++++++++++++")
+        
+        evaluate = request.args.get("evaluate")
+        paper_id = request.args.get("author_id")
+        author_id = request.args.get("paper_id")
+        
+        print("evaluate ---->>>",evaluate)
+        print("paper_id ---->>>", type(paper_id), author_id)
+        print("author_id ---->>>",type(author_id), paper_id)
+       
+        curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        curl.execute("INSERT INTO final_status (evaluate, paper_id, author_id) VALUES (%s,%s,%s)",
+                            (evaluate, int(paper_id), int(author_id),))
+        mysql.connection.commit()
+    
+        return redirect(url_for('chief_editor_page'))
+    else:
+        print("_________--------------------------______________---------")
     if session['firstname']:
         email = session['email']
         firstname = session['firstname']
