@@ -6,8 +6,8 @@ app = Flask(__name__)
 app.secret_key = 'sakoblexeyible'
 
 app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'noor'  # 'noor'#'aydan'
-app.config['MYSQL_PASSWORD'] = 'noor123'# "a1w2k3i4m5.."'noor123'
+app.config['MYSQL_USER'] = 'aydan'  # 'noor'#'aydan'
+app.config['MYSQL_PASSWORD'] = 'a1w2k3i4m5..'# "a1w2k3i4m5.."'noor123'
 app.config['MYSQL_DB'] = 'conference'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 mysql = MySQL(app)
@@ -141,6 +141,14 @@ def register():
         password = request.form['password'].encode('utf-8')
         hash_password = bcrypt.hashpw(password, bcrypt.gensalt())
 
+
+
+        password2 = request.form['password2'].encode('utf-8')
+
+        if password != password2:
+            return render_template("error.html")
+        hash_password = bcrypt.hashpw(password, bcrypt.gensalt())
+
         cur = mysql.connection.cursor()
         cur.execute("INSERT INTO authors1 (firstname,lastname, phone, email, country, city,zipcode, password) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)",
                     (firstname, lastname, phone, email, country, city, zip, hash_password))
@@ -160,17 +168,17 @@ def login():
         curl.execute("SELECT * FROM admins WHERE email=%s", (email,))
         user = curl.fetchone()
         curl.close()
-    
-        if len(user) > 0:
-            if bcrypt.hashpw(password, user["password"].encode('utf-8')) == user["password"].encode('utf-8'):
-                session['name'] = user['name']
-                session['email'] = user['email']
-                # return render_template("home.html")
-                return redirect(url_for('home'))
-            else:
-                return render_template('error.html')
-        else:
-            return "Error user not found"
+        try:
+            if len(user) > 0:
+                if bcrypt.hashpw(password, user["password"].encode('utf-8')) == user["password"].encode('utf-8'):
+                    session['name'] = user['name']
+                    session['email'] = user['email']
+                    # return render_template("home.html")
+                    return redirect(url_for('home'))
+                else:
+                    return render_template('error.html')
+        except:
+            return render_template('notfound.html')
     else:
         return render_template("login.html")
 
