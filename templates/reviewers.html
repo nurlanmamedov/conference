@@ -95,7 +95,7 @@
                                                       <form action="/rating" method="POST">
                                                          <div class="form-floating mb-2 col-md-12 col-12">
                                                             <textarea  name="comment" class="form-control" placeholder="Leave a comment here" id="floatingTextarea{{i.paper_id}}" style="height: 200px; max-height: 200px;min-height: 200px;"></textarea>
-                                                            <label for="floatingTextarea{{i.paper_id}}" >Comments</label>
+                                                            <label for="floatingTextarea{{i.paper_id}}" >Comments {{i.author_id}}</label>
                                                          </div>
                                                          <div class="col-md-12 col-12" >
                                                          <input class="star star-5" id="star-5{{i.paper_id}}" type="radio" name="star" value="5" /> 
@@ -111,6 +111,8 @@
                                                          
 
                                                       </div>
+
+                                                      <input style="display: none;" name="author_id" value="{{i.author_id}}" />
                                                       <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                                          <button class="btn btn-primary" name="submit_b" value={{i.paper_id}}>Save</button>
                                                       </form>

@@ -271,18 +271,19 @@ def rating():
         comment = request.form["comment"]
         paper_id = request.form["submit_b"]
         reviewer_id = session["reviewer_id"]
-
+        author_id = request.form["author_id"]
+        
         curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         curl.execute("SELECT count(*) as cnt FROM paper_status1 WHERE reviewer_id=%s AND paper_id=%s",(reviewer_id,paper_id))
         count = curl.fetchone()
         curl.execute("SELECT * FROM paper_status1")
         status = curl.fetchall()
         if count['cnt'] == 0:
-            curl.execute("INSERT INTO paper_status1 (reviewer_id, paper_id, rating, comment) VALUES (%s,%s,%s,%s)",
-                        (reviewer_id, paper_id, rating, comment, ))
+            curl.execute("INSERT INTO paper_status1 (reviewer_id, paper_id, rating,author_id, comment) VALUES (%s,%s,%s,%s,%s)",
+                        (reviewer_id, paper_id,author_id, rating, comment,  ))
         else:
-            curl.execute("UPDATE paper_status1 SET rating = %s, comment=%s WHERE reviewer_id = %s AND paper_id=%s",
-                        (rating, comment,reviewer_id,paper_id, ))
+            curl.execute("UPDATE paper_status1 SET rating = %s, comment=%s WHERE reviewer_id = %s AND paper_id=%s AND author_id=%s",
+                        (rating, comment,reviewer_id,paper_id,author_id, ))
         mysql.connection.commit()
         result = curl.fetchall()
         print("rating --> ", rating, "comment -->", comment,
@@ -329,7 +330,7 @@ def login_reviewer():
                     curl.execute("SELECT * FROM papers1")
                     authors = curl.fetchall()
 
-                    curl.execute("SELECT Distinct papers1.paper_id, papers1.abstract, authors1.firstname,authors1.lastname, papers1.title, papers1.body, interests1.interest_name FROM papers1 INNER JOIN authors1 INNER JOIN reviewers1 INNER JOIN interests1 ON (papers1.author_id = authors1.author_id AND papers1.interest_id = %s AND reviewers1.reviewer_id=%s AND interests1.interest_id=%s)", (int_id, rew_id, int_id,))
+                    curl.execute("SELECT Distinct papers1.paper_id, papers1.abstract, authors1.firstname,authors1.lastname,authors1.author_id, papers1.title, papers1.body, interests1.interest_name FROM papers1 INNER JOIN authors1 INNER JOIN reviewers1 INNER JOIN interests1 ON (papers1.author_id = authors1.author_id AND papers1.interest_id = %s AND reviewers1.reviewer_id=%s AND interests1.interest_id=%s)", (int_id, rew_id, int_id,))
                     answer = curl.fetchall()
                     print(
                         "answer ----++++++++++++_________++++++++++++++++++----------------+++++++++++++++++++", answer)
@@ -501,43 +502,51 @@ def login_chief_editor():
         email = request.form['email']
         password = request.form['password'].encode('utf-8')
 
-        print("email --> ", password)
         print("password --> ", password)
+        print("email --> ", email)
 
         curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         curl.execute("SELECT * FROM chief_editor WHERE email=%s", (email,))
         user = curl.fetchone()
         print("User --> ", user)
         curl.close()
-        try:
-            if len(user) > 0:
-                if  bcrypt.hashpw(password, user["password"].encode('utf-8')) == user["password"].encode('utf-8'):
-                    session["firstname"] = user['firstname']
-                    session['lastname'] = user['lastname']
-                    session['email'] = user['email']
-                    curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-                    curl.execute("SELECT sum(rating) as point, GROUP_CONCAT(comment) as comments, firstname, lastname, author_id, paper_id FROM  conference.paper_status1 LEFT JOIN conference.authors1 using(author_id) WHERE author_id=author_id GROUP BY conference.paper_status1.paper_id HAVING SUM(conference.paper_status1.rating) > 8")
-                    data = curl.fetchall()
-                    curl.execute("SELECT * FROM final_status")
-                    final_status = curl.fetchall()
+       
+        if len(user) > 0:
 
-                    print("finaaaaaaaaal", final_status)
+            print("password", password)
+            print("user password utf encode", user["password"].encode('utf-8'))
 
-                    
-                    for i in data:
-                        i['point'] = int(i['point'])
-                    result_status = {}
-                    for i in final_status:
-                        result_status[i['paper_id']] = i['evaluate']
+            
 
-                    session['final_status'] = result_status
-                    session['data'] = data
-                    return redirect(url_for('chief_editor_page'))
-                else:
-                    return render_template('error.html')
+            if  bcrypt.hashpw(password, user["password"].encode('utf-8')) == user["password"].encode('utf-8'):
+                session["firstname"] = user['firstname']
+                session['lastname'] = user['lastname']
+                session['email'] = user['email']
+                curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+                curl.execute("SELECT sum(rating) as point, GROUP_CONCAT(comment) as comments, firstname, lastname, author_id, paper_id FROM  conference.paper_status1 LEFT JOIN conference.authors1 using(author_id) WHERE author_id=author_id GROUP BY conference.paper_status1.paper_id HAVING SUM(conference.paper_status1.rating) > 8")
+                data = curl.fetchall()
+                curl.execute("SELECT * FROM final_status")
+                final_status = curl.fetchall()
 
-        except:
-                return render_template('notfound.html')
+                print("finaaaaaaaaal", final_status)
+
+                
+                for i in data:
+                    i['point'] = int(i['point'])
+                result_status = {}
+                for i in final_status:
+                    result_status[i['paper_id']] = i['evaluate']
+
+                session['final_status'] = result_status
+                session['data'] = data
+
+
+                return redirect(url_for('chief_editor_page'))
+            else:
+                return render_template('error.html')
+
+        else:
+            return render_template('notfound.html')
     else:
         return render_template("login.html")
 
