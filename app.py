@@ -266,6 +266,7 @@ def author_page():
 def rating():
     # rate = request.form["star"]
     if request.method == 'POST':
+        print("***********************----------------------*****************************")
         rating = request.form["star"]
         comment = request.form["comment"]
         paper_id = request.form["submit_b"]
@@ -280,8 +281,8 @@ def rating():
             curl.execute("INSERT INTO paper_status1 (reviewer_id, paper_id, rating, comment) VALUES (%s,%s,%s,%s)",
                         (reviewer_id, paper_id, rating, comment, ))
         else:
-            curl.execute("UPDATE paper_status1 SET rating = %s, comment=%s WHERE reviewer_id = %s",
-                        (rating, comment,reviewer_id, ))
+            curl.execute("UPDATE paper_status1 SET rating = %s, comment=%s WHERE reviewer_id = %s AND paper_id=%s",
+                        (rating, comment,reviewer_id,paper_id, ))
         mysql.connection.commit()
         result = curl.fetchall()
         print("rating --> ", rating, "comment -->", comment,
@@ -289,7 +290,7 @@ def rating():
         print("rating result --->", result)
 
         return redirect(url_for('reviewer_page'))
-        # return render_template("reviewers.html")
+        
 
 
 @app.route('/login_reviewer', methods=["GET", "POST"])

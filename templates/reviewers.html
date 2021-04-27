@@ -89,15 +89,15 @@
                                        <div class="modal-body">
                                           
                                           <div class="container d-flex justify-content-center">
-                                             <div class="row">
-                                                <div class="col-md-12">
-                                                   <div class="stars">
+                                             <div >
+                                                <div>
+                                                   <div class="stars row" style="width: auto; overflow: hidden;">
                                                       <form action="/rating" method="POST">
-                                                         <div class="form-floating mb-2">
+                                                         <div class="form-floating mb-2 col-md-12 col-12">
                                                             <textarea  name="comment" class="form-control" placeholder="Leave a comment here" id="floatingTextarea{{i.paper_id}}" style="height: 200px; max-height: 200px;min-height: 200px;"></textarea>
                                                             <label for="floatingTextarea{{i.paper_id}}" >Comments</label>
                                                          </div>
-                                                         
+                                                         <div class="col-md-12 col-12" >
                                                          <input class="star star-5" id="star-5{{i.paper_id}}" type="radio" name="star" value="5" /> 
                                                          <label class="star star-5" for="star-5{{i.paper_id}}"></label>
                                                          <input class="star star-4" id="star-4{{i.paper_id}}" type="radio" name="star" value="4" />
@@ -107,7 +107,11 @@
                                                          <input class="star star-2" id="star-2{{i.paper_id}}" type="radio" name="star" value="2"/> 
                                                          <label class="star star-2" for="star-2{{i.paper_id}}"></label> 
                                                          <input class="star star-1 form-control is-invalid" id="star-1{{i.paper_id}}" type="radio" name="star" value="1" checked required/>
-                                                         <label class="star star-1" for="star-1{{i.paper_id}}"></label> 
+                                                         <label class="star star-1" for="star-1{{i.paper_id}}"></label>
+                                                         
+
+                                                      </div>
+                                                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                                          <button class="btn btn-primary" name="submit_b" value={{i.paper_id}}>Save</button>
                                                       </form>
                                                    </div>
@@ -115,9 +119,9 @@
                                              </div>
                                           </div>
                                        </div>
-                                       <div class="modal-footer">
+                                       <!-- <div class="modal-footer">
                                           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                       </div>
+                                       </div> -->
                                     </div>
                                  </div>
                               </div>
