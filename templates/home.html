@@ -168,7 +168,7 @@
                         <th scope="col">#</th>
                         <th scope="col">Author's fullname</th>
                         <th scope="col">All papers</th>
-                        <th scope="col">interests</th>
+        
                         <th scope="col">Status(accepted/rejected)</th>
                      </tr>
                   </thead>
@@ -181,7 +181,7 @@
                            <!-- Button trigger modal -->
                            <a type="button" class="btn btn-primary" data-bs-toggle="modal"
                               data-bs-target="#staticBackdrop{{i.paper_id}}">
-                              more
+                              See More
                            </a>
                            <!-- Modal -->
                            <div class="modal fade" id="staticBackdrop{{i.paper_id}}"
@@ -216,8 +216,8 @@
                               </div>
                            </div>
                         </td>
-                        <td>{{ i.interests }}</td>
-                        <td>{{ i.user_name }}</td>
+                        <td>{{ i.interest }}</td>
+                        <td>{{ evaluate }}</td>
                      </tr>
                   </tbody>
                   {% endfor %}

@@ -9,19 +9,19 @@
          <h1>to shief editor page {{ name }} </h1>
       </div>
       <div class="col-md-9 register-right">
-         <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist">
-            <li class="nav-item" role="presentation">
+       <!--    <ul class="nav nav-tab" style="width: 130pt;" id="myTab" role="tablist">
+            <li class="nav-item" >
                <a class="nav-link active" id="all-tab" data-bs-toggle="tab" data-bs-target="#all" type="button"
-                  role="tab" aria-controls="all" aria-selected="true">aLL Papers</a>
+                  role="tab" aria-controls="all" aria-selected="true">All Papers</a>
             </li>
-            <li class="nav-item" role="presentation">
+           <li class="nav-item" role="presentation">
                <a class="nav-link" id="accept-tab" data-bs-toggle="tab" data-bs-target="#accept" type="button"
                   role="tab" aria-controls="accept" aria-selected="false">Accepted paper</a>
             </li>
-         </ul>
+         </ul> -->
          <div class="tab-content" id="myTabContent">
             <div class="tab-pane fade show active" id="all" role="tabpanel" aria-labelledby="all-tab">
-               <h3 class="register-heading">Review a paper</h3>
+               <h3 class="register-heading">All Papers</h3>
                <form method="GET" action="">
                   <div class="row register-form">
                      <div class="col-md-10">
@@ -39,7 +39,7 @@
                                  {% for i in data %}
                                  <tr>
                                     <td scope="row">{{i.firstname}} {{i.lastname}}</td>
-                                    <td>{{i.point}}</td>
+                                    <td>paper's title</td>
                                     <td>
                                        <!-- Button trigger modal -->
                                        <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal"
@@ -125,7 +125,7 @@
                </form>
 
             </div>
-            <div class="tab-pane fade" id="accept" role="tabpanel" aria-labelledby="accept-tab">
+            <!-- <div class="tab-pane fade" id="accept" role="tabpanel" aria-labelledby="accept-tab">
                <h3 class="register-heading">Accepted papers</h3>
                <div class="tab-content" id="myTabContent">
                   <form method="GET" action="">
@@ -146,16 +146,16 @@
                                     <tr>
                                        <td scope="row">{{i.firstname}} {{i.lastname}}</td>
 
-                                       <td>{{i.point}} </td>
-                                       <td>
+                                       <td> paper title</td>
+                                       <td> -->
                                           <!-- Button trigger modal -->
-                                          <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                          <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                                              data-bs-target="#staticBackdrop{{i.paper_id}}">
                                              evaluate
-                                          </button>
+                                          </button> -->
 
                                           <!-- Modal -->
-                                          <div class="modal fade" id="staticBackdrop{{i.paper_id}}"
+                                          <!-- <div class="modal fade" id="staticBackdrop{{i.paper_id}}"
                                              data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
                                              aria-labelledby="staticBackdropLabel" aria-hidden="true">
                                              <div class="modal-dialog">
@@ -197,10 +197,10 @@
 
                </div>
 
-               </form>
-            </div>
+               </form> -->
+            <!-- </div> -->
 
-            <div class="tab-pane fade" id="evaluate" role="tabpanel" aria-labelledby="evaluate-tab">
+            <!-- <div class="tab-pane fade" id="evaluate" role="tabpanel" aria-labelledby="evaluate-tab">
                <form action="/evaluate_accept" method="POST">
 
 
@@ -215,8 +215,8 @@
 
                   <button type="submit" class="btn btn-primary">Submit</button>
                </form>
-            </div>
-         </div>
+            </div> -->
+         <!-- </div> -->
       </div>
 
 
