@@ -514,20 +514,24 @@ def login_chief_editor():
                     session["firstname"] = user['firstname']
                     session['lastname'] = user['lastname']
                     session['email'] = user['email']
-
-
                     curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-                    curl.execute("SELECT sum(rating) as point, GROUP_CONCAT(comment) as comments, firstname, lastname, author_id, paper_id FROM  conference.paper_status1 LEFT JOIN conference.authors1 using(author_id) WHERE author_id=author_id GROUP BY conference.paper_status1.paper_id HAVING SUM(conference.paper_status1.rating) > 10")
-                    
+                    curl.execute("SELECT sum(rating) as point, GROUP_CONCAT(comment) as comments, firstname, lastname, author_id, paper_id FROM  conference.paper_status1 LEFT JOIN conference.authors1 using(author_id) WHERE author_id=author_id GROUP BY conference.paper_status1.paper_id HAVING SUM(conference.paper_status1.rating) > 8")
                     data = curl.fetchall()
+                    curl.execute("SELECT * FROM final_status")
+                    final_status = curl.fetchall()
+
+                    print("finaaaaaaaaal", final_status)
+
+                    
                     for i in data:
                         i['point'] = int(i['point'])
-                        print("=====>>>>>>>>>>>>>>>",i['point'])
-                
+                    result_status = {}
+                    for i in final_status:
+                        result_status[i['paper_id']] = i['evaluate']
+
+                    session['final_status'] = result_status
                     session['data'] = data
                     return redirect(url_for('chief_editor_page'))
-                    # return render_template("chief_editor.html", data=data)
-                    
                 else:
                     return render_template('error.html')
 
@@ -540,53 +544,56 @@ def login_chief_editor():
 
 @app.route('/evaluate_accept', methods=["GET","POST"])
 def evaluate_accept():
-    
-    if request.method == 'GET':
-        print("+++++++++GET++++++++++")
-    else:
-        print("++++++++++++POST++++++++++")
-    data = request.form['evaluate']
-
-    print("----------->>>>>> evaluatee",data)
-    return 
-    return redirect(url_for("chief_editor_page"))
-    keywords = request.form['keywords']
+   
+    evaluate = request.form["evaluate"]
+    paper_id = request.form["paper_id"]
+    author_id = request.form["author_id"]
     curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-    cur.execute("INSERT INTO final_status (evaluate, paper_id, author_id) VALUES (%s,%s,%s)",
-                        (firstname, lastname, interest_id,))
+    print(curl)
+    curl.execute("INSERT INTO final_status (evaluate, paper_id, author_id) VALUES (%s,%s,%s)", (evaluate, int(paper_id), int(author_id),))
     mysql.connection.commit()
-    return render_template(url_for("chief_editor_page"))
+    return redirect(url_for('chief_editor_page'))
 
 
 
 @app.route('/chief_editor_page', methods=["GET", "POST"])
 def chief_editor_page():
+
+
+    curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    curl.execute("SELECT * FROM final_status")
+    final_status = curl.fetchall()
+
+    result_status = {}
+    for i in final_status:
+        result_status[i['paper_id']] = i['evaluate']
+    session['final_status'] = result_status
+    
     if request.args.get("evaluate"):
-        print(request.args.get("evaluate"), "+++++++++++++++++++++++++++++++++++++++++++")
-        # print(request.args.get("allData"), "+++++++++++++++++++++++++++++++++++++++++++")
-        
         evaluate = request.args.get("evaluate")
-        paper_id = request.args.get("author_id")
-        author_id = request.args.get("paper_id")
-        
-        print("evaluate ---->>>",evaluate)
-        print("paper_id ---->>>", type(paper_id), author_id)
-        print("author_id ---->>>",type(author_id), paper_id)
-       
+        paper_id = request.args.get("paper_id")
+        author_id = request.args.get("author_id")
+
         curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         curl.execute("INSERT INTO final_status (evaluate, paper_id, author_id) VALUES (%s,%s,%s)",
                             (evaluate, int(paper_id), int(author_id),))
         mysql.connection.commit()
-    
+
         return redirect(url_for('chief_editor_page'))
-    else:
-        print("_________--------------------------______________---------")
+    
     if session['firstname']:
         email = session['email']
         firstname = session['firstname']
         data = session['data']
+        final_status = session['final_status']
+
+        temp = {}
+        for k,v in final_status.items():
+            temp[int(k)] = v
+        
         print("session data -----+++++", data)
-        return render_template("chief_editor.html", firstname=firstname, data=data )
+        print("session data -----+++++", final_status)
+        return render_template("chief_editor.html", firstname=firstname, data=data, final_status=temp )
     else:
         redirect(url_for("login_chief_editor"))
 

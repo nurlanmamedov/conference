@@ -47,10 +47,21 @@
                                           evaluate
                                        </button> -->
 
+                                       {% if not final_status[i.paper_id] %}
                                        <a href="/evaluate_accept/{{i.paper_id}}" class="btn btn-primary"
                                           data-bs-toggle="modal" data-bs-target="#exampleModal{{i.paper_id}}">
                                           Evaluate
                                        </a>
+                                       {% endif %}
+
+                                       
+                                       {% if final_status[i.paper_id] %}
+                                          {% if final_status[i.paper_id] == "accept" %}
+                                             <p class="text-success">accepted</p>
+                                          {% else %}
+                                             <p class="text-danger">rejected</p>
+                                          {% endif %}
+                                       {% endif %}
 
                                        <!-- <button class="nav-link" id="evaluate-tab" data-bs-toggle="tab" data-bs-target="#evaluate" type="button"
                                                    role="tab" aria-controls="accept" aria-selected="false">Evaluate</button> -->
@@ -68,25 +79,34 @@
                                                       aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
-                                                   <form action="/evaluate_accept"
-                                                      method="post">
+                                                   <form action="/evaluate_accept" method="post">
+
+                                                      <!-- <div class="form-group">
+                                                         <input type="radio" name="options" id="option1"
+                                                            value="option1"> Option1 </input><br>
+                                                         <input type="radio" name="options" id="option2"
+                                                            value="option2"> Option2 </input><br>
+                                                         <input type="radio" name="options" id="option3"
+                                                            value="option3"> Option3 </input><br>
+                                                      </div> -->
+
                                                       <div class="mb-3">
                                                          <label for="disabledSelect" class="form-label">Set status</label>
                                                          <select id="disabledSelect" class="form-select"
-                                                            name="evaluate" aria-label="Default select example" >
-                                                           <option selected> Select ..... </option>
-                                                            <option value="accept">Accept</option>
+                                                            name="evaluate">
+                                                            <option value="accept" selected>Accept</option>
                                                             <option value="reject">Reject</option>
                                                          </select>
-                                                         <input style="display: none;" type="text" value="{{i.paper_id}}" name="author_id" />
-                                                         <input style="display: none;" type="text" value="{{i.author_id}}" name="paper_id" />
+                                                         <input style="display: none;" type="text" value="{{i.paper_id}}" name="paper_id" />
+                                                         <input style="display: none;" type="text" value="{{i.author_id}}" name="author_id" />
                                                       </div>
-                                                      
-                                                      <div class="modal-footer">
-                                                         <button type="button" class="btn btn-secondary"
-                                                            data-bs-dismiss="modal">Close</button>
-                                                         <button type="submit" class="btn btn-primary">Submit</button>
-                                                      </div>
+
+                                                      <button type="button" class="btn btn-secondary"
+                                                         data-bs-dismiss="modal">Close</button>
+                                                      <!-- <button type="submit" class="btn btn-primary">Submit</button> -->
+
+                                                      <button type="submit" class="btn btn-primary mb-2"
+                                                         style="margin-bottom: 10px; margin-top: 10px; float: right;">Add</button>
                                                    </form>
                                                 </div>
                                              </div>
