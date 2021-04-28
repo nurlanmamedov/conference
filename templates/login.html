@@ -13,29 +13,32 @@
             <h3>In order to continue</h3>
             <h4>Login</h4>
         </div>
-        <div class="col-md-9 register-right">
+        <div class="col-md-6 register-right">
             <ul class="nav nav-tabs nav-justified" style="width: 300pt;height:25pt ;" id="Tab" role="tablist">
-                <li class="nav-item">
-                    <a class="nav-link" id="admin-tab" data-toggle="tab" href="#admin" role="tab" aria-controls="admin"
-                        aria-selected="true"> Admin</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link " id="reviewer-tab" data-toggle="tab" href="#reviewer" role="tab"
-                        aria-controls="reviewer" aria-selected="true"> Reviewer</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="author-tab" data-toggle="tab" href="#author" role="tab"
-                        aria-controls="author" aria-selected="true"> Author</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="chief_editor-tab" data-toggle="tab" href="#chief_editor" role="tab"
-                        aria-controls="chief_editor" aria-selected="true">Chief Editor</a>
-                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link active" id="admin-tab" data-bs-toggle="tab" data-bs-target="#admin" type="button"
+                       role="tab" aria-controls="admin" aria-selected="true">Admin</a>
+                 </li>
+                
+                 <li class="nav-item" role="presentation">
+                    <a class="nav-link" id="reviewer-tab" data-bs-toggle="tab" data-bs-target="#reviewer" type="button"
+                       role="tab" aria-controls="reviewer" aria-selected="false">Reviewer</a>
+                 </li>
+                 <li class="nav-item" role="presentation">
+                    <a class="nav-link" id="author-tab" data-bs-toggle="tab" data-bs-target="#author" type="button"
+                       role="tab" aria-controls="author" aria-selected="false">Author</a>
+                 </li>
+
+                 <li class="nav-item" role="presentation">
+                    <a class="nav-link" id="chief_editor-tab" data-bs-toggle="tab" data-bs-target="#chief_editor" type="button"
+                       role="tab" aria-controls="chief_editor" aria-selected="false">Chief Editor</a>
+                 </li>
             </ul>
 
             <div class="tab-content" id="myTabContent">
 
                 <div class="tab-pane fade show active" id="admin" role="tabpanel" aria-labelledby="admin-tab">
+<<<<<<< HEAD
                     {% with messages = get_flashed_messages() %}
                     {% if messages %}
                         {%- for message in messages %}
@@ -48,9 +51,12 @@
                     {% endif %}
                 {% endwith %}    
                     <h3 class="register-heading">Login as an admin</h3>
+=======
+                    <h3 class="login-heading">Login as an admin</h3>
+>>>>>>> 5520d926ef1291dd949cb54cfa8cca906179be96
                     <form action="/login" method="POST">
                         <div class="row register-form">
-                            <div class="col-md-12">
+                            <div class="col-md-12 col-lg-12 col-xl-12">
 
                                 <div class="mb-3">
                                     <label for="exampleInputEmail1" class="form-label">Email address</label>
@@ -75,7 +81,7 @@
 
 
                 <div class="tab-pane fade show" id="reviewer" role="tabpanel" aria-labelledby="reviewer-tab">
-                    <h3 class="register-heading">Log in as an Reviewer</h3>
+                    <h3 class="login-heading">Log in as an Reviewer</h3>
                     <form action="/login_reviewer" method="POST">
 
                         <div class="row register-form">
@@ -104,7 +110,7 @@
 
 
                 <div class="tab-pane fade show" id="author" role="tabpanel" aria-labelledby="author-tab">
-                    <h3 class="register-heading">Log in as an Author</h3>
+                    <h3 class="login-heading">Log in as an Author</h3>
                     <form action="/login_author" method="POST">
 
                         <div class="row register-form">
@@ -130,7 +136,7 @@
             </div>
 
                 <div class="tab-pane fade show" id="chief_editor" role="tabpanel" aria-labelledby="chief_editor-tab">
-                    <h3 class="register-heading">Log in as a Chief Editor</h3>
+                    <h3 class="login-heading">Log in as a Chief Editor</h3>
                     <form action="/login_chief_editor" method="POST">
 
                         <div class="row register-form">
