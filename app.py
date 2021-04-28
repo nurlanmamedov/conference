@@ -256,7 +256,9 @@ def author_page():
             cur.execute("SELECT sum(rating) as res, GROUP_CONCAT(comment) as comments, count(reviewer_id) as reviewers_count FROM paper_status1 WHERE paper_id=%s", (i['paper_id'],))
             rate_list[i["paper_id"]] = cur.fetchone()
         print("Rate list result  --->", rate_list)
-            
+        
+       
+
         return render_template("author.html", name=name, lastname=lastname, papers=papers, interests=interests, rate_list=rate_list)
     else:
         redirect(url_for("login_author"))
@@ -279,15 +281,17 @@ def rating():
         curl.execute("SELECT * FROM paper_status1")
         status = curl.fetchall()
         if count['cnt'] == 0:
-            curl.execute("INSERT INTO paper_status1 (reviewer_id, paper_id, rating,author_id, comment) VALUES (%s,%s,%s,%s,%s)",
+            print("---------insert------------")
+            curl.execute("INSERT INTO paper_status1 (reviewer_id, paper_id,author_id, rating, comment) VALUES (%s,%s,%s,%s,%s)",
                         (reviewer_id, paper_id,author_id, rating, comment,  ))
         else:
-            curl.execute("UPDATE paper_status1 SET rating = %s, comment=%s WHERE reviewer_id = %s AND paper_id=%s AND author_id=%s",
-                        (rating, comment,reviewer_id,paper_id,author_id, ))
+            print("---------UPDATE------------")
+            curl.execute("UPDATE paper_status1 SET rating = %s, comment=%s WHERE reviewer_id = %s AND paper_id=%s",
+                        (rating, comment,reviewer_id,paper_id, ))
         mysql.connection.commit()
         result = curl.fetchall()
         print("rating --> ", rating, "comment -->", comment,
-              "id -->", paper_id, "reviewer id --> ", reviewer_id)
+              "id -->", paper_id, "reviewer id --> ", reviewer_id, "author-id-->", author_id)
         print("rating result --->", result)
 
         return redirect(url_for('reviewer_page'))
@@ -361,7 +365,18 @@ def reviewer_page():
             papers = session['data']['papers']
             authors = session['data']['authors']
             answer = session['data']['answer']
-        return render_template("reviewers.html", firstname=firstname, papers=papers, authors=authors, answer=answer)
+
+
+        cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cur.execute("SELECT * FROM final_status")
+        final_status = cur.fetchall()
+
+        final_status_result = {}
+        for i in final_status:
+            final_status_result[i['paper_id']] = i['evaluate']
+        print("||||||||||||||||||",final_status)
+        print("||||||||||||||||||",final_status_result)
+        return render_template("reviewers.html", firstname=firstname, papers=papers, authors=authors, answer=answer, final_status=final_status_result)
     else:
         redirect(url_for("login_reviewer"))
 
