@@ -6,12 +6,12 @@
    <div class="col-md-3 register-left">
       <img src="https://image.ibb.co/n7oTvU/logo_white.png" alt="" />
       <h3>Welcome</h3>
-      <h3> Welcome Reviewer : {{ firstname }} </h3>
+      <h3> dear Reviewer : {{ firstname }} </h3>
    </div>
    <div class="col-md-9 register-right">
       <div class="tab-content" id="myTabContent">
          <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-            <h3 class="register-heading">Please select one of this, {{ name }}</h3>
+            <h3 class="register-heading">Select one of these dear {{ name }}</h3>
             <div class="row register-form">
                <div class="col-md-12">
                   <table class="table table-primary table-striped">
@@ -56,10 +56,8 @@
                                                    <p>{{i.title}}</p>
                                                    by <cite title="Source Title">{{i.firstname}}{{i.lastname}}</cite>
                                                 </b>
-                                                <p><b>Abstract</b>{{i.abstract}}</p>
-                                                <p><b>Keywords</b>{{i.keywords}}</p>
-                                                <p><b> Body</b>{{i.body}}</p>
-
+                                                <p><b>Abstract.</b>{{i.abstract}}</p>
+                                                <p><b>  body.</b>{{i.body}}</p>
                                              </blockquote>
                                              <figcaption class="blockquote-footer">
                                              </figcaption>
