@@ -34,7 +34,7 @@
                   </div>
                   <div class="mb-3">
                      <select class="form-select" aria-label="Default select example" name="interest_id">
-                        <option selected>select interest</option>
+                        <option selected>Select interest</option>
                         {% for interest in interests %}
                         <option value="{{ interest.interest_id }}">{{ interest.interest_name }}</option>
                         {% endfor %}
@@ -154,7 +154,7 @@
                         <td>{{ i.email }}</td>
                         <td>
                            <form method="get" action="/direct_page">
-                              <button type="submit">Make Reviewer</button>
+                              <button class="btn btn-light" type="submit">Make Reviewer</button>
                            </form>
                      </tr>
                   </tbody>
@@ -181,7 +181,7 @@
                            <!-- Button trigger modal -->
                            <a type="button" class="btn btn-primary" data-bs-toggle="modal"
                               data-bs-target="#staticBackdrop{{i.paper_id}}">
-                              See More
+                              See Paper
                            </a>
                            <!-- Modal -->
                            <div class="modal fade" id="staticBackdrop{{i.paper_id}}"
@@ -201,8 +201,9 @@
                                                 <p> {{name}} {{lastname}}</p>
                                                 <p>{{i.title}}</p>
                                              </b>
-                                             <p><b>Abstract</b>{{i.abstract}}</p>
-                                             <p><b> Body</b>{{i.body}}</p>
+                                             <p><b>Abstract. </b>{{i.abstract}}</p>
+                                             <p><b>Keywords. </b>{{i.keywords}}</p>                                             
+                                             <p><b> Body. </b>{{i.body}}</p>
                                           </blockquote>
                                           <figcaption class="blockquote-footer">
                                           </figcaption>

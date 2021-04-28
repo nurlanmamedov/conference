@@ -36,6 +36,17 @@
             <div class="tab-content" id="myTabContent">
 
                 <div class="tab-pane fade show active" id="admin" role="tabpanel" aria-labelledby="admin-tab">
+                    {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        {%- for message in messages %}
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <strong>{{message}}</strong>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                          </div>
+
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}    
                     <h3 class="register-heading">Login as an admin</h3>
                     <form action="/login" method="POST">
                         <div class="row register-form">
@@ -43,14 +54,14 @@
 
                                 <div class="mb-3">
                                     <label for="exampleInputEmail1" class="form-label">Email address</label>
-                                    <input type="email" required  class="form-control" placeholder="Email" value="" name="email"
+                                    <input type="email"     class="form-control" placeholder="Email" value="" name="email"
                                         id="exampleInputEmail1" />
                                     <div id="emailHelp" class="form-text">We'll never share your email with anyone else.
                                     </div>
                                 </div>
                                 <div class="mb-3">
                                     <label for="exampleInputPassword1" class="form-label">Password</label>
-                                    <input required  type="password" class="form-control" placeholder="Password" value=""
+                                    <input     type="password" class="form-control" placeholder="Password" value=""
                                         name="password" id="exampleInputPassword1" />
                                 </div>
 
@@ -72,14 +83,14 @@
 
                                 <div class="mb-3">
                                     <label for="exampleInputEmail1" class="form-label">Email address</label>
-                                    <input type="email" required  class="form-control" placeholder="Email" value="" name="email"
+                                    <input type="email"     class="form-control" placeholder="Email" value="" name="email"
                                         id="exampleInputEmail1" />
                                     <div id="emailHelp" class="form-text">We'll never share your email with anyone else.
                                     </div>
                                 </div>
                                 <div class="mb-3">
                                     <label for="exampleInputPassword1" class="form-label">Password</label>
-                                    <input type="password" required  class="form-control" placeholder="Password" value=""
+                                    <input type="password"     class="form-control" placeholder="Password" value=""
                                         name="password" id="exampleInputPassword1" />
                                 </div>
 
@@ -101,14 +112,14 @@
 
                                 <div class="mb-3">
                                     <label for="exampleInputEmail1" class="form-label">Email address</label>
-                                    <input type="email" required  class="form-control" placeholder="Email" value="" name="email"
+                                    <input type="email"     class="form-control" placeholder="Email" value="" name="email"
                                         id="exampleInputEmail1" />
                                     <div id="emailHelp" class="form-text">We'll never share your email with anyone else.
                                     </div>
                                 </div>
                                 <div class="mb-3">
                                     <label for="exampleInputPassword1" class="form-label">Password</label>
-                                    <input type="password" required  class="form-control" placeholder="Password" value=""
+                                    <input type="password"     class="form-control" placeholder="Password" value=""
                                         name="password" id="exampleInputPassword1" />
                                 </div>
 
@@ -127,14 +138,14 @@
 
                                 <div class="mb-3">
                                     <label for="exampleInputEmail1" class="form-label">Email address</label>
-                                    <input type="email" required  class="form-control" placeholder="Email" value="" name="email"
+                                    <input type="email"     class="form-control" placeholder="Email" value="" name="email"
                                         id="exampleInputEmail1" />
                                     <div id="emailHelp" class="form-text">We'll never share your email with anyone else.
                                     </div>
                                 </div>
                                 <div class="mb-3">
                                     <label for="exampleInputPassword1" class="form-label">Password</label>
-                                    <input type="password" required  class="form-control" placeholder="Password" value=""
+                                    <input type="password"     class="form-control" placeholder="Password" value=""
                                         name="password" id="exampleInputPassword1" />
                                 </div>
 
