@@ -1,14 +1,14 @@
-from flask import Flask, render_template, flash, request,flash, redirect, url_for, session
+from flask import Flask, render_template, flash, request, redirect, url_for, session
 from flask_mysqldb import MySQL, MySQLdb
 import bcrypt
 import json
 
 app = Flask(__name__)
 app.secret_key = 'sakoblexeyible'
-#IntegrityError
+
 app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'aydan'  # 'noor'#'aydan'
-app.config['MYSQL_PASSWORD'] = 'a1w2k3i4m5..'# "a1w2k3i4m5.."'noor123'
+app.config['MYSQL_USER'] = 'noor'  # 'noor'#'aydan'
+app.config['MYSQL_PASSWORD'] = 'noor123'# "a1w2k3i4m5.."'noor123'
 app.config['MYSQL_DB'] = 'conference'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 mysql = MySQL(app)
@@ -140,29 +140,15 @@ def register():
         city = request.form['city']
         zip = request.form['zipcode']
         password = request.form['password'].encode('utf-8')
-        hash_password = bcrypt.hashpw(password, bcrypt.gensalt())       
-        password2 = request.form['password2'].encode('utf-8')
         hash_password = bcrypt.hashpw(password, bcrypt.gensalt())
-        if not firstname or not lastname or not phone or not email or not country or not city or not zip or not password or not password2:
-            flash("You can not leave this place empty,Please fill out!!")
-            return redirect('register')
-        elif not len(password)>=8:
-            flash('You must write at least 8 charachters in length')
-            print("huhuhu")
-            return redirect('register')
-    
-
-        elif "@" not in email:
-            flash("You must include '@' here")
-            print("huhuhu")
-            return redirect('register')
 
 
-        elif password != password2:
-            flash("Passwords dont match!")
-            print("huhuhu")
-            return redirect('register')
-    
+
+        password2 = request.form['password2'].encode('utf-8')
+
+        if password != password2:
+            return render_template("match.html")
+        hash_password = bcrypt.hashpw(password, bcrypt.gensalt())
 
         cur = mysql.connection.cursor()
         cur.execute("INSERT INTO authors1 (firstname,lastname, phone, email, country, city,zipcode, password) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)",
@@ -178,10 +164,7 @@ def login():
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password'].encode('utf-8')
-        if not email or not password:
-            flash("You can not leave this place empty,Please fill out!!")
-            return redirect('login')
-        
+
         curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         curl.execute("SELECT * FROM admins WHERE email=%s", (email,))
         user = curl.fetchone()
@@ -206,10 +189,6 @@ def login_author():
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password'].encode('utf-8')
-
-        if not  email or password:
-            flash("You can not leave this place empty,Please fill out!!")
-            return redirect('login')
 
         print("email --> ", password)
         print("password --> ", password)
@@ -277,9 +256,7 @@ def author_page():
             cur.execute("SELECT sum(rating) as res, GROUP_CONCAT(comment) as comments, count(reviewer_id) as reviewers_count FROM paper_status1 WHERE paper_id=%s", (i['paper_id'],))
             rate_list[i["paper_id"]] = cur.fetchone()
         print("Rate list result  --->", rate_list)
-        
-       
-
+            
         return render_template("author.html", name=name, lastname=lastname, papers=papers, interests=interests, rate_list=rate_list)
     else:
         redirect(url_for("login_author"))
@@ -302,17 +279,15 @@ def rating():
         curl.execute("SELECT * FROM paper_status1")
         status = curl.fetchall()
         if count['cnt'] == 0:
-            print("---------insert------------")
-            curl.execute("INSERT INTO paper_status1 (reviewer_id, paper_id,author_id, rating, comment) VALUES (%s,%s,%s,%s,%s)",
+            curl.execute("INSERT INTO paper_status1 (reviewer_id, paper_id, rating,author_id, comment) VALUES (%s,%s,%s,%s,%s)",
                         (reviewer_id, paper_id,author_id, rating, comment,  ))
         else:
-            print("---------UPDATE------------")
-            curl.execute("UPDATE paper_status1 SET rating = %s, comment=%s WHERE reviewer_id = %s AND paper_id=%s",
-                        (rating, comment,reviewer_id,paper_id, ))
+            curl.execute("UPDATE paper_status1 SET rating = %s, comment=%s WHERE reviewer_id = %s AND paper_id=%s AND author_id=%s",
+                        (rating, comment,reviewer_id,paper_id,author_id, ))
         mysql.connection.commit()
         result = curl.fetchall()
         print("rating --> ", rating, "comment -->", comment,
-              "id -->", paper_id, "reviewer id --> ", reviewer_id, "author-id-->", author_id)
+              "id -->", paper_id, "reviewer id --> ", reviewer_id)
         print("rating result --->", result)
 
         return redirect(url_for('reviewer_page'))
@@ -324,7 +299,6 @@ def login_reviewer():
     if session.get('rewiever_id'):
         return redirect(url_for('reviewer_page'))
     if request.method == 'POST':
-        print('yess')
         email = request.form['email']
         password = request.form['password'].encode('utf-8')
         curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
@@ -332,47 +306,47 @@ def login_reviewer():
         user = curl.fetchone()
         curl.close()
         print("beafore if ---> ", session)
+        try:
+            if len(user) > 0:
+                if bcrypt.hashpw(password, user["password"].encode('utf-8')) == user["password"].encode('utf-8'):
+                    print("after if ---> ", session)
+                    session['name'] = user['firstname']
+                    session['lastname'] = user['lastname']
+                    session['email'] = user['email']
+                    session['reviewer_id'] = user['reviewer_id']
+                    session['interest_id'] = user['interest_id']
 
-        if len(user) > 0:
-            if bcrypt.hashpw(password, user["password"].encode('utf-8')) == user["password"].encode('utf-8'):
-                print("after if ---> ", session)
-                session['name'] = user['firstname']
-                session['lastname'] = user['lastname']
-                session['email'] = user['email']
-                session['reviewer_id'] = user['reviewer_id']
-                session['interest_id'] = user['interest_id']
+                    rew_id = session['reviewer_id']
+                    int_id = session['interest_id']
 
-                rew_id = session['reviewer_id']
-                int_id = session['interest_id']
+                    print("+_+_+_+_+_+_+_+_+_+_+", rew_id, int_id)
+                    curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+                    curl.execute("SELECT * FROM papers1")
+                    papers = curl.fetchall()
+                    # print("Papers ---->", papers)
 
-                print("+_+_+_+_+_+_+_+_+_+_+", rew_id, int_id)
-                curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-                curl.execute("SELECT * FROM papers1")
-                papers = curl.fetchall()
-                # print("Papers ---->", papers)
+                    curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+                    curl.execute("SELECT * FROM authors1")
+                    curl.execute("SELECT * FROM papers1")
+                    authors = curl.fetchall()
 
-                curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-                curl.execute("SELECT * FROM authors1")
-                curl.execute("SELECT * FROM papers1")
-                authors = curl.fetchall()
+                    curl.execute("SELECT Distinct papers1.paper_id, papers1.abstract, authors1.firstname,authors1.lastname,authors1.author_id, papers1.title, papers1.body, interests1.interest_name FROM papers1 INNER JOIN authors1 INNER JOIN reviewers1 INNER JOIN interests1 ON (papers1.author_id = authors1.author_id AND papers1.interest_id = %s AND reviewers1.reviewer_id=%s AND interests1.interest_id=%s)", (int_id, rew_id, int_id,))
+                    answer = curl.fetchall()
+                    print(
+                        "answer ----++++++++++++_________++++++++++++++++++----------------+++++++++++++++++++", answer)
 
-                curl.execute("SELECT Distinct papers1.paper_id, papers1.abstract, authors1.firstname,authors1.lastname,authors1.author_id, papers1.title, papers1.body, interests1.interest_name FROM papers1 INNER JOIN authors1 INNER JOIN reviewers1 INNER JOIN interests1 ON (papers1.author_id = authors1.author_id AND papers1.interest_id = %s AND reviewers1.reviewer_id=%s AND interests1.interest_id=%s)", (int_id, rew_id, int_id,))
-                answer = curl.fetchall()
-                print(
-                    "answer ----++++++++++++_________++++++++++++++++++----------------+++++++++++++++++++", answer)
-
-                data = {
-                    "firstname": user['lastname'],
-                    "papers": papers,
-                    "authors": authors,
-                    "answer": answer
-                }
-                session['data'] = data
-                # return render_template("reviewers.html", firstname=user['lastname'], papers=papers, authors=authors, answer=answer)
-                return redirect(url_for('reviewer_page'))
-            else:
-                return render_template('error.html')
-        else:
+                    data = {
+                        "firstname": user['lastname'],
+                        "papers": papers,
+                        "authors": authors,
+                        "answer": answer
+                    }
+                    session['data'] = data
+                    # return render_template("reviewers.html", firstname=user['lastname'], papers=papers, authors=authors, answer=answer)
+                    return redirect(url_for('reviewer_page'))
+                else:
+                    return render_template('error.html')
+        except:
                 return render_template('notfound.html')
     else:
         print("else login if ---> ", session)
@@ -387,18 +361,7 @@ def reviewer_page():
             papers = session['data']['papers']
             authors = session['data']['authors']
             answer = session['data']['answer']
-
-
-        cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        cur.execute("SELECT * FROM final_status")
-        final_status = cur.fetchall()
-
-        final_status_result = {}
-        for i in final_status:
-            final_status_result[i['paper_id']] = i['evaluate']
-        print("||||||||||||||||||",final_status)
-        print("||||||||||||||||||",final_status_result)
-        return render_template("reviewers.html", firstname=firstname, papers=papers, authors=authors, answer=answer, final_status=final_status_result)
+        return render_template("reviewers.html", firstname=firstname, papers=papers, authors=authors, answer=answer)
     else:
         redirect(url_for("login_reviewer"))
 
@@ -420,7 +383,7 @@ def submit_paper():  # database name is papers
                     (title, interest_id, author_id, keywords, abstract, body, ))
         mysql.connection.commit()
 
-        return render_template("paper_submit.html")
+        return redirect(url_for('author_page'))
 
 
 @app.route('/papers', methods=["GET", "POST"])

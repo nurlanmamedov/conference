@@ -67,9 +67,9 @@
                                                             <p> {{name}} {{lastname}}</p>
                                                             <p>{{i.title}}</p>
                                                          </b>
-                                                         <p><b>Abstract. </b>{{i.abstract}}</p>
-                                                      <p> <b>Keywords.</b>   {{i.keywords}}</p>
-                                                         <p><b> Body. </b>{{i.body}}</p>
+                                                         <p><b>Abstract.</b>{{i.abstract}}</p>
+                                                         <p>{{i.keywords}}</p>
+                                                         <p><b> body.</b>{{i.body}}</p>
                                                       </blockquote>
                                                       <figcaption class="blockquote-footer">
                                                       </figcaption>
@@ -160,7 +160,7 @@
                                           data-bs-toggle="modal" data-bs-target="#updatePaper{{i.paper_id}}">
                                           Modify
                                        </a>
-                                       </td>
+
                                        <div class="modal fade" id="updatePaper{{i.paper_id}}" data-bs-backdrop="static"
                                           data-bs-keyboard="false" aria-labelledby="staticBackdropLabel"
                                           aria-hidden="true">
@@ -222,7 +222,7 @@
                                        </div>
                         </div>
 
-                      
+                        </td>
                         </tr>
                         {% endfor %}
                         </tbody>

@@ -6,7 +6,7 @@
       <div class="col-md-3 register-left">
          <img src="https://image.ibb.co/n7oTvU/logo_white.png" alt="" />
          <h3>Welcome</h3>
-         <h1>to Chief Editor Page {{ name }} </h1>
+         <h1>to shief editor page {{ name }} </h1>
       </div>
       <div class="col-md-9 register-right">
        <!--    <ul class="nav nav-tab" style="width: 130pt;" id="myTab" role="tablist">
@@ -113,11 +113,7 @@
                                           </div>
                                        </div>
                                     </td>
-                                    <td>
-                                       {% for comment in i['comments'].split(',') %}
-                                       <p> {{comment}} </p>
-                                       {% endfor %}
-                                    </td>
+                                    <td>{{i.comments}}</td>
                                     </td>
                                  </tr>
                                  {% endfor %}
