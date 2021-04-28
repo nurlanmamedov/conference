@@ -28,7 +28,7 @@
                         aria-describedby="firstnameHelp">
                   </div>
                   <div class="mb-3">
-                     <label for="exampleInputEmail1" class="form-label">lastname</label>
+                     <label for="exampleInputEmail1" class="form-label">Lastname</label>
                      <input type="form-text" required  class="form-control form-control-sm" name="lastname" id="lastname"
                         aria-describedby="lastnameHelp">
                   </div>
@@ -90,7 +90,7 @@
                         <div class="modal-dialog">
                            <div class="modal-content">
                               <div class="modal-header">
-                                 <h5 class="modal-title" id="exampleModalLabel">Update reviewer</h5>
+                                 <h5 class="modal-title" id="exampleModalLabel">Update Reviewer</h5>
                                  <button type="button" class="btn-close" data-bs-dismiss="modal"
                                     aria-label="Close"></button>
                               </div>
@@ -102,7 +102,7 @@
                                           id="firstname" aria-describedby="firstnameHelp" value="{{i.firstname}}">
                                     </div>
                                     <div class="mb-3">
-                                       <label for="exampleInputEmail1" class="form-label">lastname</label>
+                                       <label for="exampleInputEmail1" class="form-label">Lastname</label>
                                        <input type="form-text" required  class="form-control form-control-sm" name="lastname"
                                           id="lastname" aria-describedby="lastnameHelp" value="{{i.lastname}}">
                                     </div>
@@ -154,7 +154,7 @@
                         <td>{{ i.email }}</td>
                         <td>
                            <form method="get" action="/direct_page">
-                              <button type="submit">make reviewer</button>
+                              <button type="submit">Make Reviewer</button>
                            </form>
                      </tr>
                   </tbody>
@@ -167,9 +167,9 @@
                      <tr>
                         <th scope="col">#</th>
                         <th scope="col">Author's fullname</th>
-                        <th scope="col">All papers</th>
+                        <th scope="col">All Papers</th>
         
-                        <th scope="col">Status(accepted/rejected)</th>
+                        <th scope="col">Status of Paper</th>
                      </tr>
                   </thead>
                   <tbody>
@@ -201,8 +201,8 @@
                                                 <p> {{name}} {{lastname}}</p>
                                                 <p>{{i.title}}</p>
                                              </b>
-                                             <p><b>Abstract.</b>{{i.abstract}}</p>
-                                             <p><b> body.</b>{{i.body}}</p>
+                                             <p><b>Abstract</b>{{i.abstract}}</p>
+                                             <p><b> Body</b>{{i.body}}</p>
                                           </blockquote>
                                           <figcaption class="blockquote-footer">
                                           </figcaption>
