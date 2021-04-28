@@ -2,6 +2,7 @@
 {% block title %} Reviewers page {% endblock %}
 {% block content %}
 <div class="container register">
+<<<<<<< HEAD
 <div class="row">
    <div class="col-md-3 register-left">
       <img src="https://image.ibb.co/n7oTvU/logo_white.png" alt="" />
@@ -67,79 +68,172 @@
                                        </div>
                                        <div class="modal-footer">
                                           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+=======
+   <div class="row">
+      <div class="col-md-3 register-left">
+         <img src="https://image.ibb.co/n7oTvU/logo_white.png" alt="" />
+         <h3>Welcome</h3>
+         <h3> dear Reviewer : {{ firstname }} </h3>
+      </div>
+      <div class="col-md-9 register-right">
+         <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+               <h3 class="register-heading">Select one of these dear {{ name }}</h3>
+               <div class="row register-form">
+                  <div class="col-md-12">
+                     <table class="table table-primary table-striped">
+                        <thead>
+                           <tr>
+                              <th scope="col">Firstname</th>
+                              <th scope="col">Lastname</th>
+                              <th scope="col">Title</th>
+                              <th scope="col">Interests</th>
+                              <th scope="col">See more</th>
+                              <th scope="col">Status</th>
+                              <th scope="col">Evaluate</th>
+                           </tr>
+                        </thead>
+                        <tbody>
+                           {% for i in answer %}
+                           <tr>
+                              <td>{{i.firstname}}</td>
+                              <td> {{i.lastname}}</td>
+                              <td>{{ i.title }}</td>
+                              <td>{{ i.interest_name }}</td>
+                              <td>
+                                 <!-- Button trigger modal -->
+                                 <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                    data-bs-target="#moreModal{{i.paper_id}}">
+                                    more
+                                 </button>
+                                 <!-- Modal -->
+                                 <div class="modal fade" id="moreModal{{i.paper_id}}" data-bs-backdrop="static"
+                                    data-bs-keyboard="false" tabindex="-1" aria-labelledby="moreLabel"
+                                    aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                                       <div class="modal-content">
+                                          <div class="modal-header">
+                                             <h5 class="modal-title" id="moreLabel"><b>{{i.title}}</b></h5>
+                                             <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                          </div>
+                                          <div class="modal-body">
+                                             <figure class="text-center">
+                                                <blockquote class="blockquote">
+                                                   <b>
+                                                      <p>{{i.title}}</p>
+                                                      by <cite title="Source Title">{{i.firstname}}{{i.lastname}}</cite>
+                                                   </b>
+                                                   <p><b>Abstract.</b>{{i.abstract}}</p>
+                                                   <p><b> body.</b>{{i.body}}</p>
+                                                </blockquote>
+                                                <figcaption class="blockquote-footer">
+                                                </figcaption>
+                                             </figure>
+                                          </div>
+                                          <div class="modal-footer">
+                                             <button type="button" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">Close</button>
+                                          </div>
+>>>>>>> 5520d926ef1291dd949cb54cfa8cca906179be96
                                        </div>
                                     </div>
                                  </div>
-                              </div>
-                           </td>
-                           <td>Pending...</td>
-                           <td>
-                              <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                 data-bs-target="#ratingModal{{i.paper_id}}">
-                              rate
-                              </button>
-                              <!-- Modal -->
-                              <div class="modal fade" id="ratingModal{{i.paper_id}}" data-bs-backdrop="static" data-bs-keyboard="false"
-                                 tabindex="-1" aria-labelledby="ratingModalLabel{{i.paper_id}}" aria-hidden="true">
-                                 <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                                    <div class="modal-content">
-                                       <div class="modal-header">
-                                          <h5 class="modal-title" id="ratingModalLabel{{i.paper_id}}"><b></b></h5>
-                                          <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                             aria-label="Close"></button>
-                                       </div>
-                                       <div class="modal-body">
-                                          
-                                          <div class="container d-flex justify-content-center">
-                                             <div >
+                              </td>
+                              <td>Pending...</td>
+                              <td>
+                                 {% if final_status[i.paper_id] and final_status[i.paper_id] == 'accept' %}
+                                    <span class="text-success"> Accepted</span>
+                                 {% elif final_status[i.paper_id] and final_status[i.paper_id] == 'reject' %}
+                                    <span class="text-danger"> Rejected </span>
+                                 {% else %}
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                       data-bs-target="#ratingModal{{i.paper_id}}">
+                                       rate
+                                    </button>
+                                 {% endif %}
+
+                                 <!-- Modal -->
+                                 <div class="modal fade" id="ratingModal{{i.paper_id}}" data-bs-backdrop="static"
+                                    data-bs-keyboard="false" tabindex="-1"
+                                    aria-labelledby="ratingModalLabel{{i.paper_id}}" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                                       <div class="modal-content">
+                                          <div class="modal-header">
+                                             <h5 class="modal-title" id="ratingModalLabel{{i.paper_id}}"><b></b></h5>
+                                             <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                          </div>
+                                          <div class="modal-body">
+
+                                             <div class="container d-flex justify-content-center">
                                                 <div>
-                                                   <div class="stars row" style="width: auto; overflow: hidden;">
-                                                      <form action="/rating" method="POST">
-                                                         <div class="form-floating mb-2 col-md-12 col-12">
-                                                            <textarea  name="comment" class="form-control" placeholder="Leave a comment here" id="floatingTextarea{{i.paper_id}}" style="height: 200px; max-height: 200px;min-height: 200px;"></textarea>
-                                                            <label for="floatingTextarea{{i.paper_id}}" >Comments {{i.author_id}}</label>
-                                                         </div>
-                                                         <div class="col-md-12 col-12" >
-                                                         <input class="star star-5" id="star-5{{i.paper_id}}" type="radio" name="star" value="5" /> 
-                                                         <label class="star star-5" for="star-5{{i.paper_id}}"></label>
-                                                         <input class="star star-4" id="star-4{{i.paper_id}}" type="radio" name="star" value="4" />
-                                                         <label class="star star-4" for="star-4{{i.paper_id}}"></label> 
-                                                         <input class="star star-3" id="star-3{{i.paper_id}}" type="radio" name="star" value="3"/> 
-                                                         <label class="star star-3" for="star-3{{i.paper_id}}"></label>
-                                                         <input class="star star-2" id="star-2{{i.paper_id}}" type="radio" name="star" value="2"/> 
-                                                         <label class="star star-2" for="star-2{{i.paper_id}}"></label> 
-                                                         <input class="star star-1 form-control is-invalid" id="star-1{{i.paper_id}}" type="radio" name="star" value="1" checked required/>
-                                                         <label class="star star-1" for="star-1{{i.paper_id}}"></label>
-                                                         
+                                                   <div>
+                                                      <div class="stars row" style="width: auto; overflow: hidden;">
+                                                         <form action="/rating" method="POST">
+                                                            <div class="form-floating mb-2 col-md-12 col-12">
+                                                               <textarea name="comment" class="form-control"
+                                                                  placeholder="Leave a comment here"
+                                                                  id="floatingTextarea{{i.paper_id}}"
+                                                                  style="height: 200px; max-height: 200px;min-height: 200px;"></textarea>
+                                                               <label for="floatingTextarea{{i.paper_id}}">Comments
+                                                                  {{i.author_id}}</label>
+                                                            </div>
+                                                            <div class="col-md-12 col-12">
+                                                               <input class="star star-5" id="star-5{{i.paper_id}}"
+                                                                  type="radio" name="star" value="5" />
+                                                               <label class="star star-5"
+                                                                  for="star-5{{i.paper_id}}"></label>
+                                                               <input class="star star-4" id="star-4{{i.paper_id}}"
+                                                                  type="radio" name="star" value="4" />
+                                                               <label class="star star-4"
+                                                                  for="star-4{{i.paper_id}}"></label>
+                                                               <input class="star star-3" id="star-3{{i.paper_id}}"
+                                                                  type="radio" name="star" value="3" />
+                                                               <label class="star star-3"
+                                                                  for="star-3{{i.paper_id}}"></label>
+                                                               <input class="star star-2" id="star-2{{i.paper_id}}"
+                                                                  type="radio" name="star" value="2" />
+                                                               <label class="star star-2"
+                                                                  for="star-2{{i.paper_id}}"></label>
+                                                               <input class="star star-1 form-control is-invalid"
+                                                                  id="star-1{{i.paper_id}}" type="radio" name="star"
+                                                                  value="1" checked required />
+                                                               <label class="star star-1"
+                                                                  for="star-1{{i.paper_id}}"></label>
 
+
+                                                            </div>
+
+                                                            <input style="display: none;" name="author_id"
+                                                               value="{{i.author_id}}" />
+                                                            <button type="button" class="btn btn-secondary"
+                                                               data-bs-dismiss="modal">Close</button>
+                                                            <button class="btn btn-primary" name="submit_b"
+                                                               value={{i.paper_id}}>Save</button>
+                                                         </form>
                                                       </div>
-
-                                                      <input style="display: none;" name="author_id" value="{{i.author_id}}" />
-                                                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                         <button class="btn btn-primary" name="submit_b" value={{i.paper_id}}>Save</button>
-                                                      </form>
                                                    </div>
                                                 </div>
                                              </div>
                                           </div>
-                                       </div>
-                                       <!-- <div class="modal-footer">
+                                          <!-- <div class="modal-footer">
                                           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                        </div> -->
+                                       </div>
                                     </div>
                                  </div>
-                              </div>
-                           </td>
-                     </tbody>
-                     {% endfor %}
-                     </tr>
-                     </tbody>
-                  </table>
-                  <!-- <input type="submit" class="btnRegister"  value="Register"/> -->
+                              </td>
+                        </tbody>
+                        {% endfor %}
+                        </tr>
+                        </tbody>
+                     </table>
+                     <!-- <input type="submit" class="btnRegister"  value="Register"/> -->
+                  </div>
                </div>
             </div>
          </div>
       </div>
    </div>
-</div>
-{% endblock %}
+   {% endblock %}
