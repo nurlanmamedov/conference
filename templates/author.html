@@ -28,7 +28,7 @@
                            <table class="table table-primary table-striped">
                               <thead>
                                  <tr>
-                                    <th scope="col">#</th>
+                                    <th scope="col">Paper id</th>
                                     <th scope="col">Title</th>
                                     <th scope="col">interests</th>
                                     <th scope="col">see more</th>
@@ -40,8 +40,8 @@
                               <tbody>
                                  {% for i in papers %}
                                  <tr>
-                                    <th scope="row">{{ i.index }}</th>
-                                    <td>{{i.paper_id}}  {{ i.title }}</td>
+                                    <th scope="row">{{i.paper_id}}  </th>
+                                    <td>{{ i.title }}</td>
                                     <td>{{ i.interest_name }}</td>
                                     <td>
                                        <!-- Button trigger modal -->
@@ -68,6 +68,7 @@
                                                             <p>{{i.title}}</p>
                                                          </b>
                                                          <p><b>Abstract.</b>{{i.abstract}}</p>
+                                                         <p>{{i.keywords}}</p>
                                                          <p><b> body.</b>{{i.body}}</p>
                                                       </blockquote>
                                                       <figcaption class="blockquote-footer">
@@ -237,7 +238,7 @@
             <div class="col-md-9" style="margin: 20% 10%;">
                <form action="/submit_paper" method="POST" class="form-inline">
                   <div class="form-group">
-                     <label for="titleId">keywords</label>
+                     <label for="titleId">Title</label>
                      <input type="text" required class="form-control" id="titleId" placeholder="Title" name="title">
                   </div>
                   <div class="form-group">
@@ -256,12 +257,12 @@
                   <div class="form-group">
                      <label for="abstractId">Abstract</label>
                      <textarea class="form-control" id="abstractId" rows="7" name="abstract"
-                        placeholder="Your abstract shoud not exceed 300word"></textarea>
+                        placeholder="Your abstract should not exceed 300 word"></textarea>
                   </div>
                   <div class="form-group">
-                     <label for="bodyId">Example textarea</label>
+                     <label for="bodyId">Body</label>
                      <textarea class="form-control" id="bodyId" rows="10" cols="50"
-                        placeholder="Your body shoud not exceed 5000word" name="body"></textarea>
+                        placeholder="Your body should not exceed 5000 word" name="body"></textarea>
                   </div>
                   <button type="submit" class="btn btn-primary mb-2"
                      style="margin-bottom: 10px; margin-top: 10px; float: right;">Add</button>
