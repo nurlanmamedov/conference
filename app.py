@@ -247,6 +247,21 @@ def login_author():
 
 @app.route('/author_page', methods=["GET", "POST"])
 def author_page():
+
+    if request.args.get("title"):
+        title = request.args.get("title")
+        body = request.args.get("body")
+        keywords = request.args.get("keywords")
+        abstract = request.args.get("abstract")
+        paper_id = request.args.get("paperID")
+        curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        sql = ("UPDATE papers1 SET title=%s, keywords=%s, body=%s, abstract=%s WHERE paper_id = %s")
+        val = (title,keywords,body,abstract, paper_id)
+        curl.execute(sql, val)
+        # curl.close()
+        mysql.connection.commit()
+        return redirect(url_for('author_page'))
+
     if session.get('author_id') != None:
         if session['author_data']:
             name = session['author_data']['name']
@@ -271,6 +286,31 @@ def author_page():
         return render_template("author.html", name=name, lastname=lastname, papers=papers, interests=interests, rate_list=rate_list)
     else:
         redirect(url_for("login_author"))
+
+@app.route('/update_papers', methods=['GET', 'POST'])
+def update_papers():
+    if request.method == 'GET':
+        return render_template("author.html")
+    else:
+        title = request.form['title']
+        keywords = request.form['keywords']
+        body = request.form['body']
+        abstract = request.form['abstract']
+        paperID = request.form['paperID']
+        
+        print("PAPER id ------", paperID, "----------------------------")
+        
+        print("457------->>>>>>>", title,keywords,body,abstract)
+        curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+            # curl.execute("SELECT * from rewievers WHERE id=%s",(id,))
+
+        sql = ("UPDATE papers1 SET title=%s, keywords=%s, body=%s, abstract=%s WHERE paper_id = %s")
+        val = (title,keywords,body,abstract, paperID)
+        curl.execute(sql, val)
+        # curl.close()
+        mysql.connection.commit()
+        # return render_template('author.html')
+        return redirect(url_for('author_page'))
 
 
 @app.route('/rating', methods=["GET", "POST"])
@@ -493,30 +533,6 @@ def delete_paper(id):
     
     
     
-@app.route('/update_papers', methods=['GET', 'POST'])
-def update_papers():
-    if request.method == 'GET':
-        return render_template("author.html")
-    else:
-        title = request.form['title']
-        keywords = request.form['keywords']
-        body = request.form['body']
-        abstract = request.form['abstract']
-        paperID = request.form['paperID']
-        
-        print("PAPER id ------", paperID, "----------------------------")
-        return
-        print("457------->>>>>>>", title,keywords,body,abstract)
-        curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-            # curl.execute("SELECT * from rewievers WHERE id=%s",(id,))
-
-        sql = ("UPDATE papers1 SET title=%s, keywords=%s, body=%s, abstract=%s WHERE paper_id = %s")
-        val = (title,keywords,body,abstract, paperID)
-        curl.execute(sql, val)
-        # curl.close()
-        mysql.connection.commit()
-        # return render_template('author.html')
-        return redirect(url_for('author_page'))
 
 
 
