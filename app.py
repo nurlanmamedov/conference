@@ -601,9 +601,19 @@ def chief_editor_page():
         for k,v in final_status.items():
             temp[int(k)] = v
         
+        curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        curl.execute("SELECT * from  papers1")
+        papers = curl.fetchall()
+        mysql.connection.commit()
+
+        
+        papers_data = {}
+        for i in papers:
+            papers_data[i['paper_id']] = i                
+        print("papersss ___>>>>>>>>>>>>", papers_data)
         print("session data -----+++++", data)
         print("session data -----+++++", final_status)
-        return render_template("chief_editor.html", firstname=firstname, data=data, final_status=temp )
+        return render_template("chief_editor.html", firstname=firstname, data=data, final_status=temp, papers_data=papers_data )
     else:
         redirect(url_for("login_chief_editor"))
 
