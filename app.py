@@ -7,13 +7,13 @@ app = Flask(__name__)
 app.secret_key = 'sakoblexeyible'
 
 app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'aydan'  # 'noor'#'aydan'
-app.config['MYSQL_PASSWORD'] = 'a1w2k3i4m5..'# "a1w2k3i4m5.."'noor123'
+app.config['MYSQL_USER'] = 'noor'  # 'noor'#'aydan'
+app.config['MYSQL_PASSWORD'] = 'noor123'# "a1w2k3i4m5.."'noor123'
 app.config['MYSQL_DB'] = 'conference'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 mysql = MySQL(app)
 
-   
+
 @app.route('/', methods=["GET", "POST"])
 def home():
     if request.method == "GET":
@@ -23,8 +23,17 @@ def home():
         print("All rewievers --> ", rewievers)
         curl.execute("SELECT * FROM authors1 ")
         authors = curl.fetchall()
-        curl.execute("SELECT * FROM papers1 ")
+        curl.execute("SELECT Distinct firstname, lastname,  final_status.*  from conference.final_status  INNER JOIN authors1 ON (authors1.author_id = final_status.author_id ) WHERE evaluate is not null")
         papers = curl.fetchall()
+
+        curl.execute("SELECT * FROM papers1 ")
+        papers1 = curl.fetchall()
+        papers_result = {}
+        for i in papers1:
+            papers_result[i['paper_id']] = i
+
+        print("papersss-->>>>>", papers)
+
 
         # curl.execute("SELECT Distinct papers1.paper_id, papers1.abstract, authors1.firstname,authors1.lastname, papers1.title, papers1.body, interests1.interest_name FROM papers1 INNER JOIN authors1 INNER JOIN reviewers1 INNER JOIN interests1 ON (papers1.author_id = authors1.author_id AND papers1.interest_id = %s AND reviewers1.reviewer_id=%s AND interests1.interest_id=%s)", (int_id, rew_id, int_id,))
         # test_papers = curl.fetchall();
@@ -41,7 +50,7 @@ def home():
 
         curl.close()
 
-        return render_template("home.html", data=rewievers, authors=authors, papers=papers, chief_editor=chief_editor, interests=interests)
+        return render_template("home.html", data=rewievers, authors=authors, papers=papers, chief_editor=chief_editor, interests=interests, papers1=papers1, papers_result=papers_result)
     else:
         print("alalalal")
         return render_template("home.html")
@@ -141,11 +150,8 @@ def register():
         zip = request.form['zipcode']
         password = request.form['password'].encode('utf-8')
         hash_password = bcrypt.hashpw(password, bcrypt.gensalt())
-
-
-
         password2 = request.form['password2'].encode('utf-8')
-
+        
         if password != password2:
             return render_template("match.html")
         hash_password = bcrypt.hashpw(password, bcrypt.gensalt())
@@ -164,7 +170,6 @@ def login():
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password'].encode('utf-8')
-
         curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         curl.execute("SELECT * FROM admins WHERE email=%s", (email,))
         user = curl.fetchone()
@@ -238,6 +243,20 @@ def login_author():
 
 @app.route('/author_page', methods=["GET", "POST"])
 def author_page():
+    if request.args.get("title"):
+        title = request.args.get("title")
+        body = request.args.get("body")
+        keywords = request.args.get("keywords")
+        abstract = request.args.get("abstract")
+        paper_id = request.args.get("paperID")
+        curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        sql = ("UPDATE papers1 SET title=%s, keywords=%s, body=%s, abstract=%s WHERE paper_id = %s")
+        val = (title,keywords,body,abstract, paper_id)
+        curl.execute(sql, val)
+        # curl.close()
+        mysql.connection.commit()
+        return redirect(url_for('author_page'))
+
     if session.get('author_id') != None:
         if session['author_data']:
             name = session['author_data']['name']
@@ -256,10 +275,37 @@ def author_page():
             cur.execute("SELECT sum(rating) as res, GROUP_CONCAT(comment) as comments, count(reviewer_id) as reviewers_count FROM paper_status1 WHERE paper_id=%s", (i['paper_id'],))
             rate_list[i["paper_id"]] = cur.fetchone()
         print("Rate list result  --->", rate_list)
-            
+        
+       
+
         return render_template("author.html", name=name, lastname=lastname, papers=papers, interests=interests, rate_list=rate_list)
     else:
         redirect(url_for("login_author"))
+
+@app.route('/update_papers', methods=['GET', 'POST'])
+def update_papers():
+    if request.method == 'GET':
+        return render_template("author.html")
+    else:
+        title = request.form['title']
+        keywords = request.form['keywords']
+        body = request.form['body']
+        abstract = request.form['abstract']
+        paperID = request.form['paperID']
+        
+        print("PAPER id ------", paperID, "----------------------------")
+        
+        print("457------->>>>>>>", title,keywords,body,abstract)
+        curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+            # curl.execute("SELECT * from rewievers WHERE id=%s",(id,))
+
+        sql = ("UPDATE papers1 SET title=%s, keywords=%s, body=%s, abstract=%s WHERE paper_id = %s")
+        val = (title,keywords,body,abstract, paperID)
+        curl.execute(sql, val)
+        # curl.close()
+        mysql.connection.commit()
+        # return render_template('author.html')
+        return redirect(url_for('author_page'))
 
 
 @app.route('/rating', methods=["GET", "POST"])
@@ -279,15 +325,17 @@ def rating():
         curl.execute("SELECT * FROM paper_status1")
         status = curl.fetchall()
         if count['cnt'] == 0:
-            curl.execute("INSERT INTO paper_status1 (reviewer_id, paper_id, rating,author_id, comment) VALUES (%s,%s,%s,%s,%s)",
+            print("---------insert------------")
+            curl.execute("INSERT INTO paper_status1 (reviewer_id, paper_id,author_id, rating, comment) VALUES (%s,%s,%s,%s,%s)",
                         (reviewer_id, paper_id,author_id, rating, comment,  ))
         else:
-            curl.execute("UPDATE paper_status1 SET rating = %s, comment=%s WHERE reviewer_id = %s AND paper_id=%s AND author_id=%s",
-                        (rating, comment,reviewer_id,paper_id,author_id, ))
+            print("---------UPDATE------------")
+            curl.execute("UPDATE paper_status1 SET rating = %s, comment=%s WHERE reviewer_id = %s AND paper_id=%s",
+                        (rating, comment,reviewer_id,paper_id, ))
         mysql.connection.commit()
         result = curl.fetchall()
         print("rating --> ", rating, "comment -->", comment,
-              "id -->", paper_id, "reviewer id --> ", reviewer_id)
+              "id -->", paper_id, "reviewer id --> ", reviewer_id, "author-id-->", author_id)
         print("rating result --->", result)
 
         return redirect(url_for('reviewer_page'))
@@ -361,7 +409,18 @@ def reviewer_page():
             papers = session['data']['papers']
             authors = session['data']['authors']
             answer = session['data']['answer']
-        return render_template("reviewers.html", firstname=firstname, papers=papers, authors=authors, answer=answer)
+
+
+        cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cur.execute("SELECT * FROM final_status")
+        final_status = cur.fetchall()
+
+        final_status_result = {}
+        for i in final_status:
+            final_status_result[i['paper_id']] = i['evaluate']
+        print("||||||||||||||||||",final_status)
+        print("||||||||||||||||||",final_status_result)
+        return render_template("reviewers.html", firstname=firstname, papers=papers, authors=authors, answer=answer, final_status=final_status_result)
     else:
         redirect(url_for("login_reviewer"))
 
@@ -469,30 +528,6 @@ def delete_paper(id):
     
     
     
-@app.route('/update_papers', methods=['GET', 'POST'])
-def update_papers():
-    if request.method == 'GET':
-        return render_template("author.html")
-    else:
-        title = request.form['title']
-        keywords = request.form['keywords']
-        body = request.form['body']
-        abstract = request.form['abstract']
-        paperID = request.form['paperID']
-        
-        print("PAPER id ------", paperID, "----------------------------")
-        return
-        print("457------->>>>>>>", title,keywords,body,abstract)
-        curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-            # curl.execute("SELECT * from rewievers WHERE id=%s",(id,))
-
-        sql = ("UPDATE papers1 SET title=%s, keywords=%s, body=%s, abstract=%s WHERE paper_id = %s")
-        val = (title,keywords,body,abstract, paperID)
-        curl.execute(sql, val)
-        # curl.close()
-        mysql.connection.commit()
-        # return render_template('author.html')
-        return redirect(url_for('author_page'))
 
 
 

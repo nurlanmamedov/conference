@@ -40,7 +40,7 @@
                               <tbody>
                                  {% for i in papers %}
                                  <tr>
-                                    <th scope="row">{{i.paper_id}}  </th>
+                                    <th scope="row">{{i.paper_id}} </th>
                                     <td>{{ i.title }}</td>
                                     <td>{{ i.interest_name }}</td>
                                     <td>
@@ -125,7 +125,8 @@
                                                             </td>
                                                             {% endif %}
                                                             <td>
-                                                               {% for comment in (rate_list[i.paper_id]['comments']).split(",") %}
+                                                               {% for comment in
+                                                               (rate_list[i.paper_id]['comments']).split(",") %}
                                                                <p> {{comment}} </p>
                                                                {% endfor %}
                                                             </td>
@@ -160,7 +161,7 @@
                                           data-bs-toggle="modal" data-bs-target="#updatePaper{{i.paper_id}}">
                                           Modify
                                        </a>
-
+                                    </td>
                                        <div class="modal fade" id="updatePaper{{i.paper_id}}" data-bs-backdrop="static"
                                           data-bs-keyboard="false" aria-labelledby="staticBackdropLabel"
                                           aria-hidden="true">

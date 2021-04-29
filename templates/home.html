@@ -176,12 +176,13 @@
                      {% for i in papers %}
                      <tr>
                         <th scope="row">{{ i.paper_id }}</th>
-                        <td>name,lastname</td>
+                        <td>{{i.firstname}} {{i.lastname}}</td>
                         <td>
                            <!-- Button trigger modal -->
                            <a type="button" class="btn btn-primary" data-bs-toggle="modal"
                               data-bs-target="#staticBackdrop{{i.paper_id}}">
-                              See More
+                              {{papers_result[i.paper_id].title}}
+                              lala
                            </a>
                            <!-- Modal -->
                            <div class="modal fade" id="staticBackdrop{{i.paper_id}}"
@@ -198,11 +199,11 @@
                                        <figure class="text-center">
                                           <blockquote class="blockquote">
                                              <b>
-                                                <p> {{name}} {{lastname}}</p>
-                                                <p>{{i.title}}</p>
+                                                <p> {{i.firstname}} {{i.lastname}}</p>
+                                                <p>{{papers_result[i.paper_id].title}}</p>
                                              </b>
-                                             <p><b>Abstract</b>{{i.abstract}}</p>
-                                             <p><b> Body</b>{{i.body}}</p>
+                                             <p><b>Abstract</b>{{papers_result[i.paper_id].abstract}}</p>
+                                             <p><b> Body</b>{{papers_result[i.paper_id].body}}</p>
                                           </blockquote>
                                           <figcaption class="blockquote-footer">
                                           </figcaption>
@@ -216,8 +217,14 @@
                               </div>
                            </div>
                         </td>
-                        <td>{{ i.interest }}</td>
-                        <td>{{ evaluate }}</td>
+                        <!-- <td>{{ i.interest }}</td> -->
+                        <td>
+                           {% if i.evaluate == 'accept' %}
+                           <span class="text-success">{{ i.evaluate }} </span>
+                           {% else %}
+                           <span class="text-danger">{{ i.evaluate }} </span>
+                           {% endif %}
+                        </td>
                      </tr>
                   </tbody>
                   {% endfor %}
