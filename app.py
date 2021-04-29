@@ -150,11 +150,8 @@ def register():
         zip = request.form['zipcode']
         password = request.form['password'].encode('utf-8')
         hash_password = bcrypt.hashpw(password, bcrypt.gensalt())
-
-
-
         password2 = request.form['password2'].encode('utf-8')
-
+        
         if password != password2:
             return render_template("match.html")
         hash_password = bcrypt.hashpw(password, bcrypt.gensalt())
@@ -173,7 +170,6 @@ def login():
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password'].encode('utf-8')
-
         curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         curl.execute("SELECT * FROM admins WHERE email=%s", (email,))
         user = curl.fetchone()
@@ -247,7 +243,6 @@ def login_author():
 
 @app.route('/author_page', methods=["GET", "POST"])
 def author_page():
-
     if request.args.get("title"):
         title = request.args.get("title")
         body = request.args.get("body")
