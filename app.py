@@ -566,7 +566,7 @@ def login_chief_editor():
                 session["email"] = user["email"]
                 curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
                 curl.execute(
-                    "SELECT sum(rating) as point, GROUP_CONCAT(comment) as comments, firstname, lastname, author_id, paper_id FROM  conference.paper_status1 LEFT JOIN conference.authors1 using(author_id) WHERE author_id=author_id GROUP BY conference.paper_status1.paper_id HAVING SUM(conference.paper_status1.rating) > 8"
+                    "SELECT sum(rating) as point, GROUP_CONCAT(comment) as comments, firstname, lastname, author_id, paper_id FROM  conference.paper_status1 LEFT JOIN conference.authors1 using(author_id) WHERE author_id=author_id GROUP BY conference.paper_status1.paper_id HAVING count(conference.paper_status1.reviewer_id)=3"
                 )
                 data = curl.fetchall()
                 curl.execute("SELECT * FROM final_status")

@@ -9,16 +9,6 @@
          <h1>to Chief Editor page {{ name }} </h1>
       </div>
       <div class="col-md-9 register-right">
-         <!--    <ul class="nav nav-tab" style="width: 130pt;" id="myTab" role="tablist">
-            <li class="nav-item" >
-               <a class="nav-link active" id="all-tab" data-bs-toggle="tab" data-bs-target="#all" type="button"
-                  role="tab" aria-controls="all" aria-selected="true">All Papers</a>
-            </li>
-           <li class="nav-item" role="presentation">
-               <a class="nav-link" id="accept-tab" data-bs-toggle="tab" data-bs-target="#accept" type="button"
-                  role="tab" aria-controls="accept" aria-selected="false">Accepted paper</a>
-            </li>
-         </ul> -->
          <div class="tab-content" id="myTabContent">
             <div class="tab-pane fade show active" id="all" role="tabpanel" aria-labelledby="all-tab">
                <h3 class="register-heading">All Papers</h3>
@@ -78,12 +68,6 @@
                                     </div>
                                  </div>
                                     <td>
-                                       <!-- Button trigger modal -->
-                                       <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                          data-bs-target="#staticBackdrop{{i.paper_id}}">
-                                          evaluate
-                                       </button> -->
-
                                        {% if not final_status[i.paper_id] %}
                                        <a href="/evaluate_accept/{{i.paper_id}}" class="btn btn-primary"
                                           data-bs-toggle="modal" data-bs-target="#exampleModal{{i.paper_id}}">
@@ -100,10 +84,6 @@
                                        {% endif %}
                                        {% endif %}
 
-                                       <!-- <button class="nav-link" id="evaluate-tab" data-bs-toggle="tab" data-bs-target="#evaluate" type="button"
-                                                   role="tab" aria-controls="accept" aria-selected="false">Evaluate</button> -->
-
-                                       <!-- Modal -->
 
 
                                        <div class="modal fade" id="exampleModal{{i.paper_id}}" tabindex="-1"
@@ -117,19 +97,8 @@
                                                 </div>
                                                 <div class="modal-body">
                                                    <form action="/evaluate_accept" method="post">
-
-                                                      <!-- <div class="form-group">
-                                                         <input type="radio" name="options" id="option1"
-                                                            value="option1"> Option1 </input><br>
-                                                         <input type="radio" name="options" id="option2"
-                                                            value="option2"> Option2 </input><br>
-                                                         <input type="radio" name="options" id="option3"
-                                                            value="option3"> Option3 </input><br>
-                                                      </div> -->
-
                                                       <div class="mb-3">
-                                                         <label for="disabledSelect" class="form-label">Set status
-</label>
+                                                         <label for="disabledSelect" class="form-label">Set status</label>
                                                          <select id="disabledSelect" class="form-select"
                                                             name="evaluate">
                                                             <option value="accept" selected>Accept</option>
@@ -167,93 +136,7 @@
                      </div>
                   </div>
                </form>
-
             </div>
-            <!-- <div class="tab-pane fade" id="accept" role="tabpanel" aria-labelledby="accept-tab">
-               <h3 class="register-heading">Accepted papers</h3>
-               <div class="tab-content" id="myTabContent">
-                  <form method="GET" action="">
-                     <div class="row register-form">
-                        <div class="col-md-10">
-                           <div class="form-group">
-                              <table class="table table-primary table-striped">
-                                 <thead>
-                                    <tr>
-                                       <th scope="col">All Authors</th>
-                                       <th scope="col">Accepted papers </th>
-                                       <th scope="col">Accept/Reject</th>
-                                       <th scope="col">Comments by Reviewers</th>
-                                    </tr>
-                                 </thead>
-                                 <tbody>
-                                    {% for i in data %}
-                                    <tr>
-                                       <td scope="row">{{i.firstname}} {{i.lastname}}</td>
-                                       <td> paper title</td>
-                                       <td> -->
-            <!-- Button trigger modal -->
-            <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                             data-bs-target="#staticBackdrop{{i.paper_id}}">
-                                             evaluate
-                                          </button> -->
-
-            <!-- Modal -->
-            <!-- <div class="modal fade" id="staticBackdrop{{i.paper_id}}"
-                                             data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-                                             aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                                             <div class="modal-dialog">
-                                                <div class="modal-content">
-                                                   <div class="modal-header">
-                                                      <h5 class="modal-title" id="staticBackdropLabel">Evaluate</h5>
-                                                      <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                         aria-label="Close"></button>
-                                                   </div>
-                                                   <div class="modal-body">
-                                                      <p>To accept paper click on <i class="fa fa-arrow-circle-down"
-                                                            aria-hidden="true"></i></p>
-                                                      <button type="button" data-bs-dismiss="modal"
-                                                         class="btn btn-primary">Accept</button> or
-                                                      <p>To reject paper click on <i class="fa fa-arrow-circle-down"
-                                                            aria-hidden="true"></i></p>
-                                                      <button type="button" class="btn btn-danger"
-                                                         data-bs-dismiss="modal">Reject</button>
-                                                   </div>
-                                                   <div class="modal-footer">
-                                                      <button type="button" class="btn btn-secondary"
-                                                         data-bs-dismiss="modal">Close</button>
-                                                   </div>
-                                                </div>
-                                             </div>
-                                          </div>
-                                       </td>
-                                       <td>{{i.comments}}</td>
-                                       </td>
-                                    </tr>
-                                    {% endfor %}
-                                 </tbody>
-                              </table>
-                           </div>
-                        </div>
-                     </div>
-                  </form>
-               </div>
-               </form> -->
-            <!-- </div> -->
-
-            <!-- <div class="tab-pane fade" id="evaluate" role="tabpanel" aria-labelledby="evaluate-tab">
-               <form action="/evaluate_accept" method="POST">
-                  <div class="mb-3">
-                     <label for="disabledSelect" class="form-label">Disabled select
-                        menu</label>
-                     <select id="disabledSelect" class="form-select" name="evaluate">
-                        <option value="accept">Accept</option>
-                        <option value="reject">Reject</option>
-                     </select>
-                  </div>
-                  <button type="submit" class="btn btn-primary">Submit</button>
-               </form>
-            </div> -->
-            <!-- </div> -->
          </div>
 
 
