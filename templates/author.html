@@ -5,7 +5,7 @@
    <div class="row">
       <div class="col-md-3 register-left">
          <img src="https://image.ibb.co/n7oTvU/logo_white.png" alt="" />
-         <h3>Welcome</h3>
+         <h1>Welcome</h1>
          <h1>to Author page {{ name }} </h1>
       </div>
       <div class="col-md-9 register-right">
@@ -30,11 +30,11 @@
                                  <tr>
                                     <th scope="col">Paper id</th>
                                     <th scope="col">Title</th>
-                                    <th scope="col">interests</th>
-                                    <th scope="col">see more</th>
-                                    <th scope="col">papers status</th>
-                                    <th scope="col">delete paper</th>
-                                    <th scope="col">update paper</th>
+                                    <th scope="col">Interests</th>
+                                    <th scope="col">See more</th>
+                                    <th scope="col">Papers status</th>
+                                    <th scope="col">Delete paper</th>
+                                    <th scope="col">Update paper</th>
                                  </tr>
                               </thead>
                               <tbody>
@@ -64,12 +64,12 @@
                                                    <figure class="text-center">
                                                       <blockquote class="blockquote">
                                                          <b>
-                                                            <p> {{name}} {{lastname}}</p>
-                                                            <p>{{i.title}}</p>
+                                                           <b>Author. </b> <p> {{name}} {{lastname}}</p>
+                                                           <b>Title. </b> <p>{{i.title}}</p>
                                                          </b>
                                                          <p><b>Abstract.</b>{{i.abstract}}</p>
-                                                         <p>{{i.keywords}}</p>
-                                                         <p><b> body.</b>{{i.body}}</p>
+                                                       <b>Keywords. </b>   <p>{{i.keywords}}</p>
+                                                         <p><b> Body.</b>{{i.body}}</p>
                                                       </blockquote>
                                                       <figcaption class="blockquote-footer">
                                                       </figcaption>
@@ -218,6 +218,7 @@
                                     </div>
                         </div>
 
+                        </td>
                         </tr>
                         {% endfor %}
                         </tbody>

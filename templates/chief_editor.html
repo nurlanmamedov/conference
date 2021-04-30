@@ -5,11 +5,11 @@
    <div class="row">
       <div class="col-md-3 register-left">
          <img src="https://image.ibb.co/n7oTvU/logo_white.png" alt="" />
-         <h3>Welcome</h3>
-         <h1>to shief editor page {{ name }} </h1>
+         <h1>Welcome</h1>
+         <h1>to Chief Editor page {{ name }} </h1>
       </div>
       <div class="col-md-9 register-right">
-       <!--    <ul class="nav nav-tab" style="width: 130pt;" id="myTab" role="tablist">
+         <!--    <ul class="nav nav-tab" style="width: 130pt;" id="myTab" role="tablist">
             <li class="nav-item" >
                <a class="nav-link active" id="all-tab" data-bs-toggle="tab" data-bs-target="#all" type="button"
                   role="tab" aria-controls="all" aria-selected="true">All Papers</a>
@@ -39,7 +39,44 @@
                                  {% for i in data %}
                                  <tr>
                                     <td scope="row">{{i.firstname}} {{i.lastname}}</td>
-                                    <td>paper's title</td>
+                                    <td>
+                                       <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                          data-bs-target="#moreModal{{i.paper_id}}">
+                                          more
+                                       </button>
+                                    </td>
+                                    <div class="modal fade" id="moreModal{{i.paper_id}}" data-bs-backdrop="static"
+                                    data-bs-keyboard="false" tabindex="-1" aria-labelledby="moreLabel"
+                                    aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                                       <div class="modal-content">
+                                          <div class="modal-header">
+                                             <h5 class="modal-title" id="moreLabel"><b></b></h5>
+                                             <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                          </div>
+                                          <div class="modal-body">
+                                             <figure class="text-center">
+                                                <blockquote class="blockquote">
+                                                  
+                                                  <b>   Title. </b> <p>{{papers_data[i.paper_id].title}}</p>
+                                                     <b>Author.</b>  <cite title="Source Title">{{i.firstname}} {{i.lastname}}</cite>
+                                                   </b>
+                                                   <p><b>Keywords. </b>{{papers_data[i.paper_id].keywords}}</p>
+                                                   <p><b>Abstract. </b>{{papers_data[i.paper_id].abstract}}</p>
+                                                   <p><b> Body. </b>{{papers_data[i.paper_id].body}}</p>
+                                                </blockquote>
+                                                <figcaption class="blockquote-footer">
+                                                </figcaption>
+                                             </figure>
+                                          </div>
+                                          <div class="modal-footer">
+                                             <button type="button" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">Close</button>
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
                                     <td>
                                        <!-- Button trigger modal -->
                                        <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal"
@@ -54,13 +91,13 @@
                                        </a>
                                        {% endif %}
 
-                                       
+
                                        {% if final_status[i.paper_id] %}
-                                          {% if final_status[i.paper_id] == "accept" %}
-                                             <p class="text-success">accepted</p>
-                                          {% else %}
-                                             <p class="text-danger">rejected</p>
-                                          {% endif %}
+                                       {% if final_status[i.paper_id] == "accept" %}
+                                       <p class="text-success">accepted</p>
+                                       {% else %}
+                                       <p class="text-danger">rejected</p>
+                                       {% endif %}
                                        {% endif %}
 
                                        <!-- <button class="nav-link" id="evaluate-tab" data-bs-toggle="tab" data-bs-target="#evaluate" type="button"
@@ -89,16 +126,19 @@
                                                          <input type="radio" name="options" id="option3"
                                                             value="option3"> Option3 </input><br>
                                                       </div> -->
-                                                      
+
                                                       <div class="mb-3">
-                                                         <label for="disabledSelect" class="form-label">Set status {{i}}</label>
+                                                         <label for="disabledSelect" class="form-label">Set status
+</label>
                                                          <select id="disabledSelect" class="form-select"
                                                             name="evaluate">
                                                             <option value="accept" selected>Accept</option>
                                                             <option value="reject">Reject</option>
                                                          </select>
-                                                         <input style="display: none;" type="text" value="{{i.paper_id}}" name="paper_id" />
-                                                         <input style="display: none;" type="text" value="{{i.author_id}}" name="author_id" />
+                                                         <input style="display: none;" type="text"
+                                                            value="{{i.paper_id}}" name="paper_id" />
+                                                         <input style="display: none;" type="text"
+                                                            value="{{i.author_id}}" name="author_id" />
                                                       </div>
 
                                                       <button type="button" class="btn btn-secondary"
@@ -112,8 +152,12 @@
                                              </div>
                                           </div>
                                        </div>
-                                    </td>
-                                    <td>{{i.comments}}</td>
+                                   </td>
+                                 <td>     {% for comment in i.comments.split(',') %} 
+                                   <p> {{comment}}    </p>                              
+                                      {% endfor%}
+                                 
+                                    </td> 
                                     </td>
                                  </tr>
                                  {% endfor %}
@@ -145,17 +189,16 @@
                                     {% for i in data %}
                                     <tr>
                                        <td scope="row">{{i.firstname}} {{i.lastname}}</td>
-
                                        <td> paper title</td>
                                        <td> -->
-                                          <!-- Button trigger modal -->
-                                          <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+            <!-- Button trigger modal -->
+            <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                                              data-bs-target="#staticBackdrop{{i.paper_id}}">
                                              evaluate
                                           </button> -->
 
-                                          <!-- Modal -->
-                                          <!-- <div class="modal fade" id="staticBackdrop{{i.paper_id}}"
+            <!-- Modal -->
+            <!-- <div class="modal fade" id="staticBackdrop{{i.paper_id}}"
                                              data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
                                              aria-labelledby="staticBackdropLabel" aria-hidden="true">
                                              <div class="modal-dialog">
@@ -178,7 +221,6 @@
                                                    <div class="modal-footer">
                                                       <button type="button" class="btn btn-secondary"
                                                          data-bs-dismiss="modal">Close</button>
-
                                                    </div>
                                                 </div>
                                              </div>
@@ -194,16 +236,12 @@
                         </div>
                      </div>
                   </form>
-
                </div>
-
                </form> -->
             <!-- </div> -->
 
             <!-- <div class="tab-pane fade" id="evaluate" role="tabpanel" aria-labelledby="evaluate-tab">
                <form action="/evaluate_accept" method="POST">
-
-
                   <div class="mb-3">
                      <label for="disabledSelect" class="form-label">Disabled select
                         menu</label>
@@ -212,16 +250,15 @@
                         <option value="reject">Reject</option>
                      </select>
                   </div>
-
                   <button type="submit" class="btn btn-primary">Submit</button>
                </form>
             </div> -->
-         <!-- </div> -->
+            <!-- </div> -->
+         </div>
+
+
       </div>
-
-
    </div>
-</div>
 </div>
 </div>
 </div>
