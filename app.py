@@ -111,21 +111,7 @@ def reviewers():
    # @app.route('/chief_editor', methods=["GET", "POST"])
     #def chief_editor():
      #   if request.method == 'POST':
-#
- #           firstname = request.form['firstname']
-  #          lastname = request.form['lastname']
-   #         email = request.form['email']
-    #        password = request.form['password'].encode('utf-8')
-     #       hash_password = bcrypt.hashpw(password, bcrypt.gensalt())
 
-      #      cur = mysql.connection.cursor()
-       #     cur.execute("INSERT INTO chief_editor (firstname, lastname, email, password) VALUES (%s,%s,%s,%s)",
-        #                (firstname, lastname, email, hash_password))
-         #   mysql.connection.commit()
-          #  return render_template("home.html")
-        #else:
-        #    print("lalal")
-         #   return render_template("home.html")
 
 
 @app.route('/logout', methods=["GET", "POST"])
@@ -151,7 +137,7 @@ def register():
         password = request.form['password'].encode('utf-8')
         hash_password = bcrypt.hashpw(password, bcrypt.gensalt())
         password2 = request.form['password2'].encode('utf-8')
-        
+
         if password != password2:
             return render_template("match.html")
         hash_password = bcrypt.hashpw(password, bcrypt.gensalt())
@@ -269,12 +255,24 @@ def author_page():
         papers = cur.fetchall()
         session['author_data']['papers'] = papers
 
-        rate_list={}
-        for i in papers:
-            print("Papers   ----> ", i['paper_id'], type(i['paper_id']))
-            cur.execute("SELECT sum(rating) as res, GROUP_CONCAT(comment) as comments, count(reviewer_id) as reviewers_count FROM paper_status1 WHERE paper_id=%s", (i['paper_id'],))
+        # rate_list1={}
+        # for i in papers:
+        #     print("Papers   ----> ", i['paper_id'], type(i['paper_id']))
+        #     # cur.execute("SELECT sum(rating) as res, GROUP_CONCAT(comment) as comments, count(reviewer_id) as reviewers_count FROM paper_status1 WHERE paper_id=%s", (i['paper_id'],))
+        #     cur.execute("SELECT sum(rating) as res, GROUP_CONCAT(comment) as comments, count(reviewer_id) as reviewers_count FROM paper_status1 WHERE paper_id=%s", (i['paper_id'],))
+        #     rate_list[i["paper_id"]] = cur.fetchone()
+        
+
+        cur.execute("SELECT * FROM final_status")
+        final_status = cur.fetchall()
+
+        rate_list = {}
+        for i in final_status:
+            print("*******************", i)
+            # cur.execute("SELECT DISTINCT  final_status.*, group_concat(paper_status1.comment) as comments  FROM final_status INNER JOIN paper_status1 on(final_status.paper_id = paper_status1.paper_id AND final_status.paper_id=%s", (i['paper_id'],) )
+            cur.execute("SELECT Distinct final_status.paper_id, final_status.author_id, final_status.evaluate, group_concat(paper_status1.comment) as comments  FROM final_status INNER JOIN paper_status1  ON (final_status.paper_id = paper_status1.paper_id AND final_status.paper_id = %s)", (i['paper_id'],))
             rate_list[i["paper_id"]] = cur.fetchone()
-        print("Rate list result  --->", rate_list)
+        print("Rate list result *********88  --->", rate_list)
         
        
 

@@ -40,7 +40,7 @@
                               <tbody>
                                  {% for i in papers %}
                                  <tr>
-                                    <th scope="row">{{i.paper_id}}  </th>
+                                    <th scope="row">{{i.paper_id}} </th>
                                     <td>{{ i.title }}</td>
                                     <td>{{ i.interest_name }}</td>
                                     <td>
@@ -87,7 +87,7 @@
                                        <!-- Button trigger modal -->
                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                                           data-bs-target="#paperId{{i.paper_id}}">
-                                          open
+                                          open {{i.paper_id}}
                                        </button>
                                        <!-- Modal -->
                                        <div class="modal fade" id="paperId{{i.paper_id}}" data-bs-backdrop="static"
@@ -102,19 +102,16 @@
                                                 </div>
                                                 <div class="modal-body">
                                                    <div class="col-md-10">
+                                                      {% if i.paper_id in rate_list %}
                                                       <table class="table table-primary table-striped">
-                                                         {% if rate_list[i.paper_id]['reviewers_count'] == 3 %}
                                                          <thead>
                                                             <tr class="col-md-12">
-                                                               <th scope="col">Point</th>
                                                                <th scope="col">Status</th>
                                                                <th scope="col">Comments</th>
                                                             </tr>
                                                          </thead>
                                                          <tbody>
-                                                            <td> {{rate_list[i.paper_id]['res']}} </td>
-                                                            {% if rate_list[i.paper_id]['res'] and
-                                                            rate_list[i.paper_id]['res'] > 11 %}
+                                                            {% if rate_list[i.paper_id]['evaluate'] == 'accept' %}
                                                             <td>
                                                                <p class="text-success"> Accepted </p>
                                                             </td>
@@ -125,17 +122,17 @@
                                                             </td>
                                                             {% endif %}
                                                             <td>
-                                                               {% for comment in (rate_list[i.paper_id]['comments']).split(",") %}
+                                                               {% for comment in
+                                                               (rate_list[i.paper_id]['comments']).split(",") %}
                                                                <p> {{comment}} </p>
                                                                {% endfor %}
                                                             </td>
                                                          </tbody>
-                                                         {% else %}
-                                                         <h3 class="text-warning"> Not rating
-                                                            yet...
-                                                         </h3>
-                                                         {% endif %}
+
                                                       </table>
+                                                      {% else %}
+                                                      <h3 class="text-warning"> Not rating yet...</h3>
+                                                      {% endif %}
                                                    </div>
 
 
@@ -161,65 +158,64 @@
                                           Modify
                                        </a>
                                     </td>
-                                       <div class="modal fade" id="updatePaper{{i.paper_id}}" data-bs-backdrop="static"
-                                          data-bs-keyboard="false" aria-labelledby="staticBackdropLabel"
-                                          aria-hidden="true">
-                                          <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                                             <form action="/update_papers" method="post">
-                                                <div class="modal-content">
-                                                   <div class="modal-header">
-                                                      <h5 class="modal-title" id="staticBackdropLabel">Update paper
-                                                         {{i.paper_id}}</h5>
-                                                      <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                         aria-label="Close"></button>
+                                    <div class="modal fade" id="updatePaper{{i.paper_id}}" data-bs-backdrop="static"
+                                       data-bs-keyboard="false" aria-labelledby="staticBackdropLabel"
+                                       aria-hidden="true">
+                                       <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                                          <form action="/update_papers" method="post">
+                                             <div class="modal-content">
+                                                <div class="modal-header">
+                                                   <h5 class="modal-title" id="staticBackdropLabel">Update paper
+                                                      {{i.paper_id}}</h5>
+                                                   <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                      aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+
+
+
+                                                   <div class="mb-9">
+                                                      <label for="exampleInputEmail1" class="form-label">Title</label>
+                                                      <input type="form-text" required
+                                                         class="form-control form-control-sm" name="title" id="title"
+                                                         aria-describedby="titleHelp" value="{{i.title}}">
                                                    </div>
-                                                   <div class="modal-body">
-
-
-
-                                                      <div class="mb-9">
-                                                         <label for="exampleInputEmail1"
-                                                            class="form-label">Title</label>
-                                                         <input type="form-text" required
-                                                            class="form-control form-control-sm" name="title" id="title"
-                                                            aria-describedby="titleHelp" value="{{i.title}}">
-                                                      </div>
-                                                      <div class="mb-9">
-                                                         <label for="keywords" class="form-label">Keywords</label>
-                                                         <input type="form-text" required
-                                                            class="form-control form-control-sm" name="keywords"
-                                                            id="keywords" aria-describedby="keywordsHelp"
-                                                            value="{{i.keywords}}">
-                                                      </div>
-                                                      <div class="mb-9">
-                                                         <label for="body" class="form-label">Body</label>
-                                                         <input type="form-text" required
-                                                            class="form-control form-control-sm" name="body" id="body"
-                                                            aria-describedby="bodyHelp" value="{{i.body}}">
-                                                      </div>
-                                                      <div class="mb-9">
-                                                         <label for="abstract" class="form-label">Abstract</label>
-                                                         <input type="form-text" required
-                                                            class="form-control form-control-sm" id="abstract"
-                                                            name="abstract" aria-describedby="abstractHelp"
-                                                            value="{{i.abstract}}">
-                                                      </div>
-
-                                                      <!-- <button type="submit" class="btn btn-primary" name="paperID" value="{{i.paper_id}}" > ok</button> -->
-
+                                                   <div class="mb-9">
+                                                      <label for="keywords" class="form-label">Keywords</label>
+                                                      <input type="form-text" required
+                                                         class="form-control form-control-sm" name="keywords"
+                                                         id="keywords" aria-describedby="keywordsHelp"
+                                                         value="{{i.keywords}}">
                                                    </div>
-                                                   <div class="modal-footer">
-                                                      <button type="button" class="btn btn-secondary"
-                                                         data-bs-dismiss="modal">Close</button>
-                                                      <button type="submit" name="paperID" value="{{i.paper_id}}"
-                                                         class="btn btn-primary">Update</button>
+                                                   <div class="mb-9">
+                                                      <label for="body" class="form-label">Body</label>
+                                                      <input type="form-text" required
+                                                         class="form-control form-control-sm" name="body" id="body"
+                                                         aria-describedby="bodyHelp" value="{{i.body}}">
+                                                   </div>
+                                                   <div class="mb-9">
+                                                      <label for="abstract" class="form-label">Abstract</label>
+                                                      <input type="form-text" required
+                                                         class="form-control form-control-sm" id="abstract"
+                                                         name="abstract" aria-describedby="abstractHelp"
+                                                         value="{{i.abstract}}">
                                                    </div>
 
-                                             </form>
+                                                   <!-- <button type="submit" class="btn btn-primary" name="paperID" value="{{i.paper_id}}" > ok</button> -->
+
+                                                </div>
+                                                <div class="modal-footer">
+                                                   <button type="button" class="btn btn-secondary"
+                                                      data-bs-dismiss="modal">Close</button>
+                                                   <button type="submit" name="paperID" value="{{i.paper_id}}"
+                                                      class="btn btn-primary">Update</button>
+                                                </div>
+
+                                          </form>
 
 
-                                          </div>
                                        </div>
+                                    </div>
                         </div>
 
                         </tr>
