@@ -47,7 +47,7 @@
                                        <!-- Button trigger modal -->
                                        <a type="button" class="btn btn-primary" data-bs-toggle="modal"
                                           data-bs-target="#staticBackdrop{{i.paper_id}}">
-                                          more
+                                       more
                                        </a>
                                        <!-- Modal -->
                                        <div class="modal fade" id="staticBackdrop{{i.paper_id}}"
@@ -64,11 +64,14 @@
                                                    <figure class="text-center">
                                                       <blockquote class="blockquote">
                                                          <b>
-                                                           <b>Author. </b> <p> {{name}} {{lastname}}</p>
-                                                           <b>Title. </b> <p>{{i.title}}</p>
+                                                            <b>Author. </b> 
+                                                            <p> {{name}} {{lastname}}</p>
+                                                            <b>Title. </b> 
+                                                            <p>{{i.title}}</p>
                                                          </b>
                                                          <p><b>Abstract.</b>{{i.abstract}}</p>
-                                                       <b>Keywords. </b>   <p>{{i.keywords}}</p>
+                                                         <b>Keywords. </b>   
+                                                         <p>{{i.keywords}}</p>
                                                          <p><b> Body.</b>{{i.body}}</p>
                                                       </blockquote>
                                                       <figcaption class="blockquote-footer">
@@ -87,7 +90,7 @@
                                        <!-- Button trigger modal -->
                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                                           data-bs-target="#paperId{{i.paper_id}}">
-                                          open {{i.paper_id}}
+                                       open {{i.paper_id}}
                                        </button>
                                        <!-- Modal -->
                                        <div class="modal fade" id="paperId{{i.paper_id}}" data-bs-backdrop="static"
@@ -115,7 +118,6 @@
                                                             <td>
                                                                <p class="text-success"> Accepted </p>
                                                             </td>
-
                                                             {% else %}
                                                             <td>
                                                                <p class="text-danger"> Rejected </p>
@@ -128,16 +130,12 @@
                                                                {% endfor %}
                                                             </td>
                                                          </tbody>
-
                                                       </table>
                                                       {% else %}
                                                       <h3 class="text-warning"> Not rating yet...</h3>
                                                       {% endif %}
                                                    </div>
-
-
                                                 </div>
-
                                                 <div class="modal-footer">
                                                    <button type="button" class="btn btn-secondary"
                                                       data-bs-dismiss="modal">Close</button>
@@ -146,133 +144,116 @@
                                           </div>
                                        </div>
                                     </td>
-
                                     <td>
                                        <a href="/delete_paper/{{i.paper_id}}" class="btn btn-danger btn-xs"
                                           onclick="return confirm('Are You Sure To Delete ?')">Delete</a>
                                     </td>
-
                                     <td>
                                        <a href="/update_papers/{{i.paper_id}}" class="btn btn-primary"
                                           data-bs-toggle="modal" data-bs-target="#updatePaper{{i.paper_id}}">
-                                          Modify
+                                       Modify
                                        </a>
                                     </td>
                                     <div class="modal fade" id="updatePaper{{i.paper_id}}" data-bs-backdrop="static"
                                        data-bs-keyboard="false" aria-labelledby="staticBackdropLabel"
                                        aria-hidden="true">
                                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                                          <form action="/update_papers" method="post">
-                                             <div class="modal-content">
-                                                <div class="modal-header">
-                                                   <h5 class="modal-title" id="staticBackdropLabel">Update paper
-                                                      {{i.paper_id}}</h5>
-                                                   <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                      aria-label="Close"></button>
-                                                </div>
-                                                <div class="modal-body">
-
-
-
-                                                   <div class="mb-9">
-                                                      <label for="exampleInputEmail1" class="form-label">Title</label>
-                                                      <input type="form-text" required
-                                                         class="form-control form-control-sm" name="title" id="title"
-                                                         aria-describedby="titleHelp" value="{{i.title}}">
-                                                   </div>
-                                                   <div class="mb-9">
-                                                      <label for="keywords" class="form-label">Keywords</label>
-                                                      <input type="form-text" required
-                                                         class="form-control form-control-sm" name="keywords"
-                                                         id="keywords" aria-describedby="keywordsHelp"
-                                                         value="{{i.keywords}}">
-                                                   </div>
-                                                   <div class="mb-9">
-                                                      <label for="body" class="form-label">Body</label>
-                                                      <input type="form-text" required
-                                                         class="form-control form-control-sm" name="body" id="body"
-                                                         aria-describedby="bodyHelp" value="{{i.body}}">
-                                                   </div>
-                                                   <div class="mb-9">
-                                                      <label for="abstract" class="form-label">Abstract</label>
-                                                      <input type="form-text" required
-                                                         class="form-control form-control-sm" id="abstract"
-                                                         name="abstract" aria-describedby="abstractHelp"
-                                                         value="{{i.abstract}}">
-                                                   </div>
-
-                                                   <!-- <button type="submit" class="btn btn-primary" name="paperID" value="{{i.paper_id}}" > ok</button> -->
-
-                                                </div>
-                                                <div class="modal-footer">
-                                                   <button type="button" class="btn btn-secondary"
-                                                      data-bs-dismiss="modal">Close</button>
-                                                   <button type="submit" name="paperID" value="{{i.paper_id}}"
-                                                      class="btn btn-primary">Update</button>
-                                                </div>
-
-                                          </form>
-
-
-                                       </div>
-                                    </div>
-                        </div>
-
-                        </td>
-                        </tr>
-                        {% endfor %}
-                        </tbody>
-                        </table>
-                     </div>
-                  </div>
-            </div>
-            </form>
-
-         </div>
-         <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-            <h3 class="register-heading">Add a paper</h3>
-            <div class="col-md-9" style="margin: 20% 10%;">
-               <form action="/submit_paper" method="POST" class="form-inline">
-                  <div class="form-group">
-                     <label for="titleId">Title</label>
-                     <input type="text" required class="form-control" id="titleId" placeholder="Title" name="title">
-                  </div>
-                  <div class="form-group">
-                     <label for="keywordId">Keywords</label>
-                     <input type="text" required class="form-control" id="keywordId" placeholder="Keywords"
-                        name="keywords">
-                  </div>
-                  <div class="form-group">
-                     <label for="selectId">Select interest</label>
-                     <select class="form-control" id="selectId" name="interest_id">
-                        {% for interest in interests %}
-                        <option value="{{ interest.interest_id }}">{{ interest.interest_name }}</option>
-                        {% endfor %}
-                     </select>
-                  </div>
-                  <div class="form-group">
-                     <label for="abstractId">Abstract</label>
-                     <textarea class="form-control" id="abstractId" rows="7" name="abstract"
-                        placeholder="Your abstract should not exceed 300 word"></textarea>
-                  </div>
-                  <div class="form-group">
-                     <label for="bodyId">Body</label>
-                     <textarea class="form-control" id="bodyId" rows="10" cols="50"
-                        placeholder="Your body should not exceed 5000 word" name="body"></textarea>
-                  </div>
-                  <button type="submit" class="btn btn-primary mb-2"
-                     style="margin-bottom: 10px; margin-top: 10px; float: right;">Add</button>
+               <form action="/update_papers" method="post">
+               <div class="modal-content">
+               <div class="modal-header">
+               <h5 class="modal-title" id="staticBackdropLabel">Update paper
+               {{i.paper_id}}</h5>
+               <button type="button" class="btn-close" data-bs-dismiss="modal"
+                  aria-label="Close"></button>
+               </div>
+               <div class="modal-body">
+               <div class="mb-9">
+               <label for="exampleInputEmail1" class="form-label">Title</label>
+               <input type="form-text" required
+                  class="form-control form-control-sm" name="title" id="title"
+                  aria-describedby="titleHelp" value="{{i.title}}">
+               </div>
+               <div class="mb-9">
+               <label for="keywords" class="form-label">Keywords</label>
+               <input type="form-text" required
+                  class="form-control form-control-sm" name="keywords"
+                  id="keywords" aria-describedby="keywordsHelp"
+                  value="{{i.keywords}}">
+               </div>
+               <div class="mb-9">
+               <label for="body" class="form-label">Body</label>
+               <input type="form-text" required
+                  class="form-control form-control-sm" name="body" id="body"
+                  aria-describedby="bodyHelp" value="{{i.body}}">
+               </div>
+               <div class="mb-9">
+               <label for="abstract" class="form-label">Abstract</label>
+               <input type="form-text" required
+                  class="form-control form-control-sm" id="abstract"
+                  name="abstract" aria-describedby="abstractHelp"
+                  value="{{i.abstract}}">
+               </div>
+               <!-- <button type="submit" class="btn btn-primary" name="paperID" value="{{i.paper_id}}" > ok</button> -->
+               </div>
+               <div class="modal-footer">
+               <button type="button" class="btn btn-secondary"
+                  data-bs-dismiss="modal">Close</button>
+               <button type="submit" name="paperID" value="{{i.paper_id}}"
+                  class="btn btn-primary">Update</button>
+               </div>
+               </form>
+               </div>
+               </div>
+               </div>
+               </td>
+               </tr>
+               {% endfor %}
+               </tbody>
+               </table>
+               </div>
+               </div>
+               </div>
                </form>
             </div>
-
-
+            <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+               <h3 class="register-heading">Add a paper</h3>
+               <div class="col-md-9" style="margin: 20% 10%;">
+                  <form action="/submit_paper" method="POST" class="form-inline">
+                     <div class="form-group">
+                        <label for="titleId">Title</label>
+                        <input type="text" required class="form-control" id="titleId" placeholder="Title" name="title">
+                     </div>
+                     <div class="form-group">
+                        <label for="keywordId">Keywords</label>
+                        <input type="text" required class="form-control" id="keywordId" placeholder="Keywords"
+                           name="keywords">
+                     </div>
+                     <div class="form-group">
+                        <label for="selectId">Select interest</label>
+                        <select class="form-control" id="selectId" name="interest_id">
+                           {% for interest in interests %}
+                           <option value="{{ interest.interest_id }}">{{ interest.interest_name }}</option>
+                           {% endfor %}
+                        </select>
+                     </div>
+                     <div class="form-group">
+                        <label for="abstractId">Abstract</label>
+                        <textarea class="form-control" id="abstractId" rows="7" name="abstract"
+                           placeholder="Your abstract should not exceed 300 word"></textarea>
+                     </div>
+                     <div class="form-group">
+                        <label for="bodyId">Body</label>
+                        <textarea class="form-control" id="bodyId" rows="10" cols="50"
+                           placeholder="Your body should not exceed 5000 word" name="body"></textarea>
+                     </div>
+                     <button type="submit" class="btn btn-primary mb-2"
+                        style="margin-bottom: 10px; margin-top: 10px; float: right;">Add</button>
+                  </form>
+               </div>
+            </div>
          </div>
       </div>
-
-
-
    </div>
-</div>
 </div>
 </div>
 </div>
