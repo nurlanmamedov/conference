@@ -5,8 +5,8 @@
    <div class="row">
       <div class="col-md-3 register-left">
          <img src="https://image.ibb.co/n7oTvU/logo_white.png" alt="" />
-         <h3>Welcome</h3>
-         <h1>to shief editor page {{ name }} </h1>
+         <h1>Welcome</h1>
+         <h1>to Chief Editor page {{ name }} </h1>
       </div>
       <div class="col-md-9 register-right">
          <!--    <ul class="nav nav-tab" style="width: 130pt;" id="myTab" role="tablist">
@@ -51,19 +51,20 @@
                                     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                                        <div class="modal-content">
                                           <div class="modal-header">
-                                             <h5 class="modal-title" id="moreLabel"><b>{{papers_data[i.paper_id].title}}</b></h5>
+                                             <h5 class="modal-title" id="moreLabel"><b></b></h5>
                                              <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                 aria-label="Close"></button>
                                           </div>
                                           <div class="modal-body">
                                              <figure class="text-center">
                                                 <blockquote class="blockquote">
-                                                   <b>
-                                                      <p>{{papers_data[i.paper_id].title}}</p>
-                                                      by <cite title="Source Title">{{i.firstname}}{{i.lastname}}</cite>
+                                                  
+                                                  <b>   Title. </b> <p>{{papers_data[i.paper_id].title}}</p>
+                                                     <b>Author.</b>  <cite title="Source Title">{{i.firstname}} {{i.lastname}}</cite>
                                                    </b>
-                                                   <p><b>Abstract.</b>{{papers_data[i.paper_id].abstract}}</p>
-                                                   <p><b> body.</b>{{papers_data[i.paper_id].body}}</p>
+                                                   <p><b>Keywords. </b>{{papers_data[i.paper_id].keywords}}</p>
+                                                   <p><b>Abstract. </b>{{papers_data[i.paper_id].abstract}}</p>
+                                                   <p><b> Body. </b>{{papers_data[i.paper_id].body}}</p>
                                                 </blockquote>
                                                 <figcaption class="blockquote-footer">
                                                 </figcaption>
@@ -128,7 +129,7 @@
 
                                                       <div class="mb-3">
                                                          <label for="disabledSelect" class="form-label">Set status
-                                                            {{i}}</label>
+</label>
                                                          <select id="disabledSelect" class="form-select"
                                                             name="evaluate">
                                                             <option value="accept" selected>Accept</option>
@@ -151,8 +152,12 @@
                                              </div>
                                           </div>
                                        </div>
-                                    </td>
-                                    <td>{{i.comments}}</td>
+                                   </td>
+                                 <td>     {% for comment in i.comments.split(',') %} 
+                                   <p> {{comment}}    </p>                              
+                                      {% endfor%}
+                                 
+                                    </td> 
                                     </td>
                                  </tr>
                                  {% endfor %}

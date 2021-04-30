@@ -10,6 +10,7 @@
       <div class="col-md-5 col-md-offset-9">
          <div class="tab-content" id="nav-tabContent">
             <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+               <h2>Make a Reviewer</h2>
                <form action="/rewievers" method="POST">
                   <div class="mb-3">
                      <label for="exampleInputEmail1" class="form-label">First Name</label>
@@ -17,7 +18,7 @@
                         id="firstname" aria-describedby="firstnameHelp">
                   </div>
                   <div class="mb-3">
-                     <label for="exampleInputEmail1" class="form-label">lastname</label>
+                     <label for="exampleInputEmail1" class="form-label">Lastname</label>
                      <input type="form-text" required class="form-control form-control-sm" name="lastname" id="lastname"
                         aria-describedby="lastnameHelp">
                   </div>
@@ -37,6 +38,10 @@
                   <div class="mb-3">
                      <label for="exampleInputPassword1" class="form-label">Password</label>
                      <input type="password" required class="form-control form-control-sm" id="password" name="password">
+                  </div>
+                  <div class="mb-3">
+                     <label for="exampleInputPassword2" class="form-label">Confirm password</label>
+                     <input type="password" required  class="form-control form-control-sm" id="exampleInputPassword2" name="password2">
                   </div>
                   <button type="submit" class="btn btn-primary">Register</button>
                </form>
