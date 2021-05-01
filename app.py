@@ -2,22 +2,29 @@ from flask import Flask, render_template, flash, request, redirect, url_for, ses
 from flask_mysqldb import MySQL, MySQLdb
 import bcrypt
 import json
+from flask_session import Session
 
-import mysql.connector as ms_connector
+
+
+
 
 app = Flask(__name__)
 app.secret_key = "sakoblexeyible"
+SESSION_TYPE = 'filesystem'
+app.config.from_object(__name__)
+Session(app)
 
 app.config["MYSQL_HOST"] = "localhost"
-app.config["MYSQL_USER"] = "noor"  # 'noor'#'aydan'
-app.config["MYSQL_PASSWORD"] = "noor123"  # "a1w2k3i4m5.."'noor123'
+app.config["MYSQL_USER"] = "aydan"  # 'noor'#'aydan'
+app.config["MYSQL_PASSWORD"] = "a1w2k3i4m5.."  # "a1w2k3i4m5.."'noor123'
 app.config["MYSQL_DB"] = "conference"
 app.config["MYSQL_CURSORCLASS"] = "DictCursor"
 mysql = MySQL(app)
 
-
 @app.route("/", methods=["GET", "POST"])
 def home():
+    print("here is our sesion *******/*/*/*/*4/45454/54/54/54",session)
+
     if request.method == "GET":
         curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         curl.execute("SELECT * FROM reviewers1")
@@ -173,11 +180,8 @@ def register():
             "INSERT INTO authors1 (firstname,lastname, phone, email, country, city,zipcode, password) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)",
             (firstname, lastname, phone, email, country, city, zip, hash_password),
         )
-
         
         mysql.connection.commit()
-        session["name"] = request.form["firstname"]
-        session["email"] = request.form["email"]
         email=request.form['email']
         return render_template("login_success.html",email=email)
 
@@ -385,6 +389,7 @@ def rating():
 
 @app.route("/login_reviewer", methods=["GET", "POST"])
 def login_reviewer():
+
     if session.get("rewiever_id"):
         return redirect(url_for("reviewer_page"))
     if request.method == "POST":
@@ -392,19 +397,22 @@ def login_reviewer():
         password = request.form["password"].encode("utf-8")
         curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         curl.execute("SELECT * FROM reviewers1 WHERE email=%s", (email,))
+        
         user = curl.fetchone()
+        print("user*/*/**/*/*/*/*/*/*/*",session,user)
         curl.close()
         try:
             if len(user) > 0:
-                if bcrypt.hashpw(password, user["password"].encode("utf-8")) == user[
-                    "password"
-                ].encode("utf-8"):
+                print('usrmizi burdadi>0',user)
+                if bcrypt.hashpw(password, user["password"].encode("utf-8")) == user[ "password"].encode("utf-8"):
                     print("after if ---> ", session)
+                    print("after if 34rd---> ", session)
                     session["name"] = user["firstname"]
                     session["lastname"] = user["lastname"]
                     session["email"] = user["email"]
                     session["reviewer_id"] = user["reviewer_id"]
                     session["interest_id"] = user["interest_id"]
+                    print("after if --->2 ", session)
 
                     rew_id = session["reviewer_id"]
                     int_id = session["interest_id"]
@@ -438,6 +446,7 @@ def login_reviewer():
                     return redirect(url_for("reviewer_page"))
                 else:
                     return render_template("error.html")
+                    
         except:
             return render_template("notfound.html")
     else:
@@ -477,30 +486,36 @@ def reviewer_page():
 
 @app.route("/submit_paper", methods=["GET", "POST"])
 def submit_paper():  # database name is papers
-    if request.method == "GET":
-        return render_template("author.html")
-    else:
-        title = request.form["title"]
-        interest_id = request.form["interest_id"]
-        author_id = session["author_id"]
-        keywords = request.form["keywords"]
-        abstract = request.form["abstract"]
-        body = request.form["body"]
+    try:
+        if request.method == "GET":
+            return render_template("author.html")
+        else:
+            title = request.form["title"]
+            interest_id = request.form["interest_id"]
+            author_id = session["author_id"]
+            keywords = request.form["keywords"]
+            abstract = request.form["abstract"]
+            body = request.form["body"]
 
-        cur = mysql.connection.cursor()
-        cur.execute(
-            "INSERT INTO papers1 (title, interest_id, author_id, keywords, abstract, body) VALUES (%s,%s,%s,%s,%s,%s)",
-            (
-                title,
-                interest_id,
-                author_id,
-                keywords,
-                abstract,
-                body,
-            ),
-        )
-        mysql.connection.commit()
-        return render_template("submit_sucess.html")
+            cur = mysql.connection.cursor()
+            cur.execute(
+                "INSERT INTO papers1 (title, interest_id, author_id, keywords, abstract, body) VALUES (%s,%s,%s,%s,%s,%s)",
+                (
+                    title,
+                    interest_id,
+                    author_id,
+                    keywords,
+                    abstract,
+                    body,
+                ),
+            )
+            mysql.connection.commit()
+            return render_template("submit_sucess.html")
+    except MySQLdb.Error as  err:
+        cur.close()
+        flash("No valid data ..." )
+        return redirect(url_for("author_page"))
+
 
 
 @app.route("/papers", methods=["GET", "POST"])
@@ -725,6 +740,9 @@ def info():  # database name is papers
 def info1():  # database name is papers
     return render_template("info1.html")
 
+
 if __name__ == "__main__":
+    sess = Session()
+    sess.init_app(app)
     app.debug = True
     app.run()
