@@ -149,7 +149,7 @@ def register():
         hash_password = bcrypt.hashpw(password, bcrypt.gensalt())       
         password2 = request.form['password2'].encode('utf-8')
         hash_password = bcrypt.hashpw(password, bcrypt.gensalt())
-
+        
         if not firstname or not lastname or not phone or not email or not country or not city or not zip or not password or not password2:
             flash("You can not leave this place empty,Please fill out!!")
             return redirect('register')
@@ -494,7 +494,7 @@ def submit_paper():  # database name is papers
                 body,
             ),
         )
-
+        mysql.connection.commit()
         return render_template("submit_sucess.html")
 
 
@@ -715,6 +715,10 @@ def chief_editor_page():
 def info():  # database name is papers
     return render_template("info.html")
 
+
+@app.route("/info1", methods=["GET"])
+def info1():  # database name is papers
+    return render_template("info1.html")
 
 if __name__ == "__main__":
     app.debug = True
