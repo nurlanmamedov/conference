@@ -3,12 +3,14 @@ from flask_mysqldb import MySQL, MySQLdb
 import bcrypt
 import json
 
+import mysql.connector as ms_connector
+
 app = Flask(__name__)
 app.secret_key = "sakoblexeyible"
 
 app.config["MYSQL_HOST"] = "localhost"
-app.config["MYSQL_USER"] = "aydan"  # 'noor'#'aydan'
-app.config["MYSQL_PASSWORD"] = "a1w2k3i4m5.."  # "a1w2k3i4m5.."'noor123'
+app.config["MYSQL_USER"] = "noor"  # 'noor'#'aydan'
+app.config["MYSQL_PASSWORD"] = "noor123"  # "a1w2k3i4m5.."'noor123'
 app.config["MYSQL_DB"] = "conference"
 app.config["MYSQL_CURSORCLASS"] = "DictCursor"
 mysql = MySQL(app)
@@ -94,10 +96,6 @@ def reviewers():
             flash('You must write at least 8 charachters in length')
             print("huhuhu")
             return redirect('/')
-        elif not phone.isnumeric():
-            flash('Include a correct phone number')
-            print("huhuhu")
-            return redirect('/')
 
         curl = mysql.connection.cursor()
         curl.execute(
@@ -106,7 +104,7 @@ def reviewers():
         )
         count = curl.fetchall()
         count = count[0]["count(*)"]
-
+        hash_password = bcrypt.hashpw(password, bcrypt.gensalt())
         if int(count) < 3:
             curl.execute(
                 "INSERT INTO reviewers1 (firstname, lastname, interest_id, email, password) VALUES (%s,%s,%s,%s,%s)",
@@ -146,9 +144,9 @@ def register():
         city = request.form["city"]
         zip = request.form["zipcode"]
         password = request.form['password'].encode('utf-8')
-        hash_password = bcrypt.hashpw(password, bcrypt.gensalt())       
+        hash_password1 = bcrypt.hashpw(password, bcrypt.gensalt())       
         password2 = request.form['password2'].encode('utf-8')
-        hash_password = bcrypt.hashpw(password, bcrypt.gensalt())
+        hash_password2 = bcrypt.hashpw(password2, bcrypt.gensalt())
         
         if not firstname or not lastname or not phone or not email or not country or not city or not zip or not password or not password2:
             flash("You can not leave this place empty,Please fill out!!")
@@ -276,6 +274,7 @@ def author_page():
         curl.execute(sql, val)
         # curl.close()
         mysql.connection.commit()
+        flash("The paper has been updated")
         return redirect(url_for("author_page"))
 
     if session.get("author_id") != None:
@@ -315,24 +314,30 @@ def author_page():
 
 @app.route("/update_papers", methods=["GET", "POST"])
 def update_papers():
-    if request.method == "GET":
-        return render_template("author.html")
-    else:
-        title = request.form["title"]
-        keywords = request.form["keywords"]
-        body = request.form["body"]
-        abstract = request.form["abstract"]
-        paperID = request.form["paperID"]
 
-        curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        sql = "UPDATE papers1 SET title=%s, keywords=%s, body=%s, abstract=%s WHERE paper_id = %s"
-        val = (title, keywords, body, abstract, paperID)
-        curl.execute(sql, val)
-        mysql.connection.commit()
+    try:
+
+        if request.method == "GET":
+            return render_template("author.html")
+        else:
+            title = request.form["title"]
+            keywords = request.form["keywords"]
+            body = request.form["body"]
+            abstract = request.form["abstract"]
+            paperID = request.form["paperID"]
+
+            curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+            sql = "UPDATE papers1 SET title=%s, keywords=%s, body=%s, abstract=%s WHERE paper_id = %s"
+            val = (title, keywords, body, abstract, paperID)
+            curl.execute(sql, val)
+            mysql.connection.commit()
+            curl.close()
+            flash("The paper has been updated")
+            return redirect(url_for("author_page"))
+    except MySQLdb.Error as  err:
         curl.close()
-        flash("The paper has been updated")
+        flash("No valid data ..." )
         return redirect(url_for("author_page"))
-
 
 @app.route("/rating", methods=["GET", "POST"])
 def rating():
