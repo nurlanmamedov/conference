@@ -80,9 +80,24 @@ def reviewers():
         password = request.form["password"].encode("utf-8")
         password2 = request.form["password2"].encode("utf-8")
 
-        if password != password2:
-            return render_template("match.html")
-        hash_password = bcrypt.hashpw(password, bcrypt.gensalt())
+        if not firstname or not lastname or not email or not password or not password2:
+            flash("You can not leave this place empty,Please fill out!!")
+            return redirect('/')
+        elif "@" not in email:
+            flash("You must include '@' into email")
+            print("huhuhu")
+            return redirect('/')
+        elif password != password2:
+            flash("Passwords dont match!!")
+            return redirect('/')
+        elif not len(password)>=8:
+            flash('You must write at least 8 charachters in length')
+            print("huhuhu")
+            return redirect('/')
+        elif not phone.isnumeric():
+            flash('Include a correct phone number')
+            print("huhuhu")
+            return redirect('/')
 
         curl = mysql.connection.cursor()
         curl.execute(
@@ -130,19 +145,38 @@ def register():
         country = request.form["country"]
         city = request.form["city"]
         zip = request.form["zipcode"]
-        password = request.form["password"].encode("utf-8")
-        hash_password = bcrypt.hashpw(password, bcrypt.gensalt())
-        password2 = request.form["password2"].encode("utf-8")
-
-        if password != password2:
-            return render_template("match.html")
+        password = request.form['password'].encode('utf-8')
+        hash_password = bcrypt.hashpw(password, bcrypt.gensalt())       
+        password2 = request.form['password2'].encode('utf-8')
         hash_password = bcrypt.hashpw(password, bcrypt.gensalt())
 
+        if not firstname or not lastname or not phone or not email or not country or not city or not zip or not password or not password2:
+            flash("You can not leave this place empty,Please fill out!!")
+            return redirect('register')
+        elif "@" not in email:
+            flash("You must include '@' into email")
+            print("huhuhu")
+            return redirect('register')
+        elif password != password2:
+            flash("Passwords dont match!!")
+            return redirect('register')
+        elif not len(password)>=8:
+            flash('You must write at least 8 charachters in length')
+            print("huhuhu")
+            return redirect('register')
+        elif not phone.isnumeric():
+            flash('Include a correct phone number')
+            print("huhuhu")
+            return redirect('register')
+            
+        hash_password = bcrypt.hashpw(password, bcrypt.gensalt())
         cur = mysql.connection.cursor()
         cur.execute(
             "INSERT INTO authors1 (firstname,lastname, phone, email, country, city,zipcode, password) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)",
             (firstname, lastname, phone, email, country, city, zip, hash_password),
         )
+
+        
         mysql.connection.commit()
         session["name"] = request.form["firstname"]
         session["email"] = request.form["email"]
@@ -557,42 +591,42 @@ def login_chief_editor():
         user = curl.fetchone()
         print("User --> ", user)
         curl.close()
+        try:
+            if len(user) > 0:
 
-        if len(user) > 0:
+                print("password", password)
+                print("user password utf encode", user["password"].encode("utf-8"))
 
-            print("password", password)
-            print("user password utf encode", user["password"].encode("utf-8"))
+                if bcrypt.hashpw(password, user["password"].encode("utf-8")) == user[
+                    "password"
+                ].encode("utf-8"):
+                    session["firstname"] = user["firstname"]
+                    session["lastname"] = user["lastname"]
+                    session["email"] = user["email"]
+                    curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+                    curl.execute(
+                        "SELECT sum(rating) as point, GROUP_CONCAT(comment) as comments, firstname, lastname, author_id, paper_id FROM  conference.paper_status1 LEFT JOIN conference.authors1 using(author_id) WHERE author_id=author_id GROUP BY conference.paper_status1.paper_id HAVING count(conference.paper_status1.reviewer_id)=3"
+                    )
+                    data = curl.fetchall()
+                    curl.execute("SELECT * FROM final_status")
+                    final_status = curl.fetchall()
 
-            if bcrypt.hashpw(password, user["password"].encode("utf-8")) == user[
-                "password"
-            ].encode("utf-8"):
-                session["firstname"] = user["firstname"]
-                session["lastname"] = user["lastname"]
-                session["email"] = user["email"]
-                curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-                curl.execute(
-                    "SELECT sum(rating) as point, GROUP_CONCAT(comment) as comments, firstname, lastname, author_id, paper_id FROM  conference.paper_status1 LEFT JOIN conference.authors1 using(author_id) WHERE author_id=author_id GROUP BY conference.paper_status1.paper_id HAVING count(conference.paper_status1.reviewer_id)=3"
-                )
-                data = curl.fetchall()
-                curl.execute("SELECT * FROM final_status")
-                final_status = curl.fetchall()
+                    print("finaaaaaaaaal", final_status)
 
-                print("finaaaaaaaaal", final_status)
+                    for i in data:
+                        i["point"] = int(i["point"])
+                    result_status = {}
+                    for i in final_status:
+                        result_status[i["paper_id"]] = i["evaluate"]
 
-                for i in data:
-                    i["point"] = int(i["point"])
-                result_status = {}
-                for i in final_status:
-                    result_status[i["paper_id"]] = i["evaluate"]
+                    session["final_status"] = result_status
+                    session["data"] = data
 
-                session["final_status"] = result_status
-                session["data"] = data
+                    return redirect(url_for("chief_editor_page"))
+                else:
+                    return render_template("error.html")
 
-                return redirect(url_for("chief_editor_page"))
-            else:
-                return render_template("error.html")
-
-        else:
+        except:
             return render_template("notfound.html")
     else:
         return render_template("login.html")

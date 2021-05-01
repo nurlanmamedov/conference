@@ -26,7 +26,7 @@
                      {% with messages = get_flashed_messages() %}
                      {% if messages %}
                          {% for message in messages %}
-                         <div class="container alert alert-success alert-dismissible fade show" role="alert">
+                         <div class="container alert alert-warning alert-dismissible fade show" role="alert">
                              <strong>{{message}}</strong> 
                              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                            </div>   
@@ -35,12 +35,12 @@
                      {% endif %}
                  {% endwith %}
                      <label for="exampleInputEmail1" class="form-label">First Name</label>
-                     <input type="form-text" required  class="form-control form-control-sm" name="firstname" id="firstname"
+                     <input type="form-text"      class="form-control form-control-sm" name="firstname" id="firstname"
                         aria-describedby="firstnameHelp">
                   </div>
                   <div class="mb-3">
                      <label for="exampleInputEmail1" class="form-label">Lastname</label>
-                     <input type="form-text" required  class="form-control form-control-sm" name="lastname" id="lastname"
+                     <input type="form-text"      class="form-control form-control-sm" name="lastname" id="lastname"
                         aria-describedby="lastnameHelp">
                   </div>
                   <div class="mb-3">
@@ -53,16 +53,16 @@
                   </div>
                   <div class="mb-3">
                      <label for="exampleInputEmail1" class="form-label">Email address</label>
-                     <input type="email" required  class="form-control form-control-sm" id="email" name="email"
+                     <input type="text"      class="form-control form-control-sm" id="email" name="email"
                         aria-describedby="emailHelp">
                   </div>
                   <div class="mb-3">
                      <label for="exampleInputPassword1" class="form-label">Password</label>
-                     <input type="password" required  class="form-control form-control-sm" id="exampleInputPassword1" name="password">
+                     <input type="password"      class="form-control form-control-sm" id="exampleInputPassword1" name="password">
                   </div>
                   <div class="mb-3">
                      <label for="exampleInputPassword2" class="form-label">Confirm password</label>
-                     <input type="password" required  class="form-control form-control-sm" id="exampleInputPassword2" name="password2">
+                     <input type="password"      class="form-control form-control-sm" id="exampleInputPassword2" name="password2">
                   </div>
                   <button type="submit" class="btn btn-primary">Register</button>
                </form>
@@ -110,24 +110,24 @@
                                  <form action="{{ url_for('update_rewiever', id=i.reviewer_id) }}" method="POST">
                                     <div class="mb-3">
                                        <label for="exampleInputEmail1" class="form-label">First Name</label>
-                                       <input type="form-text" required  class="form-control form-control-sm" name="firstname"
+                                       <input type="form-text"      class="form-control form-control-sm" name="firstname"
                                           id="firstname" aria-describedby="firstnameHelp" value="{{i.firstname}}">
                                     </div>
                                     <div class="mb-3">
                                        <label for="exampleInputEmail1" class="form-label">Lastname</label>
-                                       <input type="form-text" required  class="form-control form-control-sm" name="lastname"
+                                       <input type="form-text"      class="form-control form-control-sm" name="lastname"
                                           id="lastname" aria-describedby="lastnameHelp" value="{{i.lastname}}">
                                     </div>
                                     
                                     <div class="mb-3">
                                        <label for="exampleInputEmail1" class="form-label">Email address</label>
-                                       <input type="email" required  class="form-control form-control-sm" id="email" name="email"
+                                       <input type="email"      class="form-control form-control-sm" id="email" name="email"
                                           aria-describedby="emailHelp" value="{{i.email}}">
                                     </div>
 
                                     <div class="mb-3">
                                        <label for="exampleInputEmail1" class="form-label">Password</label>
-                                       <input type="password" required  class="form-control form-control-sm" id="password" name="password"
+                                       <input type="password"      class="form-control form-control-sm" id="password" name="password"
                                           aria-describedby="emailHelp" value="">
                                     </div>
                                     <div class="modal-footer">
