@@ -25,6 +25,16 @@
                   <div class="row register-form">
                      <div class="col-md-10">
                         <div class="form-group">
+                           {% with messages = get_flashed_messages() %}
+                           {% if messages %}
+                               {% for message in messages %}
+                               <div class="container alert alert-success alert-dismissible fade show" role="alert">
+                                   <strong>{{message}}</strong> 
+                                   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                 </div>   
+       
+                               {% endfor %}
+                           {% endif %}{% endwith%}
                            <table class="table table-primary table-striped">
                               <thead>
                                  <tr>
@@ -47,7 +57,7 @@
                                        <!-- Button trigger modal -->
                                        <a type="button" class="btn btn-primary" data-bs-toggle="modal"
                                           data-bs-target="#staticBackdrop{{i.paper_id}}">
-                                       more
+                                      See paper
                                        </a>
                                        <!-- Modal -->
                                        <div class="modal fade" id="staticBackdrop{{i.paper_id}}"
@@ -90,7 +100,7 @@
                                        <!-- Button trigger modal -->
                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                                           data-bs-target="#paperId{{i.paper_id}}">
-                                       open {{i.paper_id}}
+                                       Open
                                        </button>
                                        <!-- Modal -->
                                        <div class="modal fade" id="paperId{{i.paper_id}}" data-bs-backdrop="static"
@@ -217,6 +227,7 @@
             </div>
             <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                <h3 class="register-heading">Add a paper</h3>
+               
                <div class="col-md-9" style="margin: 20% 10%;">
                   <form action="/submit_paper" method="POST" class="form-inline">
                      <div class="form-group">

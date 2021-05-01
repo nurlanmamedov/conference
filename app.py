@@ -7,8 +7,8 @@ app = Flask(__name__)
 app.secret_key = "sakoblexeyible"
 
 app.config["MYSQL_HOST"] = "localhost"
-app.config["MYSQL_USER"] = "noor"  # 'noor'#'aydan'
-app.config["MYSQL_PASSWORD"] = "noor123"  # "a1w2k3i4m5.."'noor123'
+app.config["MYSQL_USER"] = "aydan"  # 'noor'#'aydan'
+app.config["MYSQL_PASSWORD"] = "a1w2k3i4m5.."  # "a1w2k3i4m5.."'noor123'
 app.config["MYSQL_DB"] = "conference"
 app.config["MYSQL_CURSORCLASS"] = "DictCursor"
 mysql = MySQL(app)
@@ -98,6 +98,7 @@ def reviewers():
                 (firstname, lastname, interest_id, email, hash_password),
             )
             mysql.connection.commit()
+            flash('Congratulations! You have sucessfully added a reviewer.')
             return redirect("/")
         else:
             message = "Sorry, but limit of interests is exceed"
@@ -106,13 +107,14 @@ def reviewers():
                 "reviewer_exceed.html", message=message, backUrl=backUrl
             )
     else:
+
         return render_template("home.html")
 
 
 @app.route("/logout", methods=["GET", "POST"])
 def logout():
     session.clear()
-    flash("You successfully logged out")
+    flash("You have successfully logged out")
     return redirect("login")
 
 
@@ -144,7 +146,8 @@ def register():
         mysql.connection.commit()
         session["name"] = request.form["firstname"]
         session["email"] = request.form["email"]
-        return redirect(url_for("register"))
+        email=request.form['email']
+        return render_template("login_success.html",email=email)
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -293,6 +296,7 @@ def update_papers():
         curl.execute(sql, val)
         mysql.connection.commit()
         curl.close()
+        flash("The paper has been updated")
         return redirect(url_for("author_page"))
 
 
@@ -456,9 +460,8 @@ def submit_paper():  # database name is papers
                 body,
             ),
         )
-        mysql.connection.commit()
 
-        return redirect(url_for("author_page"))
+        return render_template("submit_sucess.html")
 
 
 @app.route("/papers", methods=["GET", "POST"])
@@ -510,7 +513,7 @@ def update_rewiever(id):
     curl.execute(sql, val)
     curl.close()
     mysql.connection.commit()
-
+    flash("Reviewer has been successfully updated")
     return redirect(url_for("home"))
 
 
@@ -524,6 +527,7 @@ def direct_pages():  # database name is papers
         curl.execute("SELECT * FROM interests1")
         interests = curl.fetchall()
         curl.close()
+        flash("Congratulations,Author has been assignes as a reviewer")
         return render_template("view.html", authors=authors, interests=interests)
 
 
@@ -535,6 +539,7 @@ def delete_paper(id):
     curl.execute("DELETE from papers1 WHERE paper_id=%s", (id,))
     curl.close()
     mysql.connection.commit()
+    flash("Reviewer has been successfully deleted")
     return redirect(url_for("author_page"))
 
 
