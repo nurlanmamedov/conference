@@ -340,7 +340,7 @@ def update_papers():
             return redirect(url_for("author_page"))
     except MySQLdb.Error as  err:
         curl.close()
-        flash("Please write title shorter" )
+        flash("Please do not exeed 100words" )
         return redirect(url_for("author_page"))
 
 @app.route("/rating", methods=["GET", "POST"])

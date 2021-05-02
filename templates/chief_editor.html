@@ -122,11 +122,12 @@
                                           </div>
                                        </div>
                                    </td>
-                                 <td>     {% for comment in i.comments.split(',') %} 
+                                 <td>  ({{i.point}}total points)    {% for comment in i.comments.split(',') %} 
                                    <p> {{comment}}    </p>                              
                                       {% endfor%}
-                                 
+                                
                                     </td> 
+
                                     </td>
                                  </tr>
                                  {% endfor %}
