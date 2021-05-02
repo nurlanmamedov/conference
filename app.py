@@ -340,7 +340,7 @@ def update_papers():
             return redirect(url_for("author_page"))
     except MySQLdb.Error as  err:
         curl.close()
-        flash("No valid data ..." )
+        flash("Please write title shorter" )
         return redirect(url_for("author_page"))
 
 @app.route("/rating", methods=["GET", "POST"])
@@ -593,7 +593,7 @@ def delete_paper(id):
     curl.execute("DELETE from papers1 WHERE paper_id=%s", (id,))
     curl.close()
     mysql.connection.commit()
-    flash("Reviewer has been successfully deleted")
+    flash("Paper has been successfully deleted")
     return redirect(url_for("author_page"))
 
 

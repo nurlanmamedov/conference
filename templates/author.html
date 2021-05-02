@@ -184,6 +184,13 @@
                   aria-describedby="titleHelp" value="{{i.title}}">
                </div>
                <div class="mb-9">
+                  <label for="abstract" class="form-label">Abstract</label>
+                  <input type="form-text" required
+                     class="form-control form-control-sm" id="abstract"
+                     name="abstract" aria-describedby="abstractHelp"
+                     value="{{i.abstract}}">
+                  </div>
+               <div class="mb-9">
                <label for="keywords" class="form-label">Keywords</label>
                <input type="form-text" required
                   class="form-control form-control-sm" name="keywords"
@@ -196,13 +203,7 @@
                   class="form-control form-control-sm" name="body" id="body"
                   aria-describedby="bodyHelp" value="{{i.body}}">
                </div>
-               <div class="mb-9">
-               <label for="abstract" class="form-label">Abstract</label>
-               <input type="form-text" required
-                  class="form-control form-control-sm" id="abstract"
-                  name="abstract" aria-describedby="abstractHelp"
-                  value="{{i.abstract}}">
-               </div>
+
                <!-- <button type="submit" class="btn btn-primary" name="paperID" value="{{i.paper_id}}" > ok</button> -->
                </div>
                <div class="modal-footer">

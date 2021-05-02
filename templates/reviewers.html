@@ -22,7 +22,7 @@
                               <th scope="col">Title</th>
                               <th scope="col">Interests</th>
                               <th scope="col">See more</th>
-                              <th scope="col">Status</th>
+      
                               <th scope="col">Evaluate</th>
                            </tr>
                         </thead>
@@ -46,19 +46,21 @@
                                     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                                        <div class="modal-content">
                                           <div class="modal-header">
-                                             <h5 class="modal-title" id="moreLabel"><b>{{i.title}}</b></h5>
+                                             <h5 class="modal-title" id="moreLabel"></h5>
                                              <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                 aria-label="Close"></button>
                                           </div>
                                           <div class="modal-body">
                                              <figure class="text-center">
                                                 <blockquote class="blockquote">
-                                                   <b>
-                                                      <p>{{i.title}}</p>
-                                                      by <cite title="Source Title">{{i.firstname}}{{i.lastname}}</cite>
-                                                   </b>
+                                                 
+                                                      <p><b>Title.</b>{{i.title}}</p>
+                                                   <p> <b>   Author   </b>{{i.firstname}} {{i.lastname}}</p> 
+                                                 
                                                    <p><b>Abstract.</b>{{i.abstract}}</p>
-                                                   <p><b> body.</b>{{i.body}}</p>
+                                                   <p><b>Keywords.</b>{{i.keywords}}</p>
+
+                                                   <p><b> Body.</b>{{i.body}}</p>
                                                 </blockquote>
                                                 <figcaption class="blockquote-footer">
                                                 </figcaption>
@@ -72,7 +74,7 @@
                                     </div>
                                  </div>
                               </td>
-                              <td>Pending...</td>
+                      
                               <td>
                                  {% if final_status[i.paper_id] and final_status[i.paper_id] == 'accept' %}
                                     <span class="text-success"> Accepted</span>
