@@ -37,11 +37,23 @@
                </li> -->
                {% if session['name'] or session['firstname'] %}
                <li class="nav-item">
+                  <li class="nav-item">
+                     <a class="nav-link" href="/info">Tips to create a conference</a>
+                  </li>
+                  <li class="nav-item">
+                     <a class="nav-link" href="/info1">Instructions</a>
+                  </li>
                   <a class="nav-link" href="/logout">Logout</a>
                </li>
                {% elif session['author_name'] or session['author_email'] %}
                <li class="nav-item">
                   <a class="nav-link" href="/author_page">Home</a>
+               </li>
+               <li class="nav-item">
+                  <a class="nav-link" href="/info">Tips to create a conference</a>
+               </li>
+               <li class="nav-item">
+                  <a class="nav-link" href="/info1">Instructions</a>
                </li>
                <li>
                   <a class="nav-link" href="/logout">Logout</a>
@@ -50,12 +62,24 @@
                <li class="nav-item">
                   <a class="nav-link" href="/reviewer_page">Home</a>
                </li>
+               <li class="nav-item">
+                  <a class="nav-link" href="/info">Tips to create a conference</a>
+               </li>
+               <li class="nav-item">
+                  <a class="nav-link" href="/info1">Instructions</a>
+               </li>
                <li>
                   <a class="nav-link" href="/logout">Logout</a>
                </li>
                {% elif session['chief_name'] or session['chief_email'] %}
                <li class="nav-item">
                   <a class="nav-link" href="/chief_editor_page">Home</a>
+               </li>
+               <li class="nav-item">
+                  <a class="nav-link" href="/info">Tips to create a conference</a>
+               </li>
+               <li class="nav-item">
+                  <a class="nav-link" href="/info1">Instructions</a>
                </li>
                <li>
                   <a class="nav-link" href="/logout">Logout</a>
