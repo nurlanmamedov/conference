@@ -15,8 +15,8 @@ app.config.from_object(__name__)
 Session(app)
 
 app.config["MYSQL_HOST"] = "localhost"
-app.config["MYSQL_USER"] = "aydan"  # 'noor'#'aydan'
-app.config["MYSQL_PASSWORD"] = "a1w2k3i4m5.."  # "a1w2k3i4m5.."'noor123'
+app.config["MYSQL_USER"] = "noor"  # 'noor'#'aydan'
+app.config["MYSQL_PASSWORD"] = "noor123"  # "a1w2k3i4m5.."'noor'
 app.config["MYSQL_DB"] = "conference"
 app.config["MYSQL_CURSORCLASS"] = "DictCursor"
 mysql = MySQL(app)
@@ -169,10 +169,8 @@ def register():
             flash('You must write at least 8 charachters in length')
             print("huhuhu")
             return redirect('register')
-        elif not phone.isnumeric():
-            flash('Include a correct phone number')
-            print("huhuhu")
-            return redirect('register')
+
+            
             
         hash_password = bcrypt.hashpw(password, bcrypt.gensalt())
         cur = mysql.connection.cursor()
