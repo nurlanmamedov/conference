@@ -568,6 +568,7 @@ def delete_rewiever(id):
     curl.execute("DELETE from reviewers1 WHERE reviewer_id=%s", (id,))
     curl.close()
     mysql.connection.commit()
+    flash("Reviewer has been successfully deleted")
     return redirect(url_for("home"))
 
 
@@ -603,7 +604,7 @@ def direct_pages():  # database name is papers
         curl.execute("SELECT * FROM interests1")
         interests = curl.fetchall()
         curl.close()
-        flash("Congratulations,Author has been assignes as a reviewer")
+
         return render_template("view.html", authors=authors, interests=interests)
 
 
