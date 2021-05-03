@@ -1,7 +1,7 @@
 {% extends 'layout.html' %}
 {% block title %} Home {% endblock %}
 {% block content %}
-{% if session['name'] %}
+{% if session['isAdmin'] %}
 <h1> Welcome {{ session['name'] }}</h1>
 <div class="container" style="margin: 50px;
    background-color: #c4dff3;">

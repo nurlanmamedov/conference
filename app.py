@@ -24,7 +24,7 @@ mysql = MySQL(app)
 @app.route("/", methods=["GET", "POST"])
 def home():
     print("here is our sesion *******/*/*/*/*4/45454/54/54/54",session)
-
+    
     if request.method == "GET":
         curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         curl.execute("SELECT * FROM reviewers1")
@@ -52,6 +52,11 @@ def home():
         chief_editor = True if len(chief_editor) > 0 else False
         curl.close()
 
+        print("lalalala", session.get('admin_name'))
+        if not session.get('isAdmin'):
+            print("KKKKKKKKKKKKKKKKKKKkk")
+            return render_template("home.html")
+
         return render_template(
             "home.html",
             data=rewievers,
@@ -63,6 +68,7 @@ def home():
             papers_result=papers_result,
         )
     else:
+        print("JJJJJJJJJJJJJJJJJJJJ")
         return render_template("home.html")
 
 
@@ -80,55 +86,60 @@ def authors():
 
 @app.route("/rewievers", methods=["GET", "POST"])
 def reviewers():
-    if request.method == "POST":
+    try:
+        if request.method == "POST":
 
-        firstname = request.form["firstname"]
-        lastname = request.form["lastname"]
-        email = request.form["email"]
-        interest_id = int(request.form["interest_id"])
-        password = request.form["password"].encode("utf-8")
-        password2 = request.form["password2"].encode("utf-8")
+            firstname = request.form["firstname"]
+            lastname = request.form["lastname"]
+            email = request.form["email"]
+            interest_id = int(request.form["interest_id"])
+            password = request.form["password"].encode("utf-8")
+            password2 = request.form["password2"].encode("utf-8")
 
-        if not firstname or not lastname or not email or not password or not password2:
-            flash("You can not leave this place empty,Please fill out!!")
-            return redirect('/')
-        elif "@" not in email:
-            flash("You must include '@' into email")
-            print("huhuhu")
-            return redirect('/')
-        elif password != password2:
-            flash("Passwords dont match!!")
-            return redirect('/')
-        elif not len(password)>=8:
-            flash('You must write at least 8 charachters in length')
-            print("huhuhu")
-            return redirect('/')
+            if not firstname or not lastname or not email or not password or not password2:
+                flash("You can not leave this place empty,Please fill out!!")
+                return redirect('/')
+            elif "@" not in email:
+                flash("You must include '@' into email")
+                print("huhuhu")
+                return redirect('/')
+            elif password != password2:
+                flash("Passwords dont match!!")
+                return redirect('/')
+            elif not len(password)>=8:
+                flash('You must write at least 8 charachters in length')
+                print("huhuhu")
+                return redirect('/')
 
-        curl = mysql.connection.cursor()
-        curl.execute(
-            "SELECT count(*) FROM conference.reviewers1 where interest_id=%s",
-            (interest_id,),
-        )
-        count = curl.fetchall()
-        count = count[0]["count(*)"]
-        hash_password = bcrypt.hashpw(password, bcrypt.gensalt())
-        if int(count) < 3:
+            curl = mysql.connection.cursor()
             curl.execute(
-                "INSERT INTO reviewers1 (firstname, lastname, interest_id, email, password) VALUES (%s,%s,%s,%s,%s)",
-                (firstname, lastname, interest_id, email, hash_password),
+                "SELECT count(*) FROM conference.reviewers1 where interest_id=%s",
+                (interest_id,),
             )
-            mysql.connection.commit()
-            flash('Congratulations! You have sucessfully added a reviewer.')
-            return redirect("/")
+            count = curl.fetchall()
+            count = count[0]["count(*)"]
+            hash_password = bcrypt.hashpw(password, bcrypt.gensalt())
+            if int(count) < 3:
+                curl.execute(
+                    "INSERT INTO reviewers1 (firstname, lastname, interest_id, email, password) VALUES (%s,%s,%s,%s,%s)",
+                    (firstname, lastname, interest_id, email, hash_password),
+                )
+                mysql.connection.commit()
+                flash('Congratulations! You have sucessfully added a reviewer.')
+                return redirect("/")
+            else:
+                message = "Sorry, but limit of interests is exceed"
+                backUrl = "/"
+                return render_template(
+                    "reviewer_exceed.html", message=message, backUrl=backUrl
+                )
         else:
-            message = "Sorry, but limit of interests is exceed"
-            backUrl = "/"
-            return render_template(
-                "reviewer_exceed.html", message=message, backUrl=backUrl
-            )
-    else:
 
-        return render_template("home.html")
+            return render_template("home.html")
+    except MySQLdb.Error as  err:
+        curl.close()
+        flash("Email already exist!" )
+        return redirect(url_for("home"))
 
 
 @app.route("/logout", methods=["GET", "POST"])
@@ -140,48 +151,54 @@ def logout():
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
-    if request.method == "GET":
-        return render_template("author_registration.html")
-    else:
-        firstname = request.form["firstname"]
-        lastname = request.form["lastname"]
-        phone = request.form["phone"]
-        email = request.form["email"]
-        country = request.form["country"]
-        city = request.form["city"]
-        zip = request.form["zipcode"]
-        password = request.form['password'].encode('utf-8')
-        hash_password1 = bcrypt.hashpw(password, bcrypt.gensalt())       
-        password2 = request.form['password2'].encode('utf-8')
-        hash_password2 = bcrypt.hashpw(password2, bcrypt.gensalt())
-        
-        if not firstname or not lastname or not phone or not email or not country or not city or not zip or not password or not password2:
-            flash("You can not leave this place empty,Please fill out!!")
-            return redirect('register')
-        elif "@" not in email:
-            flash("You must include '@' into email")
-            print("huhuhu")
-            return redirect('register')
-        elif password != password2:
-            flash("Passwords dont match!!")
-            return redirect('register')
-        elif not len(password)>=8:
-            flash('You must write at least 8 charachters in length')
-            print("huhuhu")
-            return redirect('register')
 
+    try:
+        if request.method == "GET":
+            return render_template("author_registration.html")
+        else:
+            firstname = request.form["firstname"]
+            lastname = request.form["lastname"]
+            phone = request.form["phone"]
+            email = request.form["email"]
+            country = request.form["country"]
+            city = request.form["city"]
+            zip = request.form["zipcode"]
+            password = request.form['password'].encode('utf-8')
+            hash_password1 = bcrypt.hashpw(password, bcrypt.gensalt())       
+            password2 = request.form['password2'].encode('utf-8')
+            hash_password2 = bcrypt.hashpw(password2, bcrypt.gensalt())
             
+            if not firstname or not lastname or not phone or not email or not country or not city or not zip or not password or not password2:
+                flash("You can not leave this place empty,Please fill out!!")
+                return redirect('register')
+            elif "@" not in email:
+                flash("You must include '@' into email")
+                print("huhuhu")
+                return redirect('register')
+            elif password != password2:
+                flash("Passwords dont match!!")
+                return redirect('register')
+            elif not len(password)>=8:
+                flash('You must write at least 8 charachters in length')
+                print("huhuhu")
+                return redirect('register')
+
+                
+                
+            hash_password = bcrypt.hashpw(password, bcrypt.gensalt())
+            cur = mysql.connection.cursor()
+            cur.execute(
+                "INSERT INTO authors1 (firstname,lastname, phone, email, country, city,zipcode, password) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)",
+                (firstname, lastname, phone, email, country, city, zip, hash_password),
+            )
             
-        hash_password = bcrypt.hashpw(password, bcrypt.gensalt())
-        cur = mysql.connection.cursor()
-        cur.execute(
-            "INSERT INTO authors1 (firstname,lastname, phone, email, country, city,zipcode, password) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)",
-            (firstname, lastname, phone, email, country, city, zip, hash_password),
-        )
-        
-        mysql.connection.commit()
-        email=request.form['email']
-        return render_template("login_success.html",email=email)
+            mysql.connection.commit()
+            email=request.form['email']
+            return render_template("register_success.html",email=email)
+    except MySQLdb.Error as  err:
+        cur.close()
+        flash("This email already exist")
+        return redirect(url_for("register"))
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -200,6 +217,7 @@ def login():
                 ].encode("utf-8"):
                     session["name"] = user["name"]
                     session["email"] = user["email"]
+                    session['isAdmin'] = True
                     return redirect(url_for("home"))
                 else:
                     return render_template("error.html")
@@ -211,6 +229,7 @@ def login():
 
 @app.route("/login_author", methods=["GET", "POST"])
 def login_author():
+    session['isAdmin'] = False
     if request.method == "POST":
         email = request.form["email"]
         password = request.form["password"].encode("utf-8")
@@ -230,8 +249,8 @@ def login_author():
                 ].encode("utf-8"):
                     session["email"] = user["email"]
                     session["author_id"] = user["author_id"]
-                    session["name"] = user["firstname"]
-                    session["lastname"] = user["lastname"]
+                    session["author_name"] = user["firstname"]
+                    session["author_lastname"] = user["lastname"]
 
                     print("Session --->>>", session)
 
@@ -302,13 +321,15 @@ def author_page():
                 (i["paper_id"],),
             )
             rate_list[i["paper_id"]] = curl.fetchone()
+        
+        
         return render_template(
             "author.html",
             name=name,
             lastname=lastname,
             papers=papers,
             interests=interests,
-            rate_list=rate_list,
+            rate_list=rate_list
         )
     else:
         redirect(url_for("login_author"))
@@ -387,7 +408,7 @@ def rating():
 
 @app.route("/login_reviewer", methods=["GET", "POST"])
 def login_reviewer():
-
+    session['isAdmin'] = False
     if session.get("rewiever_id"):
         return redirect(url_for("reviewer_page"))
     if request.method == "POST":
@@ -405,9 +426,9 @@ def login_reviewer():
                 if bcrypt.hashpw(password, user["password"].encode("utf-8")) == user[ "password"].encode("utf-8"):
                     print("after if ---> ", session)
                     print("after if 34rd---> ", session)
-                    session["name"] = user["firstname"]
+                    session["reviewer_name"] = user["firstname"]
                     session["lastname"] = user["lastname"]
-                    session["email"] = user["email"]
+                    session["reviewer_email"] = user["email"]
                     session["reviewer_id"] = user["reviewer_id"]
                     session["interest_id"] = user["interest_id"]
                     print("after if --->2 ", session)
@@ -435,7 +456,8 @@ def login_reviewer():
                     answer = curl.fetchall()
 
                     data = {
-                        "firstname": user["lastname"],
+                        "firstname": user["firstname"],
+                        "lastname": user["lastname"],
                         "papers": papers,
                         "authors": authors,
                         "answer": answer,
@@ -457,6 +479,7 @@ def reviewer_page():
     if session.get("reviewer_id") != None:
         if session["data"]:
             firstname = session["data"]["firstname"]
+            lastname = session["data"]["lastname"]
             papers = session["data"]["papers"]
             authors = session["data"]["authors"]
             answer = session["data"]["answer"]
@@ -473,6 +496,7 @@ def reviewer_page():
         return render_template(
             "reviewers.html",
             firstname=firstname,
+            lastname=lastname,
             papers=papers,
             authors=authors,
             answer=answer,
@@ -597,6 +621,7 @@ def delete_paper(id):
 
 @app.route("/login_chief_editor", methods=["GET", "POST"])
 def login_chief_editor():
+    session['isAdmin'] = False
     if request.method == "POST":
         email = request.form["email"]
         password = request.form["password"].encode("utf-8")
@@ -618,9 +643,9 @@ def login_chief_editor():
                 if bcrypt.hashpw(password, user["password"].encode("utf-8")) == user[
                     "password"
                 ].encode("utf-8"):
-                    session["firstname"] = user["firstname"]
+                    session["chief_name"] = user["firstname"]
                     session["lastname"] = user["lastname"]
-                    session["email"] = user["email"]
+                    session["chief_email"] = user["email"]
                     curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
                     curl.execute(
                         "SELECT sum(rating) as point, GROUP_CONCAT(comment) as comments, firstname, lastname, author_id, paper_id FROM  conference.paper_status1 LEFT JOIN conference.authors1 using(author_id) WHERE author_id=author_id GROUP BY conference.paper_status1.paper_id HAVING count(conference.paper_status1.reviewer_id)=3"
@@ -700,9 +725,9 @@ def chief_editor_page():
 
         return redirect(url_for("chief_editor_page"))
 
-    if session["firstname"]:
-        email = session["email"]
-        firstname = session["firstname"]
+    if session["chief_name"]:
+        email = session["chief_email"]
+        firstname = session["chief_name"]
         data = session["data"]
         final_status = session["final_status"]
 

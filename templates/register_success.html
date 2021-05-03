@@ -1,0 +1,23 @@
+{% extends 'layout.html' %}
+{% block title %} title{% endblock %}
+{% block content %}
+
+<div class="col-md-9 m-5">
+
+
+    <h1><div class="alert alert-danger" role="alert">
+   Congratulations!!! You registered
+      </div>
+    </h1>
+    <h2><div class="alert alert-danger" role="alert">Your email is {{email}}</div> </h2>
+
+<div class="row register-form">
+<h5>    <div class="alert alert-info" role="alert">
+    Use button below to go back to registration page <i class="fa fa-arrow-circle-down" aria-hidden="true"></i>
+   </div></h5> 
+</div></div>
+<div class="d-grid gap-2 col-6 mx-auto">
+    <button class="btn btn-primary" type="button" ><a type="submit" class="btn btn-primary" href="/">Home</a></button>
+    <button class="btn btn-primary" type="button" ><a type="submit" class="btn btn-primary" href="/register">Register</a></button>
+</div>
+{% endblock %}
