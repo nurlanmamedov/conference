@@ -5,7 +5,7 @@
 ![2021-05-01 (1)](https://user-images.githubusercontent.com/62059163/118400689-4a835480-b628-11eb-8f9a-2c315a6e537f.png)
 
 
-# Logging in to system a a Chief editor
+# Logging in to system as a Chief editor
 ![2021-05-01 (7)](https://user-images.githubusercontent.com/62059163/118400602-eb254480-b627-11eb-924c-d5a721013c5d.png)
 
 
